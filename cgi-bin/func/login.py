@@ -24,7 +24,7 @@ def login(form, params):
 
     passwd = decrypt(passwd)
     md5 = hashlib.md5()
-    md5.update(cont)
+    md5.update(passwd)
     passwd = md5.hexdigest()
     sql = 'SELECT * FROM users WHERE user_name="%s" AND passwd="%s"' % (user, passwd)
     result = mysql(sql)
