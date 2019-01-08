@@ -43,10 +43,6 @@ function Display_the_files(files){
     }
 }
 
-function Backpage(Path){
-    window.location.href = Path;
-}
-
 // Post a rm request and refresh the page
 function Delete_file(Path, Filename){
     var auth = new URLSearchParams();         

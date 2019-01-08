@@ -44,8 +44,11 @@
         success: function (response) {
             var json = JSON.parse(response);
             var files = JSON.parse(json.list);
-            if(json.errno==1)
-                alert("An error occurs");
+            if(json.errno==1){
+                // Todo: Jump to Registraion
+                alert("An error occurs! Please login again!");
+                window.location.href = "/registraion.html";
+            }
             else {
                 Display_the_files(files);
             }                              
@@ -66,7 +69,8 @@
 		upload($("#file"),$("#proc"));
 	});
 	$("#Bpage").click(function(){
-		Backpage(window.location.href.substring(0, window.location.href.lastIndexOf('/')));
+        localStorage.path = localStorage.path.substring(0, localStorage.path.lastIndexOf('/'));
+		window.location.href = window.location.href;
 	});
 	$("#Nfolder").click(function(){
 		Makedir();
