@@ -90,11 +90,10 @@
     });
 
     function Encrypt(passwd){
-        // Todo: /pulic.key
-        var key="";
+        var key = "";
         $.ajax({
             async: false,
-            url: "/pulic.key", 
+            url: "/public.key", 
             type: "GET",
             success: function (response) {
                 key = response;
@@ -107,7 +106,7 @@
         var encrypt = new JSEncrypt();
         encrypt.setPublicKey(key);
         var res = encrypt.encrypt(passwd);
-        return window.btoa(res);
+        return res;
     }
 </script>
 </html>

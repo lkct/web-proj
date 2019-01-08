@@ -3,6 +3,7 @@ import os
 import sys
 import string
 import urlparse
+import hashlib
 
 from mysql import mysql
 from rsa import decrypt
@@ -36,7 +37,10 @@ def reg(form, params):
         msg = {'errno': 1, 'errmsg': 'Duplicate name'}
         return (stat, msg)
     
-    # passwd = decrypt(passwd)
+    passwd = decrypt(passwd)
+    md5 = hashlib.md5()
+    md5.update(passwd)
+    passwd = md5.hexdigest()
     sql = 'INSERT INTO users (user_name, passwd) VALUES ("%s", "%s")' % (user, passwd)
     mysql(sql)
 
