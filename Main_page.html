@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<title>File manager</title>
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-	<script src="/Main_action.js"></script>
+	<script src="./Main_action.js"></script>
 </head>
 <body>
 	<button type='button' id='Dload'>Download</button><br>
@@ -13,6 +13,7 @@
 	<button type='button' id='Gbuild'>Build your group</button><br>
     <button type='button' id='Gcheck'>Check your group</button><br>
     <ul id='file_list'>
+        <li>hhh</li>
     </ul>
 	<form>
         <p>文件: <input id="file" name="file" type="file" /></p>
@@ -36,7 +37,7 @@
     // Request for contents
     $.ajax({
         async: false,
-        url: "/cgi-bin/serve.py", 
+        url: "./cgi-bin/serve.py", 
         type: "POST",
         data: formData,
         processData: false,
