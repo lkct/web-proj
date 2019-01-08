@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script src="/jquery-3.3.1.min.js"></script>
+    <title>upload</title>
+</head>
+
+<body>
+    <form>
+        <p>文件: <input id="file" name="file" type="file" /></p>
+        <p><button id="subbut" type="button">上传</button></p>
+        <p id="proc"></p>
+    </form>
+</body>
+
+<script>
+    $("#subbut").click(function () {
+        var file = $("#file")[0].files[0];
+        var size = file.size;
+        var chuck = 1000000;
+        var num = Math.ceil(size / chuck);
+
+        var md5list = new Array(num);
+        var ajaxlist = new Array(num);
+
+        var proc = 0;
+        $("#proc")[0].innerHTML = "process: " + proc.toFixed(0) + "%";
+
+        for (var i = 0; i < num; i++) {
+            var beg = i * chuck;
+            var end = beg + chuck;
+            if (end > size)
+                end = size
+            var slice = file.slice(beg, end);
+
+            var formData = new FormData();
+            var auth = new URLSearchParams();
+            auth.append("user", "root");
+            var params = new URLSearchParams();
+            params.append("func", "save_file");
+            params.append("no", i);
+            formData.append("auth", auth);
+            formData.append("params", params);
+            formData.append("file", slice);
+
+            ajaxlist[i] = $.ajax({
+                url: "/cgi-bin/serve.py",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    var json = JSON.parse(response)
+                    md5list[json.no] = json.md5;
+                    proc += 100 / num;
+                    $("#proc")[0].innerHTML = "process: " + proc.toFixed(0) + "%";
+                    // alert(response);
+                }
+                // error handler
+            });
+        }
+
+        $.when.apply(null, ajaxlist).done(function () {
+            var md5data = md5list.join('","');
+            md5data = "[\"" + md5data + "\"]";
+
+            var formData = new FormData();
+            var auth = new URLSearchParams();
+            auth.append("user", "root");
+            var params = new URLSearchParams();
+            params.append("func", "commit");
+            params.append("filename", file.name);
+            params.append("path", "/abc"); // TODO: now fixed in code
+            params.append("size", size);
+            params.append("md5", md5data);
+            formData.append("auth", auth);
+            formData.append("params", params);
+            $.ajax({
+                url: "/cgi-bin/serve.py",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    alert(response);
+                },
+                error: function (xhr) {
+                    alert(xhr.status + " " + xhr.statusText + "\n"
+                        + xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
+
+</html>

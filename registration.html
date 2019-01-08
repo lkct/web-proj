@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>File Manager</title>
+    <script src="/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    <h2>Welcome to our file Manager</h2>
+    <div id="LoggingInput">
+        Username: <input type="text" id="username"><br>
+        Password: <input type="password" id="password"><br>
+        <button id="loginBtn">Log in</button>
+        <button id="registBtn">Register</button>
+    </div>
+</body>
+<script>
+    // Login
+    $(document).ready(() => {
+        $("#loginBtn").on("click", function(){
+            var name = $("#username").val();
+            var value = $("#password").val();
+
+            var auth = new URLSearchParams();
+            var params = new URLSearchParams();
+            var formData = new FormData();
+            auth.append("user", name);
+            auth.append("passwd", value);            
+            params.append("func", "login");
+            formData.append("auth", auth);
+            formData.append("params", params);
+
+            // Login Request
+            $.ajax({
+                url: "/cgi-bin/serve.py", 
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    var json = JSON.parse(response);
+                    localStorage.token = json.token;
+                    localStorage.path = "/"+name;
+                    if(json.errno==1)
+                        alert("The password does not match the username or the username does not exist!");
+                    else {
+                        window.location.href="/Main_page.html"; //+"?token="+json.token;
+                    }
+                },
+                error: function (xhr) {
+                    alert(xhr.status + " " + xhr.statusText + "\n"
+                        + xhr.responseText);
+                }
+            });
+        });
+
+        // Registration
+        $("#registBtn").on("click", function(){
+            var name = $("#username").val();
+            var value = $("#password").val();
+
+            var auth = new URLSearchParams();         
+            var params = new URLSearchParams();
+            var formData = new FormData();
+            auth.append("user", name);
+            auth.append("passwd", value);
+            params.append("func", "reg");
+            formData.append("auth", auth);
+            formData.append("params", params);
+            $.ajax({
+                url: "/cgi-bin/serve.py", 
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    var json = JSON.parse(response);
+                    if(json.errno==1)
+                        alert('Oops! The username has already been used!');
+                    else
+                        alert("You've already registered!\nPlease log in.");
+                },
+                error: function (xhr) {
+                    alert(xhr.status + " " + xhr.statusText + "\n"
+                        + xhr.responseText);
+                }
+            });
+        });
+    });
+
+</script>
+</html>

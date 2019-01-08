@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>File manager</title>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="/Main_action.js"></script>
+</head>
+<body>
+	<button type='button' id='Dload'>Download</button><br>
+	<button type='button' id='Bpage'>Go up one directory</button><br>
+	<button type='button' id='Nfolder'>New Folder</button><br>
+	<button type='button' id='Gbuild'>Build your group</button><br>
+    <button type='button' id='Gcheck'>Check your group</button><br>
+    <ul id='file_list'>
+    </ul>
+	<form>
+        <p>文件: <input id="file" name="file" type="file" /></p>
+        <p><button id="Uload" type="button">上传</button></p>
+    </form>
+</body>
+
+<!--Display the files-->
+<script>
+	var token = localStorage.token;
+	var path = localStorage.path;
+	var auth = new URLSearchParams();
+	var params = new URLSearchParams();
+    var formData = new FormData();
+    auth.append("token", token);
+    params.append("func", "ls");
+    params.append("path", path);
+    formData.append("auth", auth);
+    formData.append("params", params);
+
+    // Request for contents
+    $.ajax({
+        async: false,
+        url: "/cgi-bin/serve.py", 
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            var json = JSON.parse(response);
+            var files = JSON.parse(json.list);
+            if(json.errno==1)
+                alert("An error occurs");
+            else {
+                Display_the_files(files);
+            }                              
+        },
+        error: function (xhr) {
+            alert(xhr.status + " " + xhr.statusText + "\n"
+                + xhr.responseText);
+        }
+    });
+</script>
+
+<!--The Buttons-->
+<script>
+	$("#Dload").click(function(){
+		Download();
+	});
+	$("#Uload").click(function(){
+		upload($("#file"),$("#proc"));
+	});
+	$("#Bpage").click(function(){
+		Backpage(window.location.href.substring(0, window.location.href.lastIndexOf('/')));
+	});
+	$("#Nfolder").click(function(){
+		Makedir();
+	});
+	$("#Gbuild").click(function(){
+		alert("Not ready");
+	});
+	$("#Gcheck").click(function(){
+		alert("Not ready");
+	});
+</script>
+</html>
