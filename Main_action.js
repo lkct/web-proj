@@ -29,29 +29,33 @@ function Download(){
     });
 }
 
-function Display_the_files(files){
-    var element = document.getElementById("file_list");
-    element.remove()
-    for (var i in files) {
-        var filename = i[0].value;
-        var is_dir = i[1].value;
-        // var size = i[2].value;
-        var para = document.createElement("li");
-        var node = document.createTextNode(filename);
-        if (is_dir != 0) {
-            (function(fname){
-                para.ondblclick = function() {
-                    new_Path = Path + '/' + fname;
-                    window.location.href = new_Path;
-                }
-            })(filename)
-            para.style.color = '#06c';
+function Delete_file(Path, Filename){
+    var auth = new URLSearchParams();         
+    var params = new URLSearchParams();
+    var formData = new FormData();
+    auth.append("token", localstorage.value);
+    params.append("func", "rm");
+    params.append("path", Path);
+    params.append("filename", Filename);
+    formData.append("auth", auth);
+    formData.append("params", params);
+    $.ajax({
+        url: "/cgi-bin/serve.py", 
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            if(errno==1)
+                alert("Failed");
+            else
+                window.location.href = Path; // 可以采用refresh？
+        },
+        error: function (xhr) {
+            alert(xhr.status + " " + xhr.statusText + "\n"
+                + xhr.responseText);
         }
-        para.appendChild(node);
-
-        var element = document.getElementById("file_list");
-        element.appendChild(para);
-    }
+    });
 }
 
 function Backpage(Path){
