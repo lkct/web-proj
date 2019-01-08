@@ -70,7 +70,13 @@
 		Backpage(window.location.href.substring(0, window.location.href.lastIndexOf('/')));
 	});
 	$("#Nfolder").click(function(){
-		Makedir();
+        var dir_name = ""
+        $(function() {
+            dir_name = prompt("Please enter the directory name:")
+            if (!dir_name)
+                break;
+        })
+		Makedir(localStorage.path, dir_name);
 	});
 	$("#Gbuild").click(function(){
 		alert("Not ready");

@@ -41,8 +41,8 @@ function Display_the_files(files){
         if (is_dir != 0) {
             (function(fname){
                 para.ondblclick = function() {
-                    new_Path = Path + '/' + fname;
-                    window.location.href = new_Path;
+                    localStorage.path = localStorage.path + '/' + fname;
+                    window.location.href = window.location.href;
                 }
             })(filename)
             para.style.color = '#06c';
@@ -52,10 +52,6 @@ function Display_the_files(files){
         var element = document.getElementById("file_list");
         element.appendChild(para);
     }
-}
-
-function Backpage(Path){
-    window.location.href = Path;
 }
 
 // Post a rm request and refresh the page
