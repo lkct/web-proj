@@ -2,10 +2,13 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>File manager</title>
 	<script src="/jquery-3.2.1.min.js"></script>
     <script src="./Main_action.js"></script>
     <script src="./Group_action.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css"> <!-- Resource style -->
 </head>
 <body>
 	<button type='button' id='Dload'>Download</button><br>
@@ -19,6 +22,33 @@
         <p>文件: <input id="file" name="file" type="file" /></p>
         <p><button id="Uload" type="button">上传</button></p>
     </form>
+
+    <div class="dir_action_list">
+		<nav>
+			<ul class="cd-bouncy-nav">
+				<li><a href="#0">Enter</a></li>
+				<li><a href="#0">Copy</a></li>
+				<li><a href="#0">Cut</a></li>
+				<li><a href="#0">Delete</a></li>
+			</ul>
+		</nav>
+		
+		<a href="#0" class="cd-close">Close modal</a>
+    </div>
+    
+    <div class="file_action_list">
+		<nav>
+			<ul class="cd-bouncy-nav">
+				<li><a href="#0">Enter</a></li>
+				<li><a href="#0">Download</a></li>
+				<li><a href="#0">Copy</a></li>
+				<li><a href="#0">Cut</a></li>
+				<li><a href="#0">Delete</a></li>
+			</ul>
+		</nav>
+		
+		<a href="#0" class="cd-close">Close modal</a>
+	</div>
 </body>
 
 <!--Display the files-->
@@ -74,13 +104,13 @@
 		window.location.href = window.location.href;
 	});
 	$("#Nfolder").click(function(){
-        // var dir_name = ""
-        // $(function() {
-        //     dir_name = prompt("Please enter the directory name:")
-        //     if (!dir_name)
-        //         break;
-        // })
-		// Makedir(localStorage.path, dir_name);
+        var dir_name = ""
+        $(function() {
+            dir_name = prompt("Please enter the directory name:")
+            if (!dir_name)
+                return;
+        })
+		Makedir(localStorage.path, dir_name);
 	});
 	$("#GroupManage").click(function(){
 		window.location.href="./Group_page.html";

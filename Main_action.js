@@ -30,28 +30,103 @@ function Download(){
 }
 
 function Display_the_files(files){
-    // var element = document.getElementById("file_list");
-    // element.remove()
-    // for (var i in files) {
-    //     var filename = i[0].value;
-    //     var is_dir = i[1].value;
-    //     // var size = i[2].value;
-    //     var para = document.createElement("li");
-    //     var node = document.createTextNode(filename);
-    //     if (is_dir != 0) {
-    //         (function(fname){
-    //             para.ondblclick = function() {
-    //                 localStorage.path = localStorage.path + '/' + fname;
-    //                 window.location.href = window.location.href;
-    //             }
-    //         })(filename)
-    //         para.style.color = '#06c';
-    //     }
-    //     para.appendChild(node);
+    var element = document.getElementById("file_list");
+    element.remove();
+    for (var i in files) {
+        var filename = i.filename;
+        var is_dir = i.is_dir;
+        var para = document.createElement("li");
+        var node = document.createTextNode(filename);
+        if (is_dir != 0) {
+            para.addEventListener('click', function(filename){
+                choose_dir(this)
+            })
+            para.style.color = 'blue';
+        }
+        else {
+            para.addEventListener('click', function(filename){
+                choose_file(this)
+            })
+        }
+        para.appendChild(node);
 
-    //     var element = document.getElementById("file_list");
-    //     element.appendChild(para);
-    // }
+        var element = document.getElementById("file_list");
+        element.appendChild(para);
+    }
+}
+
+function choose_dir(dir_name) {
+    jQuery(document).ready(function($) {
+        var is_bouncy_nav_animating = false;
+        //open bouncy navigation
+        triggerBouncyNav(true);
+        //close bouncy navigation
+        $('.cd-bouncy-nav-modal .cd-close').on('click', function(){
+            triggerBouncyNav(false);
+        });
+        $('.cd-bouncy-nav-modal').on('click', function(event){
+            if($(event.target).is('.cd-bouncy-nav-modal')) {
+                triggerBouncyNav(false);
+            }
+        });
+
+        function triggerBouncyNav($bool) {
+            //check if no nav animation is ongoing
+            if( !is_bouncy_nav_animating) {
+                is_bouncy_nav_animating = true;
+                
+                //toggle list items animation
+                $('.cd-bouncy-nav-modal').toggleClass('fade-in', $bool).toggleClass('fade-out', !$bool).find('li:last-child').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
+                    $('.cd-bouncy-nav-modal').toggleClass('is-visible', $bool);
+                    if(!$bool) $('.cd-bouncy-nav-modal').removeClass('fade-out');
+                    is_bouncy_nav_animating = false;
+                });
+                
+                //check if CSS animations are supported... 
+                if($('.cd-bouncy-nav-trigger').parents('.no-csstransitions').length > 0 ) {
+                    $('.cd-bouncy-nav-modal').toggleClass('is-visible', $bool);
+                    is_bouncy_nav_animating = false;
+                }
+            }
+        }
+    })
+}
+
+function choose_file(file_name) {
+    jQuery(document).ready(function($) {
+        var is_bouncy_nav_animating = false;
+        //open bouncy navigation
+        triggerBouncyNav(true);
+        //close bouncy navigation
+        $('.cd-bouncy-nav-modal .cd-close').on('click', function(){
+            triggerBouncyNav(false);
+        });
+        $('.cd-bouncy-nav-modal').on('click', function(event){
+            if($(event.target).is('.cd-bouncy-nav-modal')) {
+                triggerBouncyNav(false);
+            }
+        });
+
+        function triggerBouncyNav($bool) {
+            //check if no nav animation is ongoing
+            if( !is_bouncy_nav_animating) {
+                is_bouncy_nav_animating = true;
+                
+                //toggle list items animation
+                $('.cd-bouncy-nav-modal').toggleClass('fade-in', $bool).toggleClass('fade-out', !$bool).find('li:last-child').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
+                    $('.cd-bouncy-nav-modal').toggleClass('is-visible', $bool);
+                    if(!$bool) $('.cd-bouncy-nav-modal').removeClass('fade-out');
+                    is_bouncy_nav_animating = false;
+                });
+                
+                //check if CSS animations are supported... 
+                if($('.cd-bouncy-nav-trigger').parents('.no-csstransitions').length > 0 ) {
+                    $('.cd-bouncy-nav-modal').toggleClass('is-visible', $bool);
+                    is_bouncy_nav_animating = false;
+                }
+            }
+        }
+    })
 }
 
 // Post a rm request and refresh the page
