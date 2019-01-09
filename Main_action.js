@@ -29,8 +29,28 @@ function Download(){
     });
 }
 
+function myFunction() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// 点击下拉菜单意外区域隐藏
+window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+}
+
 function Display_the_files(files){
     var element = document.getElementById("file_list");
+
     element.remove();
     for (var i in files) {
         var filename = i.filename;
