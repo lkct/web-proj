@@ -30,28 +30,28 @@ function Download(){
 }
 
 function Display_the_files(files){
-    var element = document.getElementById("file_list");
-    element.remove()
-    for (var i in files) {
-        var filename = i[0].value;
-        var is_dir = i[1].value;
-        // var size = i[2].value;
-        var para = document.createElement("li");
-        var node = document.createTextNode(filename);
-        if (is_dir != 0) {
-            (function(fname){
-                para.ondblclick = function() {
-                    localStorage.path = localStorage.path + '/' + fname;
-                    window.location.href = window.location.href;
-                }
-            })(filename)
-            para.style.color = '#06c';
-        }
-        para.appendChild(node);
+    // var element = document.getElementById("file_list");
+    // element.remove()
+    // for (var i in files) {
+    //     var filename = i[0].value;
+    //     var is_dir = i[1].value;
+    //     // var size = i[2].value;
+    //     var para = document.createElement("li");
+    //     var node = document.createTextNode(filename);
+    //     if (is_dir != 0) {
+    //         (function(fname){
+    //             para.ondblclick = function() {
+    //                 localStorage.path = localStorage.path + '/' + fname;
+    //                 window.location.href = window.location.href;
+    //             }
+    //         })(filename)
+    //         para.style.color = '#06c';
+    //     }
+    //     para.appendChild(node);
 
-        var element = document.getElementById("file_list");
-        element.appendChild(para);
-    }
+    //     var element = document.getElementById("file_list");
+    //     element.appendChild(para);
+    // }
 }
 
 // Post a rm request and refresh the page

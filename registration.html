@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>File Manager</title>
     <script src="/jquery-3.3.1.min.js"></script>
+    <script src="/jsencrypt.min.js"></script>
 </head>
 <body>
     <h2>Welcome to our file Manager</h2>
@@ -19,7 +20,7 @@
     $(document).ready(() => {
         $("#loginBtn").on("click", function(){
             var name = $("#username").val();
-            var value = $("#password").val();
+            var value = Encrypt($("#password").val());
 
             var auth = new URLSearchParams();
             var params = new URLSearchParams();
@@ -57,7 +58,7 @@
         // Registration
         $("#registBtn").on("click", function(){
             var name = $("#username").val();
-            var value = $("#password").val();
+            var value = Encrypt($("#password").val());
 
             var auth = new URLSearchParams();         
             var params = new URLSearchParams();
@@ -88,5 +89,24 @@
         });
     });
 
+    function Encrypt(passwd){
+        var key = "";
+        $.ajax({
+            async: false,
+            url: "/public.key", 
+            type: "GET",
+            success: function (response) {
+                key = response;
+            },
+            error: function (xhr) {
+                alert(xhr.status + " " + xhr.statusText + "\n"
+                    + xhr.responseText);
+            }
+        });
+        var encrypt = new JSEncrypt();
+        encrypt.setPublicKey(key);
+        var res = encrypt.encrypt(passwd);
+        return res;
+    }
 </script>
 </html>

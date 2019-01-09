@@ -2,7 +2,6 @@ import cgi
 import os
 import sys
 import json
-import hashlib
 import requests
 import urllib
 

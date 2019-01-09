@@ -6,22 +6,30 @@
 	<script src="/jquery-3.2.1.min.js"></script>
     <script src="./Main_action.js"></script>
     <script src="./Group_action.js"></script>
+<style>
+    body {background-color: powderblue;}
+</style>
 </head>
 <body>
-	<button type='button' id='Dload'>Download</button><br>
-	<button type='button' id='Bpage'>Go up one directory</button><br>
-	<button type='button' id='Nfolder'>New Folder</button><br>
-	<button type='button' id='GroupManage'>Group Management</button><br>
-    <ul id='file_list'>
+    <img src="./groups.jpg" width="400" height="400">
+    <h2 style="color:rgb(23, 80, 138);">The Groups you are already in:</h2>
+    <ul id='group_list'>
         <li>it should be different based on who the user is</li>
     </ul>
-	<form>
-        <p>文件: <input id="file" name="file" type="file" /></p>
-        <p><button id="Uload" type="button">上传</button></p>
-    </form>
+    <h2 style="color:rgb(23, 80, 138);">Build a new one</h2>
+    <div id="BuildGroupInput">
+        Groupname: <input type="text" id="groupname"><br>
+        <button id="Gbuild" style="color:green">Build this group</button>
+    </div>
+    <h2 style="color:rgb(23, 80, 138);">Pull someone into your group</h2>
+    <div id="PullGroupInput">
+        Groupname: <input type="text" id="pull_groupname"><br>
+        Username : <input type="text" id="pull_username"><br>
+        <button id="GPull">Pull</button>
+    </div>
 </body>
 
-<!--Display the files-->
+<!--Display the groups you are in-->
 <script>
 	var token = localStorage.token;
 	var path = localStorage.path;
@@ -29,7 +37,7 @@
 	var params = new URLSearchParams();
     var formData = new FormData();
     auth.append("token", token);
-    params.append("func", "ls");
+    params.append("func", "lsgrps");
     params.append("path", path);
     formData.append("auth", auth);
     formData.append("params", params);
@@ -44,14 +52,18 @@
         contentType: false,
         success: function (response) {
             var json = JSON.parse(response);
-            var files = JSON.parse(json.list);
+            var files = JSON.parse(json.list);// ????
+            var i;
             if(json.errno==1){
                 // Todo: Jump to Registraion
                 alert("An error occurs! Please login again!");
                 window.location.href = "/registraion.html";
             }
             else {
-                Display_the_files(files);
+                var len = files.length;
+                for (i=0; i<len;i++){
+                    document.getElementById("group_list").innerHTML = files[i].group.value;
+                }
             }                              
         },
         error: function (xhr) {
@@ -63,27 +75,16 @@
 
 <!--The Buttons-->
 <script>
-	$("#Dload").click(function(){
-		Download();
+    $("#GPull").click(function(){
+        var group_name = $("#pull_groupname").val();
+        var name = $("#pull_username").val();
+
+		alert("Not ready");
 	});
-	$("#Uload").click(function(){
-		upload($("#file"),$("#proc"));
-	});
-	$("#Bpage").click(function(){
-        localStorage.path = localStorage.path.substring(0, localStorage.path.lastIndexOf('/'));
-		window.location.href = window.location.href;
-	});
-	$("#Nfolder").click(function(){
-        // var dir_name = ""
-        // $(function() {
-        //     dir_name = prompt("Please enter the directory name:")
-        //     if (!dir_name)
-        //         break;
-        // })
-		// Makedir(localStorage.path, dir_name);
-	});
-	$("#GroupManage").click(function(){
-		window.location.href="./Group_page.html";
+	$("#Gbuild").click(function(){
+        var name = $("#groupname").val();
+
+		alert("Not ready");
 	});
 </script>
 </html>
