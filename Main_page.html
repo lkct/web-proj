@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>File manager</title>
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="/jquery-3.2.1.min.js"></script>
     <script src="./Main_action.js"></script>
     <script src="./Group_action.js"></script>
 </head>
@@ -74,13 +74,13 @@
 		window.location.href = window.location.href;
 	});
 	$("#Nfolder").click(function(){
-        var dir_name = ""
-        $(function() {
-            dir_name = prompt("Please enter the directory name:")
-            if (!dir_name)
-                break;
-        })
-		Makedir(localStorage.path, dir_name);
+        // var dir_name = ""
+        // $(function() {
+        //     dir_name = prompt("Please enter the directory name:")
+        //     if (!dir_name)
+        //         break;
+        // })
+		// Makedir(localStorage.path, dir_name);
 	});
 	$("#GroupManage").click(function(){
 		window.location.href="./Group_page.html";
