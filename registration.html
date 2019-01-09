@@ -90,8 +90,7 @@
     });
 
     function Encrypt(passwd){
-        // Todo: /public.key
-        var key="";
+        var key = "";
         $.ajax({
             async: false,
             url: "/public.key", 
@@ -107,7 +106,7 @@
         var encrypt = new JSEncrypt();
         encrypt.setPublicKey(key);
         var res = encrypt.encrypt(passwd);
-        return window.btoa(res);
+        return res;
     }
 </script>
 </html>
