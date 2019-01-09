@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>File manager</title>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="./Main_action.js"></script>
+    <script src="./Group_action.js"></script>
+<style>
+    body {background-color: powderblue;}
+</style>
+</head>
+<body>
+    <img src="./groups.JPG" width="400" height="400">
+    <h2 style="color:rgb(23, 80, 138);">The Groups you are already in:</h2>
+    <ul id='group_list'>
+        <li>it should be different based on who the user is</li>
+    </ul>
+    <h2 style="color:rgb(23, 80, 138);">Build a new one</h2>
+    <div id="BuildGroupInput">
+        Groupname: <input type="text" id="groupname"><br>
+        <button id="Gbuild" style="color:green">Build this group</button>
+    </div>
+    <h2 style="color:rgb(23, 80, 138);">Pull someone into your group</h2>
+    <div id="PullGroupInput">
+        Groupname: <input type="text" id="pull_groupname"><br>
+        Username : <input type="text" id="pull_username"><br>
+        <button id="GPull">Pull</button>
+    </div>
+</body>
+
+<!--Display the groups you are in-->
+<script>
+	var token = localStorage.token;
+	var path = localStorage.path;
+	var auth = new URLSearchParams();
+	var params = new URLSearchParams();
+    var formData = new FormData();
+    auth.append("token", token);
+    params.append("func", "lsgrps");
+    params.append("path", path);
+    formData.append("auth", auth);
+    formData.append("params", params);
+
+    // Request for contents
+    $.ajax({
+        async: false,
+        url: "./cgi-bin/serve.py", 
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            var json = JSON.parse(response);
+            var files = JSON.parse(json.list);// ????
+            var i;
+            if(json.errno==1){
+                // Todo: Jump to Registraion
+                alert("An error occurs! Please login again!");
+                window.location.href = "/registraion.html";
+            }
+            else {
+                var len = files.length;
+                for (i=0; i<len;i++){
+                    document.getElementById("demo").innerHTML = files[i];
+                }
+            }                              
+        },
+        error: function (xhr) {
+            alert(xhr.status + " " + xhr.statusText + "\n"
+                + xhr.responseText);
+        }
+    });
+</script>
+
+<!--The Buttons-->
+<script>
+    $("#GPull").click(function(){
+        var group_name = $("#pull_groupname").val();
+        var name = $("#pull_username").val();
+
+		alert("Not ready");
+	});
+	$("#Gbuild").click(function(){
+        var name = $("#groupname").val();
+
+		alert("Not ready");
+	});
+</script>
+</html>
