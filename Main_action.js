@@ -30,28 +30,39 @@ function Download(){
 }
 
 function Display_the_files(files){
-    // var element = document.getElementById("file_list");
-    // element.remove()
-    // for (var i in files) {
-    //     var filename = i[0].value;
-    //     var is_dir = i[1].value;
-    //     // var size = i[2].value;
-    //     var para = document.createElement("li");
-    //     var node = document.createTextNode(filename);
-    //     if (is_dir != 0) {
-    //         (function(fname){
-    //             para.ondblclick = function() {
-    //                 localStorage.path = localStorage.path + '/' + fname;
-    //                 window.location.href = window.location.href;
-    //             }
-    //         })(filename)
-    //         para.style.color = '#06c';
-    //     }
-    //     para.appendChild(node);
+    var element = document.getElementById("file_list");
+    element.remove()
+    for (var i in files) {
+        var filename = i[0].value;
+        var is_dir = i[1].value;
+        // var size = i[2].value;
+        var para = document.createElement("li");
+        //var node = document.createTextNode(filename);
+        para.innerHTML = '<section class="cd-section" style="margin-top: 50px;">'
+                    +'<a class="cd-bouncy-nav-trigger" href="#0"></a>'
+                    +filename + '</section><div class="cd-bouncy-nav-modal">'
+                    +'<nav><ul class="cd-bouncy-nav">'
+                    +'<li><a href="http://www.baidu.com/">Enter</a></li>'
+                    +'<li><a href="#0">Property</a></li>'
+                    +'<li><a href="#0">Download</a></li>'
+                    +'<li><a href="#0">Copy</a></li>'
+                    +'<li><a href="#0">Cut</a></li>'
+                    +'<li><a href="#0">Delete</a></li>'
+                    +'</ul></nav><a href="#0" class="cd-close">Close modal</a></div>'
+        // if (is_dir != 0) {
+        //     (function(fname){
+        //         para.ondblclick = function() {
+        //             localStorage.path = localStorage.path + '/' + fname;
+        //             window.location.href = window.location.href;
+        //         }
+        //     })(filename)
+        //     para.style.color = '#06c';
+        // }
+        // para.appendChild("<li><a href="#0"></a></li>");
 
-    //     var element = document.getElementById("file_list");
-    //     element.appendChild(para);
-    // }
+        var element = document.getElementById("file_list");
+        element.appendChild(para);
+    }
 }
 
 // Post a rm request and refresh the page
