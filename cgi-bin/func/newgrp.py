@@ -8,7 +8,6 @@ from mysql import mysql
 def newgrp(form, params):
     """
     params:
-        user: user name
         group: group name
     return:
         errno

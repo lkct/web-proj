@@ -8,7 +8,7 @@ from mysql import mysql
 def lsgrps(form, params):
     """
     params:
-        user: user name
+        NONE
     return:
         list: list of {group, is_own}
     """
