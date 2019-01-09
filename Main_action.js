@@ -36,97 +36,74 @@ function Display_the_files(files){
         var filename = i.filename;
         var is_dir = i.is_dir;
         var para = document.createElement("li");
-        var node = document.createTextNode(filename);
         if (is_dir != 0) {
-            para.addEventListener('click', function(filename){
-                choose_dir(this)
-            })
-            para.style.color = 'blue';
+            para.innerHTML = '<section class="cd-section" style="margin-top: 50px;">'
+					+'<button class="cd-bouncy-nav-trigger" type="button" id='+filename+' onclick="pas()">'+filename + '</button></section>'
+					+'<div class="cd-bouncy-nav-modal">'
+					+'<nav><ul class="cd-bouncy-nav">'
+					+'<li id="enter">Enter</li>'
+					+'<li id="copy">Copy</li>'
+					+'<li id="cut">Cut</li>'
+					+'<li id="delete">Delete</li>'
+					+'</ul></nav>'
+                    +'<a class="cd-close">Close modal</a></div>';
+            para.style.color='blue'
+            element.appendChild(para)
         }
         else {
-            para.addEventListener('click', function(filename){
-                choose_file(this)
-            })
+            para.innerHTML = '<section class="cd-section" style="margin-top: 50px;">'
+					+'<button class="cd-bouncy-nav-trigger" type="button" id='+filename+' onclick="pas()">'+filename + '</button></section>'
+					+'<div class="cd-bouncy-nav-modal">'
+					+'<nav><ul class="cd-bouncy-nav">'
+					+'<li id="enter">Enter</li>'
+					+'<li id="down">Download</li>'
+					+'<li id="copy">Copy</li>'
+					+'<li id="cut">Cut</li>'
+					+'<li id="delete">Delete</li>'
+					+'</ul></nav>'
+					+'<a class="cd-close">Close modal</a></div>';
+            element.appendChild(para);
         }
-        para.appendChild(node);
-
-        var element = document.getElementById("file_list");
-        element.appendChild(para);
     }
 }
 
-function choose_dir(dir_name) {
-    jQuery(document).ready(function($) {
-        var is_bouncy_nav_animating = false;
-        //open bouncy navigation
-        triggerBouncyNav(true);
-        //close bouncy navigation
-        $('.cd-bouncy-nav-modal .cd-close').on('click', function(){
-            triggerBouncyNav(false);
-        });
-        $('.cd-bouncy-nav-modal').on('click', function(event){
-            if($(event.target).is('.cd-bouncy-nav-modal')) {
-                triggerBouncyNav(false);
-            }
-        });
+function pas(){
+	jQuery(document).ready(function($){
+		var is_bouncy_nav_animating = false;
+		//open bouncy navigation
+		$('.cd-bouncy-nav-trigger').on('click', function(){
+			triggerBouncyNav(true);
+		});
+		//close bouncy navigation
+		$('.cd-bouncy-nav-modal .cd-close').on('click', function(){
+			triggerBouncyNav(false);
+		});
+		$('.cd-bouncy-nav-modal').on('click', function(event){
+			if($(event.target).is('.cd-bouncy-nav-modal')) {
+				triggerBouncyNav(false);
+			}
+		});
 
-        function triggerBouncyNav($bool) {
-            //check if no nav animation is ongoing
-            if( !is_bouncy_nav_animating) {
-                is_bouncy_nav_animating = true;
-                
-                //toggle list items animation
-                $('.cd-bouncy-nav-modal').toggleClass('fade-in', $bool).toggleClass('fade-out', !$bool).find('li:last-child').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
-                    $('.cd-bouncy-nav-modal').toggleClass('is-visible', $bool);
-                    if(!$bool) $('.cd-bouncy-nav-modal').removeClass('fade-out');
-                    is_bouncy_nav_animating = false;
-                });
-                
-                //check if CSS animations are supported... 
-                if($('.cd-bouncy-nav-trigger').parents('.no-csstransitions').length > 0 ) {
-                    $('.cd-bouncy-nav-modal').toggleClass('is-visible', $bool);
-                    is_bouncy_nav_animating = false;
-                }
-            }
-        }
-    })
-}
-
-function choose_file(file_name) {
-    jQuery(document).ready(function($) {
-        var is_bouncy_nav_animating = false;
-        //open bouncy navigation
-        triggerBouncyNav(true);
-        //close bouncy navigation
-        $('.cd-bouncy-nav-modal .cd-close').on('click', function(){
-            triggerBouncyNav(false);
-        });
-        $('.cd-bouncy-nav-modal').on('click', function(event){
-            if($(event.target).is('.cd-bouncy-nav-modal')) {
-                triggerBouncyNav(false);
-            }
-        });
-
-        function triggerBouncyNav($bool) {
-            //check if no nav animation is ongoing
-            if( !is_bouncy_nav_animating) {
-                is_bouncy_nav_animating = true;
-                
-                //toggle list items animation
-                $('.cd-bouncy-nav-modal').toggleClass('fade-in', $bool).toggleClass('fade-out', !$bool).find('li:last-child').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
-                    $('.cd-bouncy-nav-modal').toggleClass('is-visible', $bool);
-                    if(!$bool) $('.cd-bouncy-nav-modal').removeClass('fade-out');
-                    is_bouncy_nav_animating = false;
-                });
-                
-                //check if CSS animations are supported... 
-                if($('.cd-bouncy-nav-trigger').parents('.no-csstransitions').length > 0 ) {
-                    $('.cd-bouncy-nav-modal').toggleClass('is-visible', $bool);
-                    is_bouncy_nav_animating = false;
-                }
-            }
-        }
-    })
+		function triggerBouncyNav($bool) {
+			//check if no nav animation is ongoing
+			if( !is_bouncy_nav_animating) {
+				is_bouncy_nav_animating = true;
+				
+				//toggle list items animation
+				$('.cd-bouncy-nav-modal').toggleClass('fade-in', $bool).toggleClass('fade-out', !$bool).find('li:last-child').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
+					$('.cd-bouncy-nav-modal').toggleClass('is-visible', $bool);
+					if(!$bool) $('.cd-bouncy-nav-modal').removeClass('fade-out');
+					is_bouncy_nav_animating = false;
+				});
+				
+				//check if CSS animations are supported... 
+				if($('.cd-bouncy-nav-trigger').parents('.no-csstransitions').length > 0 ) {
+					$('.cd-bouncy-nav-modal').toggleClass('is-visible', $bool);
+					is_bouncy_nav_animating = false;
+				}
+			}
+		}
+	});
 }
 
 // Post a rm request and refresh the page
