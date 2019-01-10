@@ -4,11 +4,12 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>File manager</title>
-	<script src="/jquery-3.2.1.min.js"></script>
+	<script src="/jquery-3.3.1.min.js"></script>
     <script src="./Main_action.js"></script>
     <script src="./Group_action.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css"> <!-- Resource style -->
+    <title>File Manager</title>
 </head>
 <body>
 	<button type='button' id='Dload'>Download</button><br>
@@ -18,10 +19,21 @@
     <ul id='file_list'>
         <li>it should be different based on who the user is</li>
     </ul>
+
+    <!-- 上传文件可以改为单独跳转html进行上传 -->
 	<form>
         <p>文件: <input id="file" name="file" type="file" /></p>
         <p><button id="Uload" type="button">上传</button></p>
     </form>
+    <div class="dropdown">
+        <button onclick="myFunction()" class="dropbtn">Menu</button>
+          <div id="myDropdown" class="dropdown-content">
+            <a href="#Log out">Log out</a>
+            <a href="#Upload">Upload your file</a>
+            <a href="#Refresh">Refresh</a>
+            <a href="#Paste">Paste</a>
+          </div>
+    </div>
 </body>
 
 <!--Display the files-->
@@ -74,7 +86,7 @@
 	});
 	$("#Bpage").click(function(){
         localStorage.path = localStorage.path.substring(0, localStorage.path.lastIndexOf('/'));
-		window.location.href = window.location.href;
+        window.location.href = window.location.href;
 	});
 	$("#Nfolder").click(function(){
         var dir_name = ""
@@ -89,4 +101,5 @@
 		window.location.href="./Group_page.html";
 	});
 </script>
+
 </html>
