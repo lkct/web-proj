@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>File manager</title>
 	<script src="/jquery-3.3.1.min.js"></script>
     <script src="./Main_action.js"></script>
     <script src="./Group_action.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css"> <!-- Resource style -->
-    <script src="js/main.js"></script> <!-- Resource jQuery -->
     <title>File Manager</title>
 </head>
 <body>
@@ -89,13 +89,13 @@
         window.location.href = window.location.href;
 	});
 	$("#Nfolder").click(function(){
-        // var dir_name = ""
-        // $(function() {
-        //     dir_name = prompt("Please enter the directory name:")
-        //     if (!dir_name)
-        //         break;
-        // })
-		// Makedir(localStorage.path, dir_name);
+        var dir_name = ""
+        $(function() {
+            dir_name = prompt("Please enter the directory name:")
+            if (!dir_name)
+                return;
+        })
+		Makedir(localStorage.path, dir_name);
 	});
 	$("#GroupManage").click(function(){
 		window.location.href="./Group_page.html";

@@ -3,13 +3,13 @@
 */
 
 // 下载文件
-function Download(){
+function Download(path, filename){
     var auth = new URLSearchParams();         
     var params = new URLSearchParams();
     var formData = new FormData();
     params.append("func", "download");
-    params.append("path", "/abc/");
-    params.append("filename", "a.py");
+    params.append("path", path);
+    params.append("filename", filename);
     formData.append("auth", auth);
     formData.append("params", params);
     $.ajax({
@@ -29,59 +29,140 @@ function Download(){
     });
 }
 
-function myFunction() {
-    document.getElementById("myDropdown").classList.toggle("show");
-}
-
-// 点击下拉菜单意外区域隐藏
-window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
-
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
-    }
-  }
-}
-
 function Display_the_files(files){
     var element = document.getElementById("file_list");
-    while(element.hasChildNodes()){
-        element.removeChild(element.firstChild);
-    }
+    element.remove();
     for (var i in files) {
-        var filename = i[0].value;
-        var is_dir = i[1].value;
+        var filename = i.filename;
+        var is_dir = i.is_dir;
         var para = document.createElement("li");
-        //var node = document.createTextNode(filename);
-        para.innerHTML = '<section class="cd-section" style="margin-top: 50px;">'
-                    +'<a class="cd-bouncy-nav-trigger" href="#0" onclick="file_check()">'+filename + '</a></section>'
-                    +'<div class="cd-bouncy-nav-modal">'
-                    +'<nav><ul class="cd-bouncy-nav">'
-                    +'<li><a href="http://www.baidu.com/">Enter</a></li>'
-                    +'<li><a href="#0">Property</a></li>'
-                    +'<li><a href="#0">Download</a></li>'
-                    +'<li><a href="#0">Copy</a></li>'
-                    +'<li><a href="#0">Cut</a></li>'
-                    +'<li><a href="#0">Delete</a></li>'
-                    +'</ul></nav>'
-                    +'<a href="#0" class="cd-close">Close modal</a></div>';
-        element.appendChild(para);
-        // if (is_dir != 0) {
-        //     (function(fname){
-        //         para.ondblclick = function() {
-        //             localStorage.path = localStorage.path + '/' + fname;
-        //             window.location.href = window.location.href;
-        //         }
-        //     })(filename)
-        //     para.style.color = '#06c';
-        // }
-        // para.appendChild("<li><a href="#0"></a></li>");
+        if (is_dir != 0) {
+            para.innerHTML = '<section class="cd-section" style="margin-top: 50px;">'
+					+'<button class="cd-bouncy-nav-trigger" type="button" onclick="pasd('+filename+')">'+filename + '</button></section>'
+					+'<div class="cd-bouncy-nav-modal">'
+					+'<nav><ul class="cd-bouncy-nav">'
+					+'<li class="enter">Enter</li>'
+					+'<li class="copy">Copy</li>'
+					+'</ul></nav>'
+                    +'<a class="cd-close">Close modal</a></div>';
+            para.style.color='blue'
+            element.appendChild(para)
+        }
+        else {
+            para.innerHTML = '<section class="cd-section" style="margin-top: 50px;">'
+					+'<button class="cd-bouncy-nav-trigger" type="button" onclick="pasf('+filename+')">'+filename + '</button></section>'
+					+'<div class="cd-bouncy-nav-modal">'
+					+'<nav><ul class="cd-bouncy-nav">'
+					+'<li class="down">Download</li>'
+					+'<li class="copy">Copy</li>'
+					+'<li class="delete">Delete</li>'
+					+'</ul></nav>'
+					+'<a class="cd-close">Close modal</a></div>';
+            element.appendChild(para);
+        }
     }
+}
+
+function pasd(dname){
+	jQuery(document).ready(function($){
+		var is_bouncy_nav_animating = false;
+		//open bouncy navigation
+		$('.cd-bouncy-nav-trigger').on('click', function(){
+			triggerBouncyNav(true);
+		});
+		//close bouncy navigation
+		$('.cd-bouncy-nav-modal .cd-close').on('click', function(){
+			triggerBouncyNav(false);
+        });
+        $('.cd-bouncy-nav-modal .cd-bouncy-nav .copy').on('click', function(){
+            localStorage.cp_src_path = localStorage.path;
+            localStorage.cp_src_dir = dname;
+            triggerBouncyNav(false);
+            // waiting for the"paste" to call the Copy function
+        });
+        $('.cd-bouncy-nav-modal .cd-bouncy-nav .enter').on('click', function(){
+            localStorage.path = localStorage.path + '/' + dname;
+            window.location.href = window.location.href
+        });
+		$('.cd-bouncy-nav-modal').on('click', function(event){
+			if($(event.target).is('.cd-bouncy-nav-modal')) {
+				triggerBouncyNav(false);
+			}
+		});
+
+		function triggerBouncyNav($bool) {
+			//check if no nav animation is ongoing
+			if( !is_bouncy_nav_animating) {
+				is_bouncy_nav_animating = true;
+				
+				//toggle list items animation
+				$('.cd-bouncy-nav-modal').toggleClass('fade-in', $bool).toggleClass('fade-out', !$bool).find('li:last-child').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
+					$('.cd-bouncy-nav-modal').toggleClass('is-visible', $bool);
+					if(!$bool) $('.cd-bouncy-nav-modal').removeClass('fade-out');
+					is_bouncy_nav_animating = false;
+				});
+				
+				//check if CSS animations are supported... 
+				if($('.cd-bouncy-nav-trigger').parents('.no-csstransitions').length > 0 ) {
+					$('.cd-bouncy-nav-modal').toggleClass('is-visible', $bool);
+					is_bouncy_nav_animating = false;
+				}
+			}
+		}
+	});
+}
+
+function pasf(fname){
+	jQuery(document).ready(function($){
+		var is_bouncy_nav_animating = false;
+		//open bouncy navigation
+		$('.cd-bouncy-nav-trigger').on('click', function(){
+			triggerBouncyNav(true);
+		});
+		//close bouncy navigation
+		$('.cd-bouncy-nav-modal .cd-close').on('click', function(){
+			triggerBouncyNav(false);
+        });
+        $('.cd-bouncy-nav-modal .cd-bouncy-nav .copy').on('click', function(){
+			localStorage.cp_src_path = localStorage.path;
+            localStorage.cp_src_file = fname;
+            triggerBouncyNav(false);
+            // waiting for the"paste" to call the Copy function
+        });
+        $('.cd-bouncy-nav-modal .cd-bouncy-nav .delete').on('click', function(){
+            Delete_file(localStorage.path, fname);
+			triggerBouncyNav(false);
+        });
+        $('.cd-bouncy-nav-modal .cd-bouncy-nav .down').on('click', function(){
+            Download(localStorage.path, fname);
+			triggerBouncyNav(false);
+        });
+		$('.cd-bouncy-nav-modal').on('click', function(event){
+			if($(event.target).is('.cd-bouncy-nav-modal')) {
+				triggerBouncyNav(false);
+			}
+		});
+
+		function triggerBouncyNav($bool) {
+			//check if no nav animation is ongoing
+			if( !is_bouncy_nav_animating) {
+				is_bouncy_nav_animating = true;
+				
+				//toggle list items animation
+				$('.cd-bouncy-nav-modal').toggleClass('fade-in', $bool).toggleClass('fade-out', !$bool).find('li:last-child').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
+					$('.cd-bouncy-nav-modal').toggleClass('is-visible', $bool);
+					if(!$bool) $('.cd-bouncy-nav-modal').removeClass('fade-out');
+					is_bouncy_nav_animating = false;
+				});
+				
+				//check if CSS animations are supported... 
+				if($('.cd-bouncy-nav-trigger').parents('.no-csstransitions').length > 0 ) {
+					$('.cd-bouncy-nav-modal').toggleClass('is-visible', $bool);
+					is_bouncy_nav_animating = false;
+				}
+			}
+		}
+	});
 }
 
 // Post a rm request and refresh the page
@@ -105,7 +186,7 @@ function Delete_file(Path, Filename){
             if(errno==1)
                 alert("Failed");
             else
-                window.location.href = Path; // 可以采用refresh？
+                window.location.href = window.location.href;
         },
         error: function (xhr) {
             alert(xhr.status + " " + xhr.statusText + "\n"
