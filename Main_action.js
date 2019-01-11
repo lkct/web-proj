@@ -97,10 +97,11 @@ function pasd(dname){
         });
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .enter').on('click', function(){
             localStorage.path = localStorage.path + '/' + dname;
-            window.location.href = window.location.href
+            window.location.href = window.location.href;
         });
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .share').on('click', function(){
-
+            share(dname);
+            triggerBouncyNav(false);
         });
 		$('.cd-bouncy-nav-modal').on('click', function(event){
 			if($(event.target).is('.cd-bouncy-nav-modal')) {
@@ -164,7 +165,8 @@ function pasf(fname){
 			triggerBouncyNav(false);
         });
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .enter').on('click', function(){
-
+            share(fname);
+            triggerBouncyNav(false);
         });
 		$('.cd-bouncy-nav-modal').on('click', function(event){
 			if($(event.target).is('.cd-bouncy-nav-modal')) {
