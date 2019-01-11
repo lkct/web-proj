@@ -5,7 +5,7 @@ import json
 
 from mysql import mysql
 
-def lsgrps(form, params):
+def lsgrps(form, params, cursor):
     """
     params:
         NONE
@@ -15,7 +15,7 @@ def lsgrps(form, params):
     user = params['user']
 
     sql = 'SELECT * FROM belongs WHERE user_name="%s"' % (user)
-    result = mysql(sql)
+    result = mysql(sql, cursor)
     ret = [{'group': ln['group_name'], 'is_own': ln['is_own']} for ln in result]
 
     msg = {'errno': 0, 'list': json.dumps(ret)}

@@ -11,7 +11,7 @@ from mysql import mysql
 tmp_dir = '/var/www/html/grp-srv/tmp'
 
 
-def commit(form, params):
+def commit(form, params, cursor):
     """
     params:
         filename: name of file
@@ -32,7 +32,7 @@ def commit(form, params):
 
     if len(md5list) > 0:
         sql = 'SELECT * FROM file_server'
-        result = mysql(sql)
+        result = mysql(sql, cursor)
         rand = random.shuffle(range(len(result)))
         for i in rand:
             if result[i]['avail_space'] >= size:
@@ -61,7 +61,7 @@ def commit(form, params):
         r.raise_for_status()
 
         sql = 'INSERT INTO md5_list (md5, srv_id) VALUES ("%s", %d)' % (filemd5, srv_id)
-        mysql(sql)
+        mysql(sql, cursor)
 
     sql = [
         'INSERT INTO file_list (path, filename, md5, size) ' \
@@ -69,7 +69,7 @@ def commit(form, params):
 
         'UPDATE md5_list SET ref_cnt=ref_cnt+1 WHERE md5="%s"' % (filemd5)
     ]
-    mysql(sql)
+    mysql(sql, cursor)
 
     msg = {'errno': 0, 'size': size, 'md5': filemd5}
     return msg

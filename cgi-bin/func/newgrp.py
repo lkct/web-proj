@@ -5,7 +5,7 @@ import string
 
 from mysql import mysql
 
-def newgrp(form, params):
+def newgrp(form, params, cursor):
     """
     params:
         group: group name
@@ -20,13 +20,13 @@ def newgrp(form, params):
         return msg
 
     sql = 'SELECT * FROM belongs WHERE group_name="%s"' % (group)
-    result = mysql(sql)
+    result = mysql(sql, cursor)
     if len(result) > 0:
         msg = {'errno': 1, 'errmsg': 'Duplicate name'}
         return msg
     
     sql = 'SELECT * FROM users WHERE user_name="%s"' % (group)
-    result = mysql(sql)
+    result = mysql(sql, cursor)
     if len(result) > 0:
         msg = {'errno': 1, 'errmsg': 'Duplicate name'}
         return msg
@@ -38,7 +38,7 @@ def newgrp(form, params):
         'INSERT INTO file_list (path, filename, is_dir) ' \
         'VALUES ("%s", "%s", %d)' % ('/', group, 1)
     ]
-    mysql(sql)
+    mysql(sql, cursor)
 
     msg = {'errno': 0}
     return msg

@@ -4,7 +4,7 @@ import sys
 
 from token import generate
 
-def refresh(form, params):
+def refresh(form, params, cursor):
     """
     params:
         NONE
