@@ -41,8 +41,9 @@ function Display_the_files(files){
 					+'<button class="cd-bouncy-nav-trigger" type="button" onclick="pasd('+filename+')">'+filename + '</button></section>'
 					+'<div class="cd-bouncy-nav-modal">'
 					+'<nav><ul class="cd-bouncy-nav">'
-					+'<li class="enter">Enter</li>'
+                    +'<li class="enter">Enter</li>'
 					+'<li class="copy">Copy</li>'
+                    +'<li class="cut">Cut</li>'
 					+'</ul></nav>'
                     +'<a class="cd-close">Close modal</a></div>';
             para.style.color='blue'
@@ -55,6 +56,7 @@ function Display_the_files(files){
 					+'<nav><ul class="cd-bouncy-nav">'
 					+'<li class="down">Download</li>'
 					+'<li class="copy">Copy</li>'
+                    +'<li class="cut">Cut</li>'
 					+'<li class="delete">Delete</li>'
 					+'</ul></nav>'
 					+'<a class="cd-close">Close modal</a></div>';
@@ -75,8 +77,16 @@ function pasd(dname){
 			triggerBouncyNav(false);
         });
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .copy').on('click', function(){
-            localStorage.cp_src_path = localStorage.path;
-            localStorage.cp_src_dir = dname;
+            localStorage.src_path = localStorage.path;
+            localStorage.src_dir = dname;
+            localStorage.op_type = 'copy';
+            triggerBouncyNav(false);
+            // waiting for the"paste" to call the Copy function
+        });
+        $('.cd-bouncy-nav-modal .cd-bouncy-nav .cut').on('click', function(){
+            localStorage.src_path = localStorage.path;
+            localStorage.src_dir = dname;
+            localStorage.op_type = 'cut';
             triggerBouncyNav(false);
             // waiting for the"paste" to call the Copy function
         });
@@ -124,8 +134,16 @@ function pasf(fname){
 			triggerBouncyNav(false);
         });
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .copy').on('click', function(){
-			localStorage.cp_src_path = localStorage.path;
-            localStorage.cp_src_file = fname;
+            localStorage.src_path = localStorage.path;
+            localStorage.src_dir = fname;
+            localStorage.op_type = 'copy';
+            triggerBouncyNav(false);
+            // waiting for the"paste" to call the Copy function
+        });
+        $('.cd-bouncy-nav-modal .cd-bouncy-nav .cut').on('click', function(){
+            localStorage.src_path = localStorage.path;
+            localStorage.src_dir = fname;
+            localStorage.op_type = 'cut';
             triggerBouncyNav(false);
             // waiting for the"paste" to call the Copy function
         });
@@ -215,7 +233,7 @@ function Makedir(Path, Dirname){
             if(errno==1)
                 alert("Failed");
             else
-                window.location.href = Path; // 可以采用refresh？
+                window.location.href = window.location.href;
         },
         error: function (xhr) {
             alert(xhr.status + " " + xhr.statusText + "\n"
@@ -224,8 +242,36 @@ function Makedir(Path, Dirname){
     });
 }
 
-function Copyfile(){
-    alert("Not ready");
+function Copyfile(src_file, src_path, to_file, to_path, mvpara){
+    var auth = new URLSearchParams();         
+    var params = new URLSearchParams();
+    var formData = new FormData();
+    auth.append("token", localstorage.value);
+    params.append("func", "cp");
+    params.append("filename", src_file);
+    params.append("path", src_path);
+    params.append("filename2", to_file);
+    params.append("path2", to_path);
+    params.append("mvpara", mvpara);
+    formData.append("auth", auth);
+    formData.append("params", params);
+    $.ajax({
+        url: "/cgi-bin/serve.py", 
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            if(errno==1)
+                alert("Failed");
+            else
+                window.location.href = window.location.href;
+        },
+        error: function (xhr) {
+            alert(xhr.status + " " + xhr.statusText + "\n"
+                + xhr.responseText);
+        }
+    });
 }
 
 // 上传文件，还有不少需要完善
