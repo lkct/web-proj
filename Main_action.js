@@ -31,7 +31,9 @@ function Download(path, filename){
 
 function Display_the_files(files){
     var element = document.getElementById("file_list");
-    element.remove();
+    while(element.hasChildNodes()) {
+        element.removeChild(element.firstChild());
+    }
     for (var i in files) {
         var filename = i.filename;
         alert(filename);
