@@ -15,9 +15,9 @@ import func
 log_file = '/var/www/html/grp-srv/tmp/err.log'
 
 # cgitb.enable()
-form = cgi.FieldStorage()
 
 try:
+    form = cgi.FieldStorage()
     dl_token = form.getvalue('dl_token')
 
     dl_msg = func.token.check(dl_token)['dl_msg']

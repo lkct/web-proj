@@ -23,12 +23,12 @@ def check_path(path, user):
     dirn = os.path.dirname(path)
     basen = os.path.basename(path)
     sql = 'SELECT * FROM file_list WHERE path="%s" AND filename="%s"' % (dirn, basen)
-    result = func.mysql(sql)
+    result = func.mysql(sql, cursor)
     if result[0]['is_dir'] == 0:
         return {'errno': 1, 'errmsg': 'Not a directory'}
     grp = path.split('/')[1]
     sql = 'SELECT * FROM belongs where user_name="%s"' % (user)
-    result = func.mysql(sql)
+    result = func.mysql(sql, cursor)
     grps = [ln['group_name'] for ln in result]
     grps = [user] + grps
     if grp not in grps:
@@ -38,20 +38,20 @@ def check_path(path, user):
 
 def check_grp(group, user=None):
     sql = 'SELECT * FROM belongs WHERE group_name="%s"' % (group)
-    result = func.mysql(sql)
+    result = func.mysql(sql, cursor)
     if len(result) == 0:
         return {'errno': 1, 'errmsg': 'Group not exist'}
     
     if user is not None:
         sql = 'SELECT * FROM belongs WHERE group_name="%s" AND user_name="%s"' % (group, user)
-        result = func.mysql(sql)
+        result = func.mysql(sql, cursor)
         if result[0]['is_own'] == 0:
             return {'errno': 1, 'errmsg': 'Access not authorized'}
     
     return {'errno': 0}
 
 
-def serve(form):
+def serve(form, cursor):
     auth = dict(urlparse.parse_qsl(form['auth'].file.read()))
     params = dict(urlparse.parse_qsl(form['params'].file.read()))
     fun = params['func']
@@ -98,20 +98,29 @@ def serve(form):
                 msg = ret
                 return (stat, msg)
 
-    msg = eval('func.'+fun)(form, params)
+    msg = eval('func.'+fun)(form, params, cursor)
     err2stat = {0: '200 OK', 1: '400 Bad Request'}
-    stat = err2res[msg['errno']]
+    stat = err2stat[msg['errno']]
     return (stat, msg)
 
 
 log_file = '/var/www/html/grp-srv/tmp/err.log'
 
 # cgitb.enable()
-form = cgi.FieldStorage()
 
 try:
-    stat, msg = serve(form)
+    db = MySQLdb.connect('localhost', 'web', 'web', 'web', charset='utf8')
+    cursor = db.cursor()
+
+    form = cgi.FieldStorage()
+    stat, msg = serve(form, cursor)
+
+    db.commit()
+    db.close()
 except Exception, e:
+    db.rollback()
+    db.close()
+
     stat = '500 Internal Server Error'
     msg = {'errno': -1, 'errmsg': 'Error occured, check server log for details'}
 

@@ -5,7 +5,7 @@ import sys
 from mysql import mysql
 from mysql import rm_r
 
-def delgrp(form, params):
+def delgrp(form, params, cursor):
     """
     params:
         group: group name
@@ -15,8 +15,8 @@ def delgrp(form, params):
     group = params['group']
 
     sql = 'DELETE FROM belongs WHERE group_name="%s"' % (group)
-    mysql(sql)
-    rm_r('/', 'group')
+    mysql(sql, cursor)
+    rm_r(cursor, '/', 'group')
 
     msg = {'errno': 0}
     return msg

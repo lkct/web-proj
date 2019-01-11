@@ -8,7 +8,7 @@ from mysql import mysql
 from token import generate
 from rsa import decrypt
 
-def login(form, params):
+def login(form, params, cursor):
     """
     auth:
         user: user name
@@ -27,7 +27,7 @@ def login(form, params):
     md5.update(passwd)
     passwd = md5.hexdigest()
     sql = 'SELECT * FROM users WHERE user_name="%s" AND passwd="%s"' % (user, passwd)
-    result = mysql(sql)
+    result = mysql(sql, cursor)
     if len(result) == 0:
         msg = {'errno': 1, 'errmsg': 'User name or password wrong'}
     else:

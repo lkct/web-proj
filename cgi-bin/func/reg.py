@@ -8,7 +8,7 @@ import hashlib
 from mysql import mysql
 from rsa import decrypt
 
-def reg(form, params):
+def reg(form, params, cursor):
     """
     auth:
         user: user name
@@ -26,13 +26,13 @@ def reg(form, params):
         return msg
 
     sql = 'SELECT * FROM users WHERE user_name="%s"' % (user)
-    result = mysql(sql)
+    result = mysql(sql, cursor)
     if len(result) > 0:
         msg = {'errno': 1, 'errmsg': 'Duplicate name'}
         return msg
 
     sql = 'SELECT * FROM belongs WHERE group_name="%s"' % (user)
-    result = mysql(sql)
+    result = mysql(sql, cursor)
     if len(result) > 0:
         msg = {'errno': 1, 'errmsg': 'Duplicate name'}
         return msg
@@ -47,7 +47,7 @@ def reg(form, params):
         'INSERT INTO file_list (path, filename, is_dir) ' \
         'VALUES ("%s", "%s", %d)' % ('/', user, 1)
     ]
-    mysql(sql)
+    mysql(sql, cursor)
 
     msg = {'errno': 0}
     return msg

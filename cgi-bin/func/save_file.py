@@ -6,7 +6,7 @@ import urlparse
 
 tmp_dir = '/var/www/html/grp-srv/tmp'
 
-def save_file(form, params):
+def save_file(form, params, cursor):
     """
     form:
         file: file chunk content
