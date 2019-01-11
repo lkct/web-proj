@@ -21,7 +21,7 @@ def mkdir(form, params):
         msg = {'errno': 1, 'errmsg': 'File of same name alreasy existed at destination'}
     else:
         sql = 'INSERT INTO file_list (path, filename, is_dir) ' \
-        'VALUES ("%s", "%s", %d, "%s")' % (fpath, fn, 1)
+        'VALUES ("%s", "%s", %d)' % (fpath, fn, 1)
         mysql(sql)
         msg = {'errno': 0}
 

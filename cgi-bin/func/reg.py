@@ -43,6 +43,9 @@ def reg(form, params):
     passwd = md5.hexdigest()
     sql = 'INSERT INTO users (user_name, passwd) VALUES ("%s", "%s")' % (user, passwd)
     mysql(sql)
+    sql = 'INSERT INTO file_list (path, filename, is_dir) ' \
+        'VALUES ("%s", "%s", %d)' % ('/', group, 1)
+    mysql(sql)
 
     msg = {'errno': 0}
     return (stat, msg)
