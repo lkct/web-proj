@@ -28,9 +28,9 @@
     <div class="dropdown">
         <button onclick="myFunction()" class="dropbtn">Menu</button>
           <div id="myDropdown" class="dropdown-content">
-            <a href="#Log out">Log out</a>
-            <a href="#Upload">Upload your file</a>
-            <a href="#Refresh">Refresh</a>
+            <a href="/registraion.html">Log out</a>
+            <a href="#0" onclick="upload()">Upload your file</a>
+            <a href="/Main_page.html"">Refresh</a>
             <a href="#Paste">Paste</a>
           </div>
     </div>
@@ -38,6 +38,7 @@
 
 <!--Display the files-->
 <script>
+    refresh_token();
 	var token = localStorage.token;
 	var path = localStorage.path;
 	var auth = new URLSearchParams();
@@ -74,6 +75,10 @@
                 + xhr.responseText);
         }
     });
+
+    while(true){
+        setTimeout(refresh_token(),60);
+    }
 </script>
 
 <!--The Buttons-->
