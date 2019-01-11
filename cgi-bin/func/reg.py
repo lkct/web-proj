@@ -21,7 +21,9 @@ def reg(form, params):
     user = auth['user']
     passwd = auth['passwd']
 
-    assert string.lower(user) != 'root', 'Register of ROOT not allowed'
+    if string.lower(group) == 'root':
+        msg = {'errno': 1, 'errmsg': 'Register of ROOT not allowed'}
+        return msg
 
     sql = 'SELECT * FROM users WHERE user_name="%s"' % (user)
     result = mysql(sql)

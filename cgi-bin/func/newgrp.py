@@ -15,7 +15,9 @@ def newgrp(form, params):
     user = params['user']
     group = params['group']
 
-    assert string.lower(group) != 'root', 'Register of ROOT not allowed'
+    if string.lower(group) == 'root':
+        msg = {'errno': 1, 'errmsg': 'Register of ROOT not allowed'}
+        return msg
 
     sql = 'SELECT * FROM belongs WHERE group_name="%s"' % (group)
     result = mysql(sql)

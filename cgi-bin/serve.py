@@ -54,11 +54,13 @@ def check_grp(group, user=None):
 def serve(form):
     auth = dict(urlparse.parse_qsl(form['auth'].file.read()))
     params = dict(urlparse.parse_qsl(form['params'].file.read()))
-    assert not params.has_key('user')
     fun = params['func']
     allow_func = ['diff', 'save_file', 'commit', 'mkdir', 'rm', 'ls', 'ln', 'cp', 'download',
                   'reg', 'login', 'refresh', 'newgrp', 'delgrp', 'lsgrps', 'newmbr', 'delmbr', 'lsmbr']
-    assert fun in allow_func
+    if fun not in allow_func:
+        stat = '400 Bad Request'
+        msg = {'errno': 1, 'errmsg': 'func not implemented'}
+        return (stat, msg)
 
     # TODO: check auth[%s] user/pass if login, prevent root
 
@@ -100,7 +102,7 @@ def serve(form):
 
     msg = eval('func.'+fun)(form, params)
     err2stat = {0: '200 OK', 1: '400 Bad Request'}
-    stat = err2res[msg[errno]]
+    stat = err2res[msg['errno']]
     return (stat, msg)
 
 
@@ -112,7 +114,7 @@ form = cgi.FieldStorage()
 try:
     stat, msg = serve(form)
 except Exception, e:
-    stat = '400 Bad Request'
+    stat = '500 Internal Server Error'
     msg = {'errno': -1, 'errmsg': 'Error occured, check server log for details'}
 
     with open(log_file, 'w', 664) as f:
