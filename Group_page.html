@@ -16,6 +16,13 @@
     <ul id='group_list'>
         <li>it should be different based on who the user is</li>
     </ul>
+    <div id="GroupInfo">
+        Groupname: <input type="text" id="info_groupname"><br>
+        <button id="GInfo" style="color:green">Show the members of this group</button>
+    </div>
+    <ul id='member_list'>
+        <li>it should be different based on who the group is</li>
+    </ul>
     <h2 style="color:rgb(23, 80, 138);">Build a new one</h2>
     <div id="BuildGroupInput">
         Groupname: <input type="text" id="groupname"><br>
@@ -26,6 +33,12 @@
         Groupname: <input type="text" id="pull_groupname"><br>
         Username : <input type="text" id="pull_username"><br>
         <button id="GPull">Pull</button>
+    </div>
+    <h2 style="color:rgb(23, 80, 138);">delete someone in your group</h2>
+    <div id="DelGroupInput">
+        Groupname: <input type="text" id="del_groupname"><br>
+        Username : <input type="text" id="del_username"><br>
+        <button id="GDel">Delete</button>
     </div>
 </body>
 
@@ -62,7 +75,7 @@
             else {
                 var len = files.length;
                 for (i=0; i<len;i++){
-                    document.getElementById("group_list").innerHTML = files[i].group;
+                    document.getElementById("group_list").innerHTML = files[i].group + files[i].is_own;
                 }
             }                              
         },
@@ -75,16 +88,139 @@
 
 <!--The Buttons-->
 <script>
+    $("#GInfo").click(function(){
+        var group_name = $("#info_groupname").val();
+        var token = localStorage.token;
+	    var auth = new URLSearchParams();
+	    var params = new URLSearchParams();
+        var formData = new FormData();
+        auth.append("token", token);
+        params.append("func", "lsmbr");
+        params.append("group", group_name);
+        formData.append("auth", auth);
+        formData.append("params", params);
+
+    // Request for contents
+        $.ajax({
+            async: false,
+            url: "./cgi-bin/serve.py", 
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                var json = JSON.parse(response);
+                var files = JSON.parse(json.list);// ????
+                var i;
+                if(json.errno==1){
+                    // Todo: Jump to Registraion
+                    alert("An error occurs! Please login again!");
+                    window.location.href = "/registraion.html";
+                }
+                else {
+                    var len = files.length;
+                    for (i=0; i<len;i++){
+                        document.getElementById("member_list").innerHTML = files[i].user;
+                    }
+                }                              
+            },
+            error: function (xhr) {
+                alert(xhr.status + " " + xhr.statusText + "\n"
+                    + xhr.responseText);
+            }
+        });
+	});
     $("#GPull").click(function(){
         var group_name = $("#pull_groupname").val();
         var name = $("#pull_username").val();
+        var token = localStorage.token;
+	    var auth = new URLSearchParams();
+	    var params = new URLSearchParams();
+        var formData = new FormData();
+        auth.append("token", token);
+        params.append("func", "newmbr");
+        params.append("group", group_name);
+        params.append("user2", name);
+        formData.append("auth", auth);
+        formData.append("params", params);
 
-		alert("Not ready");
+    // Request for contents
+        $.ajax({
+            async: false,
+            url: "./cgi-bin/serve.py", 
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                alert("Success!");                            
+            },
+            error: function (xhr) {
+                alert(xhr.status + " " + xhr.statusText + "\n"
+                    + xhr.responseText);
+            }
+        });
+	});
+    $("#GDel").click(function(){
+        var group_name = $("#del_groupname").val();
+        var name = $("#del_username").val();
+        var token = localStorage.token;
+	    
+	    var auth = new URLSearchParams();
+	    var params = new URLSearchParams();
+        var formData = new FormData();
+        auth.append("token", token);
+        params.append("func", "delmbr");
+        params.append("group", group_name);
+        params.append("user2", name);
+        formData.append("auth", auth);
+        formData.append("params", params);
+
+    // Request for contents
+        $.ajax({
+            async: false,
+            url: "./cgi-bin/serve.py", 
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                alert("Success!");                         
+            },
+            error: function (xhr) {
+                alert(xhr.status + " " + xhr.statusText + "\n"
+                    + xhr.responseText);
+            }
+        });
 	});
 	$("#Gbuild").click(function(){
         var name = $("#groupname").val();
+        var token = localStorage.token;
+        var auth = new URLSearchParams();
+        var params = new URLSearchParams();
+        var formData = new FormData();
+        auth.append("token", token);
+        params.append("func", "newgrp");
+        params.append("group", name);
+        formData.append("auth", auth);
+        formData.append("params", params);
 
-		alert("Not ready");
+        // Request for contents
+        $.ajax({
+            async: false,
+            url: "./cgi-bin/serve.py", 
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                alert("success!")                             
+            },
+            error: function (xhr) {
+                alert(xhr.status + " " + xhr.statusText + "\n"
+                    + xhr.responseText);
+            }
+        });
 	});
 </script>
 </html>
