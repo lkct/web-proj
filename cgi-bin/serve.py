@@ -100,7 +100,7 @@ def serve(form):
 
     msg = eval('func.'+fun)(form, params)
     err2stat = {0: '200 OK', 1: '400 Bad Request'}
-    stat = err2res[msg['errno']]
+    stat = err2stat[msg['errno']]
     return (stat, msg)
 
 
