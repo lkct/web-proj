@@ -31,11 +31,13 @@ def newgrp(form, params):
         msg = {'errno': 1, 'errmsg': 'Duplicate name'}
         return (stat, msg)
 
-    sql = 'INSERT INTO belongs (group_name, user_name, is_own) '\
-        'VALUES ("%s", "%s", %d)' % (group, user, 1)
-    mysql(sql)
-    sql = 'INSERT INTO file_list (path, filename, is_dir) ' \
+    sql = [
+        'INSERT INTO belongs (group_name, user_name, is_own) ' \
+        'VALUES ("%s", "%s", %d)' % (group, user, 1),
+
+        'INSERT INTO file_list (path, filename, is_dir) ' \
         'VALUES ("%s", "%s", %d)' % ('/', group, 1)
+    ]
     mysql(sql)
 
     msg = {'errno': 0}

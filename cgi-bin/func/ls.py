@@ -16,17 +16,14 @@ def ls(form, params):
 
     sql = 'SELECT * FROM file_list WHERE path="%s"' % (fpath)
     result = mysql(sql)
-    ret = []
-    for ln in result:
-        ret.append({'filename': ln['filename'], 'is_dir': ln['is_dir'], 'size': ln['size']})
+    ret = [{'filename': ln['filename'], 'is_dir': ln['is_dir'], 'size': ln['size']} for ln in result]
     
     fin_ret = []
     if fpath == '/':
         sql = 'SELECT * FROM belongs where user_name="%s"' % (params['user'])
         result = mysql(sql)
-        grps = [params['user']]
-        for ln in result:
-            grps.append(ln['group_name'])
+        grps = [ln['group_name'] for ln in result]
+        grps = [params['user']] + grps
         for item in ret:
             if item['filename'] in grps:
                 fin_ret.append(item)

@@ -29,9 +29,8 @@ def check_path(path, user):
     grp = path.split('/')[1]
     sql = 'SELECT * FROM belongs where user_name="%s"' % (user)
     result = func.mysql(sql)
-    grps = [user]
-    for ln in result:
-        grps.append(ln['group_name'])
+    grps = [ln['group_name'] for ln in result]
+    grps = [user] + grps
     if grp not in grps:
         return {'errno': 1, 'errmsg': 'Access not authorized'}
     return {'errno': 0, 'path': path}

@@ -16,9 +16,7 @@ def lsgrps(form, params):
 
     sql = 'SELECT * FROM belongs WHERE user_name="%s"' % (user)
     result = mysql(sql)
-    ret = []
-    for ln in result:
-        ret.append({'group': ln['group_name'], 'is_own': ln['is_own']})
+    ret = [{'group': ln['group_name'], 'is_own': ln['is_own']} for ln in result]
 
     stat = '200 OK'
     msg = {'errno': 0, 'list': json.dumps(ret)}

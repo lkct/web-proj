@@ -41,10 +41,12 @@ def reg(form, params):
     md5 = hashlib.md5()
     md5.update(passwd)
     passwd = md5.hexdigest()
-    sql = 'INSERT INTO users (user_name, passwd) VALUES ("%s", "%s")' % (user, passwd)
-    mysql(sql)
-    sql = 'INSERT INTO file_list (path, filename, is_dir) ' \
-        'VALUES ("%s", "%s", %d)' % ('/', group, 1)
+    sql = [
+        'INSERT INTO users (user_name, passwd) VALUES ("%s", "%s")' % (user, passwd),
+        
+        'INSERT INTO file_list (path, filename, is_dir) ' \
+        'VALUES ("%s", "%s", %d)' % ('/', user, 1)
+    ]
     mysql(sql)
 
     msg = {'errno': 0}

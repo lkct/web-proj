@@ -4,27 +4,23 @@ import os
 
 
 def mysql(sql):
-    words = sql.split(' ')
-    for word in words:
-        if word[0] in string.lowercase:
-            table = word
-            break
-    
     db = MySQLdb.connect('localhost', 'web', 'web', 'web', charset='utf8')
     cursor = db.cursor()
     
     try:
-        cursor.execute('DESCRIBE %s' % (table))
-        result = cursor.fetchall()
-        fields = []
-        for ln in result:
-            fields.append(ln[0])
-        
-        cursor.execute(sql)
-        result = cursor.fetchall()
+        if type(sql) != list:
+            sql = [sql]
+        for ln in sql:
+            cursor.execute(ln)
         ret = []
-        for ln in result:
-            ret.append(dict(zip(fields, ln)))
+
+        if sql[0][0:6] == "SELECT":
+            result = cursor.fetchall()
+            table = sql[0].split(' ')[3]
+            cursor.execute('DESCRIBE %s' % (table))
+            fields = cursor.fetchall()
+            fields = [ln[0] for ln in fields]
+            ret = [dict(zip(fields, ln)) for ln in result]
 
         db.commit()
     except:

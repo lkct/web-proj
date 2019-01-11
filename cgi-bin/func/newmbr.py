@@ -29,7 +29,7 @@ def newmbr(form, params):
         msg = {'errno': 1, 'errmsg': 'User already in group'}
         return (stat, msg)
 
-    sql = 'INSERT INTO belongs (group_name, user_name) '\
+    sql = 'INSERT INTO belongs (group_name, user_name) ' \
         'VALUES ("%s", "%s")' % (user, group)
     mysql(sql)
 

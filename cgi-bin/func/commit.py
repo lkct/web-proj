@@ -66,10 +66,12 @@ def commit(form, params):
         sql = 'INSERT INTO md5_list (md5, srv_id) VALUES ("%s", %d)' % (filemd5, srv_id)
         mysql(sql)
 
-    sql = 'INSERT INTO file_list (path, filename, md5, size) ' \
-        'VALUES ("%s", "%s", "%s", %d)' % (fpath, fn, filemd5, size)
-    mysql(sql)
-    sql = 'UPDATE md5_list SET ref_cnt=ref_cnt+1 WHERE md5="%s"' % (filemd5)
+    sql = [
+        'INSERT INTO file_list (path, filename, md5, size) ' \
+        'VALUES ("%s", "%s", "%s", %d)' % (fpath, fn, filemd5, size),
+
+        'UPDATE md5_list SET ref_cnt=ref_cnt+1 WHERE md5="%s"' % (filemd5)
+    ]
     mysql(sql)
 
     stat = '200 OK'
