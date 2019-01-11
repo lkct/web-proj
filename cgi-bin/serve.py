@@ -62,8 +62,6 @@ def serve(form):
         msg = {'errno': 1, 'errmsg': 'func not implemented'}
         return (stat, msg)
 
-    # TODO: check auth[%s] user/pass if login, prevent root
-
     if fun not in ['reg', 'login']:
         ret = func.token.check(auth['token'])
         if ret['errno'] > 0:
