@@ -18,6 +18,5 @@ def lsmbr(form, params):
     result = mysql(sql)
     ret = [{'user': ln['user_name'], 'is_own': ln['is_own']} for ln in result]
 
-    stat = '200 OK'
     msg = {'errno': 0, 'list': json.dumps(ret)}
-    return (stat, msg)
+    return msg

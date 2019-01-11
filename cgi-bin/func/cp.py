@@ -33,5 +33,4 @@ def cp(form, params):
             cp_r(fpath, fn, fpath2, fn2)
         msg = {'errno': 0}
 
-    stat = '200 OK'
-    return (stat, msg)
+    return msg

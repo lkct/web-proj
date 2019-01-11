@@ -48,7 +48,7 @@ try:
     print ''
 except Exception, e:
     msg = {'errno': -1, 'errmsg': 'Error occured, check server log for details'}
-    print 'Status: 400 Bad Request'
+    print 'Status: 500 Internal Server Error'
     print 'Content-Type: text/html'
     print ''
     print json.dumps(msg)

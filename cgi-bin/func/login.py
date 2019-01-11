@@ -34,5 +34,4 @@ def login(form, params):
         token = generate({'user': user}, 300)
         msg = {'errno': 0, 'token': token}
 
-    stat = '200 OK'
-    return (stat, msg)
+    return msg

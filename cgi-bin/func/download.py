@@ -35,6 +35,5 @@ def download(form, params):
     dl_msg = encrypt(json.dumps(dl_msg))
     dl_token = generate({'dl_msg': dl_msg}, 3600)
 
-    stat = '200 OK'
     msg = {'errno': 0, 'dl_token': dl_token}
-    return (stat, msg)
+    return msg

@@ -30,6 +30,5 @@ def ls(form, params):
     else:
         fin_ret = ret
 
-    stat = '200 OK'
     msg = {'errno': 0, 'list': json.dumps(fin_ret)}
-    return (stat, msg)
+    return msg

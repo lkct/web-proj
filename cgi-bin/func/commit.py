@@ -74,6 +74,5 @@ def commit(form, params):
     ]
     mysql(sql)
 
-    stat = '200 OK'
     msg = {'errno': 0, 'size': size, 'md5': filemd5}
-    return (stat, msg)
+    return msg

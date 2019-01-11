@@ -26,6 +26,5 @@ def save_file(form, params):
     with open(os.path.join(tmp_dir, fn), 'wb') as f:
         f.write(cont)
 
-    stat = '200 OK'
     msg = {'errno': 0, 'md5': fn, 'no': params['no']}
-    return (stat, msg)
+    return msg

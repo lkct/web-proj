@@ -65,7 +65,7 @@ def serve(form):
     if fun not in ['reg', 'login']:
         ret = func.token.check(auth['token'])
         if ret['errno'] > 0:
-            stat = '200 OK'
+            stat = '403 Forbidden'
             msg = ret
             return (stat, msg)
         params['user'] = ret['user']
@@ -73,14 +73,14 @@ def serve(form):
         if params.has_key('path'):
             ret = check_path(params['path'], params['user'])
             if ret['errno'] > 0:
-                stat = '200 OK'
+                stat = '400 Bad Request'
                 msg = ret
                 return (stat, msg)
             params['path'] = ret['path']
         if params.has_key('path2'):
             ret = check_path(params['path2'], params['user'])
             if ret['errno'] > 0:
-                stat = '200 OK'
+                stat = '400 Bad Request'
                 msg = ret
                 return (stat, msg)
             params['path2'] = ret['path']
@@ -88,17 +88,20 @@ def serve(form):
         if fun in ['lsmbr']:
             ret = check_grp(params['group'])
             if ret['errno'] > 0:
-                stat = '200 OK'
+                stat = '400 Bad Request'
                 msg = ret
                 return (stat, msg)
         if fun in ['delgrp', 'newmbr', 'delmbr']:
             ret = check_grp(params['group'], params['user'])
             if ret['errno'] > 0:
-                stat = '200 OK'
+                stat = '400 Bad Request'
                 msg = ret
                 return (stat, msg)
 
-    return eval('func.'+fun)(form, params)
+    msg = eval('func.'+fun)(form, params)
+    err2stat = {0: '200 OK', 1: '400 Bad Request'}
+    stat = err2res[msg[errno]]
+    return (stat, msg)
 
 
 log_file = '/var/www/html/grp-srv/tmp/err.log'

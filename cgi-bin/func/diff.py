@@ -27,5 +27,4 @@ def diff(form, params):
         result = mysql(sql)
         msg = {'errno': 0, 'exist': len(result)}
 
-    stat = '200 OK'
-    return (stat, msg)
+    return msg

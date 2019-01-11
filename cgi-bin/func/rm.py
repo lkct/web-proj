@@ -17,6 +17,5 @@ def rm(form, params):
 
     rm_r(fpath, fn)
 
-    stat = '200 OK'
     msg = {'errno': 0}
-    return (stat, msg)
+    return msg

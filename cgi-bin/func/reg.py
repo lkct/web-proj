@@ -23,19 +23,17 @@ def reg(form, params):
 
     assert string.lower(user) != 'root', 'Register of ROOT not allowed'
 
-    stat = '200 OK'
-
     sql = 'SELECT * FROM users WHERE user_name="%s"' % (user)
     result = mysql(sql)
     if len(result) > 0:
         msg = {'errno': 1, 'errmsg': 'Duplicate name'}
-        return (stat, msg)
+        return msg
 
     sql = 'SELECT * FROM belongs WHERE group_name="%s"' % (user)
     result = mysql(sql)
     if len(result) > 0:
         msg = {'errno': 1, 'errmsg': 'Duplicate name'}
-        return (stat, msg)
+        return msg
     
     passwd = decrypt(passwd)
     md5 = hashlib.md5()
@@ -50,4 +48,4 @@ def reg(form, params):
     mysql(sql)
 
     msg = {'errno': 0}
-    return (stat, msg)
+    return msg
