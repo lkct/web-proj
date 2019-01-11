@@ -74,8 +74,10 @@
             }
             else {
                 var len = files.length;
+                var tbody = document.getElementById("group_list");
                 for (i=0; i<len;i++){
-                    document.getElementById("group_list").innerHTML = files[i].group + files[i].is_own;
+                    var trow = files[i].group + " "+ files[i].is_own;
+                    tbody.appendChild(trow);
                 }
             }                              
         },
@@ -119,8 +121,10 @@
                 }
                 else {
                     var len = files.length;
+                    var tbody2 = document.getElementById("member_list");
                     for (i=0; i<len;i++){
-                        document.getElementById("member_list").innerHTML = files[i].user;
+                        var trow2 = files[i].user;
+                        tbody2.appendChild(trow2);
                     }
                 }                              
             },
