@@ -4,7 +4,7 @@ import sys
 
 from mysql import mysql
 
-def mkdir(form, params):
+def mkdir(form, params, cursor):
     """
     params:
         filename: name of file
@@ -16,14 +16,13 @@ def mkdir(form, params):
     fpath = params['path']
 
     sql = 'SELECT * FROM file_list WHERE path="%s" AND filename="%s"' % (fpath, fn)
-    result = mysql(sql)
+    result = mysql(sql, cursor)
     if len(result) > 0:
         msg = {'errno': 1, 'errmsg': 'File of same name alreasy existed at destination'}
     else:
         sql = 'INSERT INTO file_list (path, filename, is_dir) ' \
-        'VALUES ("%s", "%s", %d, "%s")' % (fpath, fn, 1)
-        mysql(sql)
+            'VALUES ("%s", "%s", %d)' % (fpath, fn, 1)
+        mysql(sql, cursor)
         msg = {'errno': 0}
 
-    stat = '200 OK'
-    return (stat, msg)
+    return msg

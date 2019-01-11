@@ -15,9 +15,9 @@ import func
 log_file = '/var/www/html/grp-srv/tmp/err.log'
 
 # cgitb.enable()
-form = cgi.FieldStorage()
 
 try:
+    form = cgi.FieldStorage()
     dl_token = form.getvalue('dl_token')
 
     dl_msg = func.token.check(dl_token)['dl_msg']
@@ -48,7 +48,7 @@ try:
     print ''
 except Exception, e:
     msg = {'errno': -1, 'errmsg': 'Error occured, check server log for details'}
-    print 'Status: 400 Bad Request'
+    print 'Status: 500 Internal Server Error'
     print 'Content-Type: text/html'
     print ''
     print json.dumps(msg)

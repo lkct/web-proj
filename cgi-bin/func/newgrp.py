@@ -5,7 +5,7 @@ import string
 
 from mysql import mysql
 
-def newgrp(form, params):
+def newgrp(form, params, cursor):
     """
     params:
         group: group name
@@ -15,25 +15,30 @@ def newgrp(form, params):
     user = params['user']
     group = params['group']
 
-    assert string.lower(group) != 'root', 'Register of ROOT not allowed'
-
-    stat = '200 OK'
+    if string.lower(group) == 'root':
+        msg = {'errno': 1, 'errmsg': 'Register of ROOT not allowed'}
+        return msg
 
     sql = 'SELECT * FROM belongs WHERE group_name="%s"' % (group)
-    result = mysql(sql)
+    result = mysql(sql, cursor)
     if len(result) > 0:
         msg = {'errno': 1, 'errmsg': 'Duplicate name'}
-        return (stat, msg)
+        return msg
     
     sql = 'SELECT * FROM users WHERE user_name="%s"' % (group)
-    result = mysql(sql)
+    result = mysql(sql, cursor)
     if len(result) > 0:
         msg = {'errno': 1, 'errmsg': 'Duplicate name'}
-        return (stat, msg)
+        return msg
 
-    sql = 'INSERT INTO belongs (group_name, user_name, is_own) '\
-        'VALUES ("%s", "%s", %d)' % (user, group, 1)
-    mysql(sql)
+    sql = [
+        'INSERT INTO belongs (group_name, user_name, is_own) ' \
+        'VALUES ("%s", "%s", %d)' % (group, user, 1),
+
+        'INSERT INTO file_list (path, filename, is_dir) ' \
+        'VALUES ("%s", "%s", %d)' % ('/', group, 1)
+    ]
+    mysql(sql, cursor)
 
     msg = {'errno': 0}
-    return (stat, msg)
+    return msg

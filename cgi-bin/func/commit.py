@@ -4,13 +4,14 @@ import sys
 import json
 import requests
 import urllib
+import random
 
 from mysql import mysql
 
 tmp_dir = '/var/www/html/grp-srv/tmp'
 
 
-def commit(form, params):
+def commit(form, params, cursor):
     """
     params:
         filename: name of file
@@ -31,14 +32,14 @@ def commit(form, params):
 
     if len(md5list) > 0:
         sql = 'SELECT * FROM file_server'
-        result = mysql(sql)
-        servers = {}
-        for ln in result:
-            servers[ln['srv_id']] = ln['file_srv']
-        # TODO: test file servers to decide which
-        srv_id = 0
-        file_srv = servers[srv_id]
-        # TODO: test file servers to decide which
+        result = mysql(sql, cursor)
+        rand = random.shuffle(range(len(result)))
+        for i in rand:
+            if result[i]['avail_space'] >= size:
+                srv_id = result[i]['srv_id']
+                file_srv = result[i]['file_srv']
+                break
+        # TODO: now assume there exists a server with enough space
 
         retlist = []
         for i, md5 in zip(range(len(md5list)), md5list):
@@ -47,9 +48,7 @@ def commit(form, params):
             files = {'params': urllib.urlencode(param), 'file': open(path, 'rb')}
             url = 'http://' + file_srv + '/cgi-bin/save_file.py'
             r = requests.post(url, files=files)
-            # TODO: bad request handler
             r.raise_for_status()
-            # TODO: bad request handler
             retlist.append(r.json()['md5'])
         for md5 in md5list:
             path = os.path.join(tmp_dir, md5)
@@ -59,19 +58,18 @@ def commit(form, params):
         payload = {'size': size, 'md5list': json.dumps(retlist), 'filemd5': filemd5}
         url = 'http://' + file_srv + '/cgi-bin/commit.py'
         r = requests.post(url, data=payload)
-        # TODO: bad request handler
         r.raise_for_status()
-        # TODO: bad request handler
 
         sql = 'INSERT INTO md5_list (md5, srv_id) VALUES ("%s", %d)' % (filemd5, srv_id)
-        mysql(sql)
+        mysql(sql, cursor)
 
-    sql = 'INSERT INTO file_list (path, filename, md5, size) ' \
-        'VALUES ("%s", "%s", "%s", %d)' % (fpath, fn, filemd5, size)
-    mysql(sql)
-    sql = 'UPDATE md5_list SET ref_cnt=ref_cnt+1 WHERE md5="%s"' % (filemd5)
-    mysql(sql)
+    sql = [
+        'INSERT INTO file_list (path, filename, md5, size) ' \
+        'VALUES ("%s", "%s", "%s", %d)' % (fpath, fn, filemd5, size),
 
-    stat = '200 OK'
+        'UPDATE md5_list SET ref_cnt=ref_cnt+1 WHERE md5="%s"' % (filemd5)
+    ]
+    mysql(sql, cursor)
+
     msg = {'errno': 0, 'size': size, 'md5': filemd5}
-    return (stat, msg)
+    return msg

@@ -4,7 +4,7 @@ import sys
 
 from mysql import rm_r
 
-def rm(form, params):
+def rm(form, params, cursor):
     """
     params:
         filename: name of file
@@ -15,8 +15,7 @@ def rm(form, params):
     fn = params['filename']
     fpath = params['path']
 
-    rm_r(fpath, fn)
+    rm_r(cursor, fpath, fn)
 
-    stat = '200 OK'
     msg = {'errno': 0}
-    return (stat, msg)
+    return msg

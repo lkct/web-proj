@@ -4,7 +4,7 @@ import sys
 
 from mysql import mysql
 
-def delmbr(form, params):
+def delmbr(form, params, cursor):
     """
     params:
         group: group name
@@ -16,8 +16,7 @@ def delmbr(form, params):
     user2 = params['user2']
 
     sql = 'DELETE FROM belongs WHERE group_name="%s" AND user_name="%s"' % (group, user2)
-    mysql(sql)
+    mysql(sql, cursor)
 
-    stat = '200 OK'
     msg = {'errno': 0}
-    return (stat, msg)
+    return msg

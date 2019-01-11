@@ -4,7 +4,7 @@ import sys
 
 from token import generate
 
-def refresh(form, params):
+def refresh(form, params, cursor):
     """
     params:
         NONE
@@ -15,6 +15,5 @@ def refresh(form, params):
 
     token = generate({'user': user}, 300)
 
-    stat = '200 OK'
     msg = {'errno': 0, 'token': token}
-    return (stat, msg)
+    return msg

@@ -5,7 +5,7 @@ import json
 
 from mysql import mysql
 
-def lsmbr(form, params):
+def lsmbr(form, params, cursor):
     """
     params:
         group: group name
@@ -15,11 +15,8 @@ def lsmbr(form, params):
     group = params['group']
 
     sql = 'SELECT * FROM belongs WHERE group_name="%s"' % (group)
-    result = mysql(sql)
-    ret = []
-    for ln in result:
-        ret.append({'user': ln['user'], 'is_own': ln['is_own']})
+    result = mysql(sql, cursor)
+    ret = [{'user': ln['user_name'], 'is_own': ln['is_own']} for ln in result]
 
-    stat = '200 OK'
     msg = {'errno': 0, 'list': json.dumps(ret)}
-    return (stat, msg)
+    return msg
