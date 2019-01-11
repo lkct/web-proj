@@ -34,11 +34,12 @@ function Display_the_files(files){
     element.remove();
     for (var i in files) {
         var filename = i.filename;
+        alert(filename);
         var is_dir = i.is_dir;
         var para = document.createElement("li");
         if (is_dir != 0) {
             para.innerHTML = '<section class="cd-section" style="margin-top: 50px;">'
-					+'<button class="cd-bouncy-nav-trigger" type="button" onclick="pasd('+filename+')">'+filename + '</button></section>'
+					+'<button class="cd-bouncy-nav-trigger" type="button" onclick="pasd("'+filename+'")">'+filename + '</button></section>'
 					+'<div class="cd-bouncy-nav-modal">'
 					+'<nav><ul class="cd-bouncy-nav">'
                     +'<li class="enter">Enter</li>'
@@ -51,7 +52,7 @@ function Display_the_files(files){
         }
         else {
             para.innerHTML = '<section class="cd-section" style="margin-top: 50px;">'
-					+'<button class="cd-bouncy-nav-trigger" type="button" onclick="pasf('+filename+')">'+filename + '</button></section>'
+					+'<button class="cd-bouncy-nav-trigger" type="button" onclick="pasf("'+filename+'")">'+filename + '</button></section>'
 					+'<div class="cd-bouncy-nav-modal">'
 					+'<nav><ul class="cd-bouncy-nav">'
 					+'<li class="down">Download</li>'
@@ -242,7 +243,13 @@ function Makedir(Path, Dirname){
     });
 }
 
-function Copyfile(src_file, src_path, to_file, to_path, mvpara){
+function Copyfile(){
+    src_file = localStorage.src_file;
+    src_path = localStorage.src_path;
+    to_file = localStorage.src_file;
+    to_path = localStorage.path;
+    mvpara = localStorage.mvpara;
+
     var auth = new URLSearchParams();         
     var params = new URLSearchParams();
     var formData = new FormData();
