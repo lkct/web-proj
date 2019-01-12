@@ -24,13 +24,11 @@ def cp(form, params, cursor):
     sql = 'SELECT * FROM file_list WHERE path="%s" AND filename="%s"' % (fpath2, fn2)
     result = mysql(sql, cursor)
     if len(result) > 0:
-        msg = {'errno': 1, 'errmsg': 'File of same name alreasy existed at destination'}
+        return {'errno': 7, 'errmsg': 'File of same name already existed at destination'}
     else:
         if mv == 1:
             sql = 'UPDATE file_list SET path="%s", filename="%s" WHERE path="%s" AND filename="%s"' % (fpath2, fn2, fpath, fn)
             mysql(sql, cursor)
         else:
             cp_r(cursor, fpath, fn, fpath2, fn2)
-        msg = {'errno': 0}
-
-    return msg
+        return {'errno': 0}

@@ -18,18 +18,15 @@ def newmbr(form, params, cursor):
     sql = 'SELECT * FROM users WHERE user_name="%s"' % (user2)
     result = mysql(sql, cursor)
     if len(result) == 0:
-        msg = {'errno': 1, 'errmsg': 'User not exist'}
-        return msg
+        return {'errno': 6, 'errmsg': 'User not exist'}
 
     sql = 'SELECT * FROM belongs WHERE group_name="%s" AND user_name="%s"' % (group, user2)
     result = mysql(sql, cursor)
     if len(result) > 0:
-        msg = {'errno': 1, 'errmsg': 'User already in group'}
-        return msg
+        return {'errno': 0}
 
     sql = 'INSERT INTO belongs (group_name, user_name) ' \
         'VALUES ("%s", "%s")' % (group, user2)
     mysql(sql, cursor)
 
-    msg = {'errno': 0}
-    return msg
+    return {'errno': 0}

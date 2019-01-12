@@ -16,20 +16,17 @@ def newgrp(form, params, cursor):
     group = params['group']
 
     if string.lower(group) == 'root':
-        msg = {'errno': 1, 'errmsg': 'Register of ROOT not allowed'}
-        return msg
+        return {'errno': 4, 'errmsg': 'Register name ROOT not allowed'}
 
     sql = 'SELECT * FROM belongs WHERE group_name="%s"' % (group)
     result = mysql(sql, cursor)
     if len(result) > 0:
-        msg = {'errno': 1, 'errmsg': 'Duplicate name'}
-        return msg
+        return {'errno': 8, 'errmsg': 'Duplicate name used'}
     
     sql = 'SELECT * FROM users WHERE user_name="%s"' % (group)
     result = mysql(sql, cursor)
     if len(result) > 0:
-        msg = {'errno': 1, 'errmsg': 'Duplicate name'}
-        return msg
+        return {'errno': 8, 'errmsg': 'Duplicate name used'}
 
     sql = [
         'INSERT INTO belongs (group_name, user_name, is_own) ' \
@@ -40,5 +37,4 @@ def newgrp(form, params, cursor):
     ]
     mysql(sql, cursor)
 
-    msg = {'errno': 0}
-    return msg
+    return {'errno': 0}

@@ -46,7 +46,7 @@ def commit(form, params, cursor):
             path = os.path.join(tmp_dir, md5)
             param = {'no': i}
             files = {'params': urllib.urlencode(param), 'file': open(path, 'rb')}
-            url = 'http://' + file_srv + '/cgi-bin/save_file.py'
+            url = 'http://' + file_srv + '/cgi-bin/upload.py'
             r = requests.post(url, files=files)
             r.raise_for_status()
             retlist.append(r.json()['md5'])
@@ -71,5 +71,4 @@ def commit(form, params, cursor):
     ]
     mysql(sql, cursor)
 
-    msg = {'errno': 0, 'size': size, 'md5': filemd5}
-    return msg
+    return {'errno': 0, 'size': size, 'md5': filemd5}

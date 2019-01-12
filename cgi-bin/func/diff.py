@@ -21,10 +21,8 @@ def diff(form, params, cursor):
     sql = 'SELECT * FROM file_list WHERE path="%s" AND filename="%s"' % (fpath, fn)
     result = mysql(sql, cursor)
     if len(result) > 0:
-        msg = {'errno': 1, 'errmsg': 'File of same name alreasy existed at destination'}
+        return {'errno': 7, 'errmsg': 'File of same name already existed at destination'}
     else:
         sql = 'SELECT * FROM md5_list WHERE md5="%s"' % (md5)
         result = mysql(sql, cursor)
-        msg = {'errno': 0, 'exist': len(result)}
-
-    return msg
+        return {'errno': 0, 'exist': len(result)}

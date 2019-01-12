@@ -18,5 +18,4 @@ def delgrp(form, params, cursor):
     mysql(sql, cursor)
     rm_r(cursor, '/', 'group')
 
-    msg = {'errno': 0}
-    return msg
+    return {'errno': 0}
