@@ -2,43 +2,55 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>File manager</title>
+	<title>Group manager</title>
 	<script src="/jquery-3.3.1.min.js"></script>
     <script src="./Main_action.js"></script>
     <script src="./Group_action.js"></script>
-<style>
-    body {background-color: powderblue;}
-</style>
+    <link rel="stylesheet" href="css/group.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <img src="./groups.jpg" width="400" height="400">
-    <h2 style="color:rgb(23, 80, 138);">The Groups you are already in:</h2>
-    <ul id='group_list'>
-        <li>it should be different based on who the user is</li>
-    </ul>
-    <div id="GroupInfo">
-        Groupname: <input type="text" id="info_groupname"><br>
-        <button id="GInfo" style="color:green">Show the members of this group</button>
+    
+    <div class="logbody2">
+        <img src="./groups.jpg" width="400" height="400" align="top"> 
     </div>
-    <ul id='member_list'>
-        <li>it should be different based on who the group is</li>
-    </ul>
-    <h2 style="color:rgb(23, 80, 138);">Build a new one</h2>
-    <div id="BuildGroupInput">
-        Groupname: <input type="text" id="groupname"><br>
-        <button id="Gbuild" style="color:green">Build this group</button>
-    </div>
-    <h2 style="color:rgb(23, 80, 138);">Pull someone into your group</h2>
-    <div id="PullGroupInput">
-        Groupname: <input type="text" id="pull_groupname"><br>
-        Username : <input type="text" id="pull_username"><br>
-        <button id="GPull">Pull</button>
-    </div>
-    <h2 style="color:rgb(23, 80, 138);">delete someone in your group</h2>
-    <div id="DelGroupInput">
-        Groupname: <input type="text" id="del_groupname"><br>
-        Username : <input type="text" id="del_username"><br>
-        <button id="GDel">Delete</button>
+    <div class="container">
+        <div class="leftbox">
+            <ul id='group_list'>group name here</ul>
+            <h2 style="color:rgb(23, 80, 138);">The Groups you in:</h2>
+            <div id="GroupInfo">
+                Groupname: <input type="text" id="info_groupname"><br><br>
+                <button id="GInfo" class="logbtn">Show the members of this group</button>
+            </div>
+            
+            
+            <h2 style="color:rgb(23, 80, 138);">Build a new one</h2>
+            <div id="BuildGroupInput">
+                Groupname: <input type="text" id="groupname"><br><br>
+                <button id="Gbuild" class="logbtn">Build this group</button>
+            </div>
+            <br>
+            <br>
+            <br>
+        </div>
+        <div class="rightbox">
+            <ul id='member_list'>Members of this group here</ul>
+            <h2 style="color:rgb(23, 80, 138);">Pull someone into your group</h2>
+            <div id="PullGroupInput">
+                Groupname: <input type="text" id="pull_groupname"><br>
+                Username : <input type="text" id="pull_username"><br>
+                <button id="GPull" class="logbtn">Pull</button>
+            </div>
+            <h2 style="color:rgb(23, 80, 138);">delete someone in your group</h2>
+            <div id="DelGroupInput">
+                Groupname: <input type="text" id="del_groupname"><br>
+                Username : <input type="text" id="del_username"><br>
+                <button id="GDel" class="logbtn">Delete</button>
+            </div>
+            <br>
+            <br>
+            <br>
+        </div>
     </div>
 </body>
 
@@ -76,8 +88,9 @@
                 var len = files.length;
                 var tbody = document.getElementById("group_list");
                 for (i=0; i<len;i++){
-                    var trow = files[i].group + " "+ files[i].is_own;
-                    tbody.appendChild(trow);
+                    var para = document.createElement("li");
+                    para.innerHTML = files.group + " " + files.is_own;
+                    tbody.appendChild(para);
                 }
             }                              
         },
@@ -122,9 +135,13 @@
                 else {
                     var len = files.length;
                     var tbody2 = document.getElementById("member_list");
+                    while(tbody2.hasChildNodes()) {
+                        tbody2.removeChild(tbody2.firstChild());
+                    }
                     for (i=0; i<len;i++){
-                        var trow2 = files[i].user;
-                        tbody2.appendChild(trow2);
+                        var para = document.createElement("li");
+                        para.innerHTML = files.user + " " + files.is_own;
+                        tbody2.appendChild(para);
                     }
                 }                              
             },
