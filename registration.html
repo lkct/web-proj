@@ -5,15 +5,28 @@
     <title>File Manager</title>
     <script src="/jquery-3.3.1.min.js"></script>
     <script src="/jsencrypt.min.js"></script>
+    <link rel="stylesheet" href="css/demo.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <h2>Welcome to our file Manager</h2>
-    <div id="LoggingInput">
-        Username: <input type="text" id="username"><br>
-        Password: <input type="password" id="password"><br>
-        <button id="loginBtn">Log in</button>
-        <button id="registBtn">Register</button>
+    <div class="container">
+        <header style="color:#F0F8FF;">
+            <br><h1>Simple File Manager</h1>
+        </header>
+        <div id="LoggingInput" class="logbody">
+            Username: <input type="text" id="username"><br>
+            Password: <input type="password" id="password"><br>
+            <button class="logbtn" id="loginBtn">Log in</button>
+            <button class="logbtn" id="registBtn">Register</button>
+        </div>
+
+        <footer>
+            <div>
+                <p>Author: LKCT, FMH, YKQ, LXT, WRX<br>Copyright © www.helloweba.net</p>
+            </div>
+        </footer>
     </div>
+    
 </body>
 <script>
     // Login

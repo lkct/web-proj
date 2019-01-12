@@ -9,6 +9,7 @@ import traceback
 import json
 import urlparse
 import datetime
+import MySQLdb
 
 import func
 
@@ -109,27 +110,31 @@ log_file = '/var/www/html/grp-srv/tmp/err.log'
 # cgitb.enable()
 
 try:
+    form = cgi.FieldStorage()
+    
     db = MySQLdb.connect('localhost', 'web', 'web', 'web', charset='utf8')
     cursor = db.cursor()
 
-    form = cgi.FieldStorage()
     stat, msg = serve(form, cursor)
 
     db.commit()
     db.close()
 except Exception, e:
-    db.rollback()
-    db.close()
+    try:
+        with open(log_file, 'w', 664) as f:
+            f.write(str(datetime.datetime.now()))
+            f.write('\n')
+            f.write(traceback.format_exc())
+            f.write('\n')
+            f.write(str(form))
+
+        db.rollback()
+        db.close()
+    except Exception, ee:
+        pass
 
     stat = '500 Internal Server Error'
     msg = {'errno': -1, 'errmsg': 'Error occured, check server log for details'}
-
-    with open(log_file, 'w', 664) as f:
-        f.write(str(datetime.datetime.now()))
-        f.write('\n')
-        f.write(traceback.format_exc())
-        f.write('\n')
-        f.write(str(form))
 
 print '''\
 Status: %s
