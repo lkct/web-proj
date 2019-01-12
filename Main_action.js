@@ -250,6 +250,9 @@ function refresh_token(){
     var params = new URLSearchParams();
     auth.append("token", localStorage.token);
     params.append("func", "refresh");
+    var formData = new FormData();
+    formData.append("auth", auth);
+    formData.append("params", params);
     $.ajax({
         async: false,
         url: "./cgi-bin/serve.py", 
