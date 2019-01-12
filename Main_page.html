@@ -15,6 +15,7 @@
 	<button type='button' id='Bpage'>Go up one directory</button><br>
 	<button type='button' id='Nfolder'>New Folder</button><br>
 	<button type='button' id='GroupManage'>Group Management</button><br>
+	<p id='Path'></p>
     <ul id='file_list'>
         <li>it should be different based on who the user is</li>
     </ul>
@@ -25,7 +26,7 @@
         <p><button id="Uload" type="button">Upload</button></p>
     </form>
     <div class="dropdown">
-        <button onclick="myFunction()" class="dropbtn">Menu</button>
+        <button onclick="Menu()" class="dropbtn">Menu</button>
           <div id="myDropdown" class="dropdown-content">
             <a href="/registraion.html">Log out</a>
             <!-- <a href="#0" onclick="upload()">Upload your file</a> -->
@@ -37,7 +38,7 @@
 
 <!--Display the files-->
 <script>
-    refresh_token()
+    refresh_token();
 	var token = localStorage.token;
 	var path = localStorage.path;
 	var auth = new URLSearchParams();
@@ -74,7 +75,7 @@
                 + xhr.responseText);
         }
     });
-    setInterval(refresh_token(),60000)
+    setInterval(refresh_token(),60000);
 
 </script>
 
@@ -102,6 +103,8 @@
 	$("#GroupManage").click(function(){
 		window.location.href="./Group_page.html";
 	});
+	$("#Path").document.write("Your directory: "+localStorage.path);
+
 </script>
 
 </html>
