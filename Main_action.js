@@ -32,7 +32,7 @@ function Download(path, filename){
 function Display_the_files(files){
     var element = document.getElementById("file_list");
     while(element.hasChildNodes()) {
-        element.removeChild(element.firstChild());
+        element.removeChild(element.firstChild);
     }
     for (var i in files) {
         var filename = i.filename;
@@ -44,6 +44,7 @@ function Display_the_files(files){
 					+'<button class="cd-bouncy-nav-trigger" type="button" onclick="pasd("'+filename+'")">'+filename + '</button></section>'
 					+'<div class="cd-bouncy-nav-modal">'
 					+'<nav><ul class="cd-bouncy-nav">'
+                    +'<li class="share">Share</li>'
                     +'<li class="enter">Enter</li>'
 					+'<li class="copy">Copy</li>'
                     +'<li class="cut">Cut</li>'
@@ -57,6 +58,7 @@ function Display_the_files(files){
 					+'<button class="cd-bouncy-nav-trigger" type="button" onclick="pasf("'+filename+'")">'+filename + '</button></section>'
 					+'<div class="cd-bouncy-nav-modal">'
 					+'<nav><ul class="cd-bouncy-nav">'
+                    +'<li class="share">Share</li>'
 					+'<li class="down">Download</li>'
 					+'<li class="copy">Copy</li>'
                     +'<li class="cut">Cut</li>'
@@ -81,21 +83,25 @@ function pasd(dname){
         });
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .copy').on('click', function(){
             localStorage.src_path = localStorage.path;
-            localStorage.src_dir = dname;
+            localStorage.src_file = dname;
             localStorage.op_type = 'copy';
             triggerBouncyNav(false);
             // waiting for the"paste" to call the Copy function
         });
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .cut').on('click', function(){
             localStorage.src_path = localStorage.path;
-            localStorage.src_dir = dname;
+            localStorage.src_file = dname;
             localStorage.op_type = 'cut';
             triggerBouncyNav(false);
             // waiting for the"paste" to call the Copy function
         });
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .enter').on('click', function(){
             localStorage.path = localStorage.path + '/' + dname;
-            window.location.href = window.location.href
+            window.location.href = window.location.href;
+        });
+        $('.cd-bouncy-nav-modal .cd-bouncy-nav .share').on('click', function(){
+            share(dname);
+            triggerBouncyNav(false);
         });
 		$('.cd-bouncy-nav-modal').on('click', function(event){
 			if($(event.target).is('.cd-bouncy-nav-modal')) {
@@ -138,14 +144,14 @@ function pasf(fname){
         });
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .copy').on('click', function(){
             localStorage.src_path = localStorage.path;
-            localStorage.src_dir = fname;
+            localStorage.src_file = fname;
             localStorage.op_type = 'copy';
             triggerBouncyNav(false);
             // waiting for the"paste" to call the Copy function
         });
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .cut').on('click', function(){
             localStorage.src_path = localStorage.path;
-            localStorage.src_dir = fname;
+            localStorage.src_file = fname;
             localStorage.op_type = 'cut';
             triggerBouncyNav(false);
             // waiting for the"paste" to call the Copy function
@@ -157,6 +163,10 @@ function pasf(fname){
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .down').on('click', function(){
             Download(localStorage.path, fname);
 			triggerBouncyNav(false);
+        });
+        $('.cd-bouncy-nav-modal .cd-bouncy-nav .enter').on('click', function(){
+            share(fname);
+            triggerBouncyNav(false);
         });
 		$('.cd-bouncy-nav-modal').on('click', function(event){
 			if($(event.target).is('.cd-bouncy-nav-modal')) {
@@ -278,12 +288,15 @@ function refresh_token(){
     });
 }
 
-function Copyfile(src_file, src_path, to_file, to_path, mvpara){
-    src_file = localStorage.src_file;
-    src_path = localStorage.src_path;
-    to_file = localStorage.src_file;
-    to_path = localStorage.path;
-    mvpara = localStorage.mvpara;
+function Copyfile(to_path=localStorage.path){
+    var src_file = localStorage.src_file;
+    var src_path = localStorage.src_path;
+    var to_file = localStorage.src_file;
+    var mvpara = localStorage.mvpara;
+    if (src_file == "") {
+        alert('No file selected.');
+    }
+
     var auth = new URLSearchParams();         
     var params = new URLSearchParams();
     var formData = new FormData();
@@ -313,6 +326,25 @@ function Copyfile(src_file, src_path, to_file, to_path, mvpara){
                 + xhr.responseText);
         }
     });
+    
+    if (mvpara == 'cut') {
+        localStorage.src_file = "";
+        localStorage.src_path = "";
+        localStorage.mvpara = "";
+    }
+}
+
+function share(filename) {
+    var tmp_src_file = localStorage.src_file;
+    var tmp_src_path = localStorage.src_path;
+    var tmp_mvpara = localStorage.mvpara;
+    localStorage.src_file = filename;
+    localStorage.src_path = localStorage.path;
+    localStorage.mvpara = "copy";
+    Copyfile(_________); // fill the shared path
+    localStorage.src_file = tmp_src_file;
+    localStorage.src_path = tmp_src_path;
+    localStorage.mvpara = tmp_mvpara;
 }
 
 // 上传文件，还有不少需要完善
