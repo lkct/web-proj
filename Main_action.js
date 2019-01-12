@@ -34,10 +34,12 @@ function Display_the_files(files){
     while(element.hasChildNodes()) {
         element.removeChild(element.firstChild);
     }
-    for (var i in files) {
-        var filename = i.filename;
+    var i;
+    var len = files.length;
+    for (i = 0; i < len; i++) {
+        var filename = files[i].filename;
         alert(filename);
-        var is_dir = i.is_dir;
+        var is_dir = files[i].is_dir;
         var para = document.createElement("li");
         if (is_dir != 0) {
             para.innerHTML = '<section class="cd-section" style="margin-top: 50px;">'
