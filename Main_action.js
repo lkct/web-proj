@@ -245,10 +245,10 @@ function Makedir(Path, Dirname){
     });
 }
 
-function refresh_token(){
+function refresh_token(Token){
     var auth = new URLSearchParams();
     var params = new URLSearchParams();
-    auth.append("token", localStorage.token);
+    auth.append("token", Token);
     params.append("func", "refresh");
     var formData = new FormData();
     formData.append("auth", auth);
