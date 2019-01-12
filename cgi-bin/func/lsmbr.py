@@ -18,5 +18,4 @@ def lsmbr(form, params, cursor):
     result = mysql(sql, cursor)
     ret = [{'user': ln['user_name'], 'is_own': ln['is_own']} for ln in result]
 
-    msg = {'errno': 0, 'list': json.dumps(ret)}
-    return msg
+    return {'errno': 0, 'list': json.dumps(ret)}

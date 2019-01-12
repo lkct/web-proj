@@ -1,0 +1,30 @@
+@charset "utf-8";
+/* CSS Document */
+/*html,body,div,span,h1,h2,h3,h4,h5,h6,p,pre,a,code,em,img,small,strong,sub,sup,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}*/
+
+html{background:url(../images/bg.png)}
+header h1{ padding:10px 2px; line-height:16px; text-align:center; margin-top: 20px; margin-top: 20px}
+/*.main{border:1px solid #d3d3d3; border-radius:5px;background:#fff;}*/
+footer p{font-size:16px; text-align: center;}
+
+.logbody2{
+	margin-top: 50px;
+	text-align:center; 
+	margin-bottom: 100px;
+}
+
+.leftbox {
+	width: 50%;
+	height: 100%;
+	text-align:center; 
+	float: left;
+	margin-bottom: 100px;
+}
+
+.rightbox {
+	width: 50%;
+	height: 100%;
+	text-align:center; 
+	float: right;
+	margin-bottom: 100px;
+}

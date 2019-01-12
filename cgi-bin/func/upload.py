@@ -6,7 +6,7 @@ import urlparse
 
 tmp_dir = '/var/www/html/grp-srv/tmp'
 
-def save_file(form, params, cursor):
+def upload(form, params, cursor):
     """
     form:
         file: file chunk content
@@ -26,5 +26,4 @@ def save_file(form, params, cursor):
     with open(os.path.join(tmp_dir, fn), 'wb') as f:
         f.write(cont)
 
-    msg = {'errno': 0, 'md5': fn, 'no': params['no']}
-    return msg
+    return {'errno': 0, 'md5': fn, 'no': params['no']}

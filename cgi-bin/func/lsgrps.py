@@ -10,7 +10,7 @@ def lsgrps(form, params, cursor):
     params:
         NONE
     return:
-        list: list of {group_name, is_own}
+        list: list of {group, is_own}
     """
     user = params['user']
 
@@ -18,5 +18,4 @@ def lsgrps(form, params, cursor):
     result = mysql(sql, cursor)
     ret = [{'group': ln['group_name'], 'is_own': ln['is_own']} for ln in result]
 
-    msg = {'errno': 0, 'list': json.dumps(ret)}
-    return msg
+    return {'errno': 0, 'list': json.dumps(ret)}
