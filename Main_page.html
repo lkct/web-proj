@@ -38,9 +38,7 @@
 
 <!--Display the files-->
 <script>
-    while(true){
-        setTimeout(refresh_token(),60);
-    }
+    refresh_token()
 	var token = localStorage.token;
 	var path = localStorage.path;
 	var auth = new URLSearchParams();
@@ -77,6 +75,9 @@
                 + xhr.responseText);
         }
     });
+    while(true){
+        setTimeout(refresh_token(),60000);
+    }
 
 </script>
 
