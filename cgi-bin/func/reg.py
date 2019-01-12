@@ -22,20 +22,17 @@ def reg(form, params, cursor):
     passwd = auth['passwd']
 
     if string.lower(group) == 'root':
-        msg = {'errno': 1, 'errmsg': 'Register of ROOT not allowed'}
-        return msg
+        return {'errno': 4, 'errmsg': 'Register name ROOT not allowed'}
 
     sql = 'SELECT * FROM users WHERE user_name="%s"' % (user)
     result = mysql(sql, cursor)
     if len(result) > 0:
-        msg = {'errno': 1, 'errmsg': 'Duplicate name'}
-        return msg
+        return {'errno': 8, 'errmsg': 'Duplicate name used'}
 
     sql = 'SELECT * FROM belongs WHERE group_name="%s"' % (user)
     result = mysql(sql, cursor)
     if len(result) > 0:
-        msg = {'errno': 1, 'errmsg': 'Duplicate name'}
-        return msg
+        return {'errno': 8, 'errmsg': 'Duplicate name used'}
     
     passwd = decrypt(passwd)
     md5 = hashlib.md5()
@@ -49,5 +46,4 @@ def reg(form, params, cursor):
     ]
     mysql(sql, cursor)
 
-    msg = {'errno': 0}
-    return msg
+    return {'errno': 0}

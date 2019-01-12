@@ -16,6 +16,6 @@ def check(token):
     try:
         msg = jwt.decode(token, public_key, algorithms='RS256')
         msg['errno'] = 0
+        return msg
     except jwt.PyJWTError, e:
-        msg = {'errno': 1, 'errmsg': 'Invalid token'}
-    return msg
+        return {'errno': 2, 'errmsg': 'Invalid token'}

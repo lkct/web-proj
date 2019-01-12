@@ -18,5 +18,4 @@ def delmbr(form, params, cursor):
     sql = 'DELETE FROM belongs WHERE group_name="%s" AND user_name="%s"' % (group, user2)
     mysql(sql, cursor)
 
-    msg = {'errno': 0}
-    return msg
+    return {'errno': 0}

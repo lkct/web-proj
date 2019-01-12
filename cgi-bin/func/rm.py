@@ -17,5 +17,4 @@ def rm(form, params, cursor):
 
     rm_r(cursor, fpath, fn)
 
-    msg = {'errno': 0}
-    return msg
+    return {'errno': 0}

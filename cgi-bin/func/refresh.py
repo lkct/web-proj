@@ -15,5 +15,4 @@ def refresh(form, params, cursor):
 
     token = generate({'user': user}, 300)
 
-    msg = {'errno': 0, 'token': token}
-    return msg
+    return {'errno': 0, 'token': token}

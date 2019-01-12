@@ -26,5 +26,4 @@ def upload(form, params, cursor):
     with open(os.path.join(tmp_dir, fn), 'wb') as f:
         f.write(cont)
 
-    msg = {'errno': 0, 'md5': fn, 'no': params['no']}
-    return msg
+    return {'errno': 0, 'md5': fn, 'no': params['no']}

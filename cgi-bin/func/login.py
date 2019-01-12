@@ -29,9 +29,7 @@ def login(form, params, cursor):
     sql = 'SELECT * FROM users WHERE user_name="%s" AND passwd="%s"' % (user, passwd)
     result = mysql(sql, cursor)
     if len(result) == 0:
-        msg = {'errno': 1, 'errmsg': 'User name or password wrong'}
+        return {'errno': 2, 'errmsg': 'Invalid user name or password'}
     else:
         token = generate({'user': user}, 300)
-        msg = {'errno': 0, 'token': token}
-
-    return msg
+        return {'errno': 0, 'token': token}

@@ -30,5 +30,4 @@ def ls(form, params, cursor):
     else:
         fin_ret = ret
 
-    msg = {'errno': 0, 'list': json.dumps(fin_ret)}
-    return msg
+    return {'errno': 0, 'list': json.dumps(fin_ret)}
