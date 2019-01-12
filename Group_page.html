@@ -4,8 +4,6 @@
 	<meta charset="UTF-8">
 	<title>Group manager</title>
 	<script src="/jquery-3.3.1.min.js"></script>
-    <script src="./Main_action.js"></script>
-    <script src="./Group_action.js"></script>
     <link rel="stylesheet" href="css/group.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -89,7 +87,7 @@
                 var tbody = document.getElementById("group_list");
                 for (i=0; i<len;i++){
                     var para = document.createElement("li");
-                    para.innerHTML = files.group + " " + files.is_own;
+                    para.innerHTML = files[i].group + " " + files[i].is_own;
                     tbody.appendChild(para);
                 }
             }                              
@@ -140,7 +138,7 @@
                     }
                     for (i=0; i<len;i++){
                         var para = document.createElement("li");
-                        para.innerHTML = files.user + " " + files.is_own;
+                        para.innerHTML = files[i].user + " " + files[i].is_own;
                         tbody2.appendChild(para);
                     }
                 }                              
