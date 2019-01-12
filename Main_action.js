@@ -245,13 +245,42 @@ function Makedir(Path, Dirname){
     });
 }
 
-function Copyfile(){
+function refresh_token(){
+    var auth = new URLSearchParams();
+    var params = new URLSearchParams();
+    auth.append("token", localStorage.token);
+    params.append("func", "refresh");
+    $.ajax({
+        async: false,
+        url: "./cgi-bin/serve.py", 
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            var json = JSON.parse(response);
+            if(json.errno==1){
+                // Todo: Jump to Registraion
+                alert("An error occurs! Please login again!");
+                window.location.href = "/registraion.html";
+            }
+            else {
+                localStorage.token = json.token;
+            }                              
+        },
+        error: function (xhr) {
+            alert(xhr.status + " " + xhr.statusText + "\n"
+                + xhr.responseText);
+        }
+    });
+}
+
+function Copyfile(src_file, src_path, to_file, to_path, mvpara){
     src_file = localStorage.src_file;
     src_path = localStorage.src_path;
     to_file = localStorage.src_file;
     to_path = localStorage.path;
     mvpara = localStorage.mvpara;
-
     var auth = new URLSearchParams();         
     var params = new URLSearchParams();
     var formData = new FormData();
