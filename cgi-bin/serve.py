@@ -22,7 +22,7 @@ def check_path(path, user, fname=None):
     if path[0] != '/':
         path = '/' + path
 
-    if fname in not None:
+    if fname is not None:
         sql = 'SELECT * FROM file_list WHERE path="%s" AND filename="%s"' % (path, fname)
         result = func.mysql(sql, cursor)
         if len(result) == 0:
