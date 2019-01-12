@@ -56,7 +56,7 @@ def serve(form, cursor):
     auth = dict(urlparse.parse_qsl(form['auth'].file.read()))
     params = dict(urlparse.parse_qsl(form['params'].file.read()))
     fun = params['func']
-    allow_func = ['diff', 'save_file', 'commit', 'mkdir', 'rm', 'ls', 'ln', 'cp', 'download',
+    allow_func = ['diff', 'upload', 'commit', 'mkdir', 'rm', 'ls', 'ln', 'cp', 'download',
                   'reg', 'login', 'refresh', 'newgrp', 'delgrp', 'lsgrps', 'newmbr', 'delmbr', 'lsmbr']
     if fun not in allow_func:
         stat = '400 Bad Request'

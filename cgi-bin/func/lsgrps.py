@@ -10,7 +10,7 @@ def lsgrps(form, params, cursor):
     params:
         NONE
     return:
-        list: list of {group_name, is_own}
+        list: list of {group, is_own}
     """
     user = params['user']
 
