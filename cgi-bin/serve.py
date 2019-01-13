@@ -134,7 +134,7 @@ except Exception, e:
     except Exception, ee:
         pass
 
-    stat = '400 Bad Request'
+    stat = 400
     msg = {'errno': -1, 'errmsg': 'Error occured, check server log for details'}
 
 print '''\
