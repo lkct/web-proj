@@ -86,7 +86,7 @@
   overflow: hidden;
   text-indent: 100%;
   white-space: nowrap;
-  background: url("../img/cd-icon-close.svg") no-repeat center center;
+  background: url("../images/cd-icon-close.svg") no-repeat center center;
   -webkit-transform: scale(0) translateZ(0);
   -moz-transform: scale(0) translateZ(0);
   -ms-transform: scale(0) translateZ(0);
@@ -210,9 +210,9 @@
   transform: translateX(-50%);
   height: 80px;
   width: 80px;
-  border-radius: 50%;
+  /*border-radius: 50%;*/
   background-color: #77BFA3;
-  background-image: url("../img/cd-category-icons.svg");
+  background-image: url("../images/enter.svg"), url("../images/share.svg"), url("../images/download.svg"), url("../images/copy.svg"), url("../images/cut.svg"), url("../images/remove.svg");
   background-repeat: no-repeat;
   background-position: 0 0;
 }
