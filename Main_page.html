@@ -22,8 +22,12 @@
             <button class="logbtn" id='Bpage'>Go up one directory</button><br>
             <button class="logbtn" id='Nfolder'>New Folder</button><br>
             <button class="logbtn" id='GroupManage'>Group Management</button><br>
+            <form>
+                <p>Your Document <input id="file" name="file" type="file" /></p>
+                <p><button id="Uload" class="logbtn">Upload</button></p>
+            </form>
             <div class="dropdown">
-                <button onclick="Menu()" class="dropbtn">Menu</button>
+                <button onclick="Menu()" class="logbtn">Menu</button>
                     <div id="myDropdown" class="dropdown-content">
                     <a href="/registraion.html">Log out</a>
                     <!-- <a href="#0" onclick="upload()">Upload your file</a> -->
@@ -31,10 +35,6 @@
                     <a href="#Paste" onclick="Copyfile()">Paste</a>
                     </div>
             </div>
-            <form>
-                <p>Your Document <input id="file" name="file" type="file" /></p>
-                <p><button id="Uload" type="button">Upload</button></p>
-            </form>
         </div>
         <div class="rightbox">
             <p id='Path'></p>
