@@ -38,7 +38,7 @@
 
 <!--Display the files-->
 <script>
-    refresh_token();
+    setInterval(refresh_token(),60000);
 	var token = localStorage.token;
 	var path = localStorage.path;
 	var auth = new URLSearchParams();
@@ -75,7 +75,6 @@
                 + xhr.responseText);
         }
     });
-    setInterval(refresh_token(),60000);
 
 </script>
 
