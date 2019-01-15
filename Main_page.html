@@ -24,14 +24,8 @@
             <button class="logbtn" id='GroupManage'>Group Management</button><br>
             <form>
                 <p>Your Document <input id="file" name="file" type="file" /></p>
-                <p><button id="Uload" type="button">Upload</button></p>
+                <p><button id="Uload" class="logbtn">Upload</button></p>
             </form>
-        </div>
-        <div class="rightbox">
-            <p id='Path'></p>
-            <ul id='file_list'>
-                <li>it should be different based on who the user is</li>
-            </ul>
             <div class="dropdown">
                 <button onclick="Menu()" class="dropbtn">Menu</button>
                     <div id="myDropdown" class="dropdown-content">
@@ -41,6 +35,12 @@
                     <a href="#Paste" onclick="Copyfile()">Paste</a>
                     </div>
             </div>
+        </div>
+        <div class="rightbox">
+            <p id='Path'></p>
+            <ul id='file_list'>
+                <li>it should be different based on who the user is</li>
+            </ul>
         </div>
     </div>
     <!-- 上传文件可以改为单独跳转html进行上传 -->
