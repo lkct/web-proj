@@ -51,8 +51,7 @@ function Display_the_files(files){
                     +'<li class="cut">Cut</li>'
 					+'</ul></nav>'
                     +'<a class="cd-close">Close modal</a></div>';
-            para.style.color='blue'
-            element.appendChild(para)
+            element.appendChild(para);
         }
         else {
             para.innerHTML = '<section class="cd-section" style="margin-top: 50px;">'
@@ -364,7 +363,7 @@ function upload(File){
         var beg = i * chuck;
         var end = beg + chuck;
         if (end > size)
-            end = size
+            end = size;
         reader.readAsArrayBuffer(file.slice(start, end));
     }
 
@@ -388,7 +387,7 @@ function upload(File){
         processData: false,
         contentType: false,
         success: function (response) {
-            var json = JSON.parse(response)
+            var json = JSON.parse(response);
             need_upload = !json.exist;
         },
         error: function (xhr) {
@@ -405,7 +404,7 @@ function upload(File){
             var beg = i * chuck;
             var end = beg + chuck;
             if (end > size)
-                end = size
+                end = size;
             var slice = file.slice(beg, end);
 
             var formData = new FormData();
@@ -423,7 +422,7 @@ function upload(File){
                 processData: false,
                 contentType: false,
                 success: function (response) {
-                    var json = JSON.parse(response)
+                    var json = JSON.parse(response);
                     md5list[json.no] = json.md5;
                     // proc += 100 / nchunk;
                     // $("#proc")[0].innerHTML = "process: " + proc.toFixed(0) + "%";
