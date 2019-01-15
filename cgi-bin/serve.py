@@ -122,17 +122,17 @@ try:
     db.close()
 except Exception, e:
     try:
-        with open(log_file, 'w', 664) as f:
-            f.write(str(datetime.datetime.now()))
-            f.write('\n')
-            f.write(traceback.format_exc())
-            f.write('\n')
-            f.write(str(form))
-
         db.rollback()
         db.close()
     except Exception, ee:
         pass
+    
+    with open(log_file, 'w', 664) as f:
+        f.write(str(datetime.datetime.now()))
+        f.write('\n')
+        f.write(traceback.format_exc())
+        f.write('\n')
+        f.write(str(form))
 
     stat = 400
     msg = {'errno': -1, 'errmsg': 'Error occured, check server log for details'}
