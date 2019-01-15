@@ -23,8 +23,13 @@ function Download(path, filename){
             window.open("/download.py?dl_token="+json.token);
         },
         error: function (xhr) {
-            alert(xhr.status + " " + xhr.statusText + "\n"
-                + xhr.responseText);
+            var json = xhr.responseText;
+            if(json.errno==2){
+                alert("Access denied!");
+                window.location.href = "/registraion.html";
+            }
+            else if(json.errno==3)
+                alert("Access denied!");
         }
     });
 }
@@ -218,7 +223,11 @@ function Delete_file(Path, Filename){
         },
         error: function (xhr) {
             var json = xhr.responseText;
-            if(json.errno==3)
+            if(json.errno==2){
+                alert("Access denied!");
+                window.location.href = "/registraion.html";
+            }
+            else if(json.errno==3)
                 alert("Access denied!");
         }
     });
@@ -244,7 +253,12 @@ function Makedir(Path, Dirname){
             window.location.href = window.location.href;
         },
         error: function (xhr) {
-            if(json.errno==3)
+            var json = xhr.responseText;
+            if(json.errno==2){
+                alert("Access denied!");
+                window.location.href = "/registraion.html";
+            }
+            else if(json.errno==3)
                 alert("Access denied!");
             else if(json.errno==7)
                 alert("Dirname should not be the same as any exist File or Dir!");
@@ -306,14 +320,16 @@ function Copyfile(to_path=localStorage.path){
         processData: false,
         contentType: false,
         success: function (response) {
-            if(errno==1)
-                alert("Failed");
-            else
-                window.location.href = window.location.href;
+            window.location.href = window.location.href;
         },
         error: function (xhr) {
-            alert(xhr.status + " " + xhr.statusText + "\n"
-                + xhr.responseText);
+            var json = xhr.responseText;
+            if(json.errno==2){
+                alert("Access denied!");
+                window.location.href = "/registraion.html";
+            }
+            else if(json.errno==3)
+                alert("Access denied!");
         }
     });
     
@@ -391,7 +407,14 @@ function upload(File){
             need_upload = !json.exist;
         },
         error: function (xhr) {
-            alert("Duplicate filename! Please rename your file before upload!");
+            var json = xhr.responseText;
+            if(json.errno==7){
+                alert("Duplicate filename! Please rename your file before upload!");
+            }
+            else{
+                alert("Access denied!");
+                window.location.href = "/registraion.html";
+            }            
             // TODO: filename duplicate will give stat=400 error
         }
     });
@@ -427,7 +450,10 @@ function upload(File){
                     // proc += 100 / nchunk;
                     // $("#proc")[0].innerHTML = "process: " + proc.toFixed(0) + "%";
                 }
-                // TODO: error handler, but error should not occur
+                error: function (xhr) {
+                    alert("Access denied!");
+                    window.location.href = "/registraion.html";
+                }
             });
         }
     }
@@ -469,7 +495,10 @@ function upload(File){
                 // TODO: upload complete
                 alert("Upload finished!");
             },
-            // TODO: error handler, but error should not occur
+            error: function (xhr) {
+                alert("Access denied!");
+                window.location.href = "/registraion.html";
+            }
         });
     });
 }
