@@ -6,15 +6,15 @@
 	<title>File manager</title>
 	<script src="/jquery-3.3.1.min.js"></script>
 	<script src="/spark-md5.min.js"></script>
-    <script src="./Main_action.js"></script>
-    <link rel="stylesheet" href="css/bootstrap.min.css"> <!-- https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css -->
-    <link rel="stylesheet" href="css/style.css"> <!-- Resource style -->
-    <link rel="stylesheet" href="css/main.css"> <!-- Resource style -->
+    <script src="/Main_action.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"> <!-- https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css -->
+    <link rel="stylesheet" href="/css/style.css"> <!-- Resource style -->
+    <link rel="stylesheet" href="/css/main.css"> <!-- Resource style -->
     <title>File Manager</title>
 </head>
 <body>
     <div class="logbody2">
-        <img src="./files.jpg" width="400" height="400" align="top"> 
+        <img src="/files.jpg" width="400" height="400" align="top"> 
     </div>
     <div class = "container">
         <div class="leftbox">
@@ -63,7 +63,7 @@
     // Request for contents
     $.ajax({
         async: false,
-        url: "./cgi-bin/serve.py", 
+        url: "/cgi-bin/serve.py", 
         type: "POST",
         data: formData,
         processData: false,
@@ -103,7 +103,7 @@
 		Makedir(localStorage.path, dir_name);
 	});
 	$("#GroupManage").unbind('click').bind('click', function(){
-		window.location.href="./Group_page.html";
+		window.location.href="/Group_page.html";
 	});
     $("#Path")[0].innerHTML = "Your directory: "+localStorage.path;
 

@@ -277,7 +277,7 @@ function refresh_token(){
     formData.append("params", params);
     $.ajax({
         async: false,
-        url: "./cgi-bin/serve.py", 
+        url: "/cgi-bin/serve.py", 
         type: "POST",
         data: formData,
         processData: false,
