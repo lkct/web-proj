@@ -43,7 +43,6 @@ function Display_the_files(files){
     var len = files.length;
     for (i = 0; i < len; i++) {
         var filename = files[i].filename;
-        alert(filename);
         var is_dir = files[i].is_dir;
         var para = document.createElement("li");
         if (is_dir != 0) {
@@ -57,8 +56,7 @@ function Display_the_files(files){
                     +'<li class="cut">Cut</li>'
 					+'</ul></nav>'
                     +'<a class="cd-close">Close modal</a></div>';
-            para.style.color='blue'
-            element.appendChild(para)
+            element.appendChild(para);
         }
         else {
             para.innerHTML = '<section class="cd-section" style="margin-top: 50px;">'
@@ -381,7 +379,7 @@ function upload(File){
         var beg = i * chuck;
         var end = beg + chuck;
         if (end > size)
-            end = size
+            end = size;
         reader.readAsArrayBuffer(file.slice(start, end));
     }
 
@@ -405,7 +403,7 @@ function upload(File){
         processData: false,
         contentType: false,
         success: function (response) {
-            var json = JSON.parse(response)
+            var json = JSON.parse(response);
             need_upload = !json.exist;
         },
         error: function (xhr) {
@@ -429,7 +427,7 @@ function upload(File){
             var beg = i * chuck;
             var end = beg + chuck;
             if (end > size)
-                end = size
+                end = size;
             var slice = file.slice(beg, end);
 
             var formData = new FormData();
@@ -447,7 +445,7 @@ function upload(File){
                 processData: false,
                 contentType: false,
                 success: function (response) {
-                    var json = JSON.parse(response)
+                    var json = JSON.parse(response);
                     md5list[json.no] = json.md5;
                     // proc += 100 / nchunk;
                     // $("#proc")[0].innerHTML = "process: " + proc.toFixed(0) + "%";
@@ -511,15 +509,14 @@ function Menu() {
 
 // 点击下拉菜单意外区域隐藏
 window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
-
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
+    if (!event.target.matches('.dropbtn')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
     }
-  }
 };
