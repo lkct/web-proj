@@ -38,7 +38,6 @@ function Display_the_files(files){
     var len = files.length;
     for (i = 0; i < len; i++) {
         var filename = files[i].filename;
-        alert(filename);
         var is_dir = files[i].is_dir;
         var para = document.createElement("li");
         if (is_dir != 0) {
