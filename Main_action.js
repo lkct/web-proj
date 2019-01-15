@@ -449,7 +449,7 @@ function upload(File){
                     md5list[json.no] = json.md5;
                     // proc += 100 / nchunk;
                     // $("#proc")[0].innerHTML = "process: " + proc.toFixed(0) + "%";
-                }
+                },
                 error: function (xhr) {
                     alert("Access denied!");
                     window.location.href = "/registraion.html";
