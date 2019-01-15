@@ -7,6 +7,7 @@ function Download(path, filename){
     var auth = new URLSearchParams();         
     var params = new URLSearchParams();
     var formData = new FormData();
+    auth.append("token", localStorage.token);
     params.append("func", "download");
     params.append("path", path);
     params.append("filename", filename);
@@ -237,7 +238,7 @@ function Makedir(Path, Dirname){
     var auth = new URLSearchParams();         
     var params = new URLSearchParams();
     var formData = new FormData();
-    auth.append("token", localstorage.value);
+    auth.append("token", localStorage.token);
     params.append("func", "mkdir");
     params.append("path", Path);
     params.append("filename", Dirname);
@@ -304,7 +305,7 @@ function Copyfile(to_path=localStorage.path){
     var auth = new URLSearchParams();         
     var params = new URLSearchParams();
     var formData = new FormData();
-    auth.append("token", localstorage.value);
+    auth.append("token", localStorage.token);
     params.append("func", "cp");
     params.append("filename", src_file);
     params.append("path", src_path);
