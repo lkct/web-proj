@@ -351,8 +351,8 @@ function share(filename) {
 
 // 上传文件，还有不少需要完善
 function upload(File, Proc){
-    var token = localStorage.token; // TODO:
-    var path = localStorage.path; // TODO:
+    var token = localStorage.token;
+    var path = localStorage.path;
     var file = $("#file")[0].files[0];
     var filename = file.name;
     var size = file.size;
@@ -379,7 +379,7 @@ function upload(File, Proc){
         reader.readAsArrayBuffer(file.slice(start, end));
     }
 
-    var md5 = spark.end(); // TODO: md5 calc
+    var md5 = spark.end();
 
     var formData = new FormData();
     var auth = new URLSearchParams();
