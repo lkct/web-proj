@@ -15,6 +15,7 @@
 	<button type='button' id='Bpage'>Go up one directory</button><br>
 	<button type='button' id='Nfolder'>New Folder</button><br>
 	<button type='button' id='GroupManage'>Group Management</button><br>
+	<p id='Path'></p>
     <ul id='file_list'>
         <li>it should be different based on who the user is</li>
     </ul>
@@ -25,7 +26,7 @@
         <p><button id="Uload" type="button">Upload</button></p>
     </form>
     <div class="dropdown">
-        <button onclick="myFunction()" class="dropbtn">Menu</button>
+        <button onclick="Menu()" class="dropbtn">Menu</button>
           <div id="myDropdown" class="dropdown-content">
             <a href="/registraion.html">Log out</a>
             <!-- <a href="#0" onclick="upload()">Upload your file</a> -->
@@ -37,7 +38,7 @@
 
 <!--Display the files-->
 <script>
-    refresh_token()
+    setInterval(refresh_token(),60000);
 	var token = localStorage.token;
 	var path = localStorage.path;
 	var auth = new URLSearchParams();
@@ -60,21 +61,13 @@
         success: function (response) {
             var json = JSON.parse(response);
             var files = JSON.parse(json.list);
-            if(json.errno==1){
-                // Todo: Jump to Registraion
-                alert("An error occurs! Please login again!");
-                window.location.href = "/registraion.html";
-            }
-            else {
-                Display_the_files(files);
-            }                              
+            Display_the_files(files);                             
         },
         error: function (xhr) {
-            alert(xhr.status + " " + xhr.statusText + "\n"
-                + xhr.responseText);
+            alert("An error occurs! Please login again!");
+            window.location.href = "/registraion.html";
         }
     });
-    setInterval(refresh_token(),60000)
 
 </script>
 
@@ -84,7 +77,7 @@
 		Download();
 	});
 	$("#Uload").click(function(){
-		upload($("#file"),$("#proc"));
+		upload($("#file")[0].files[0]);
 	});
 	$("#Bpage").click(function(){
         localStorage.path = localStorage.path.substring(0, localStorage.path.lastIndexOf('/'));
@@ -102,6 +95,8 @@
 	$("#GroupManage").click(function(){
 		window.location.href="./Group_page.html";
 	});
+	$("#Path").document.write("Your directory: "+localStorage.path);
+
 </script>
 
 </html>
