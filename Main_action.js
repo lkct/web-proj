@@ -277,7 +277,7 @@ function refresh_token(){
             if(json.errno==1){
                 // Todo: Jump to Registraion
                 alert("An error occurs! Please login again!");
-                window.location.href = "/registraion.html";
+                window.location.href = "/registration.html";
             }
             else {
                 localStorage.token = json.token;
