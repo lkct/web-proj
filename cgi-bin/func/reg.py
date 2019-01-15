@@ -21,7 +21,7 @@ def reg(form, params, cursor):
     user = auth['user']
     passwd = auth['passwd']
 
-    if string.lower(group) == 'root':
+    if string.lower(user) == 'root':
         return {'errno': 4, 'errmsg': 'Register name ROOT not allowed'}
 
     sql = 'SELECT * FROM users WHERE user_name="%s"' % (user)
