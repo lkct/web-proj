@@ -95,8 +95,7 @@
 	$("#GroupManage").click(function(){
 		window.location.href="./Group_page.html";
 	});
-    p = $("#Path");
-    p.document.write("Your directory: "+localStorage.path);
+    $("#Path")[0].innerHTML = "Your directory: "+localStorage.path;
 
 </script>
 
