@@ -86,7 +86,6 @@
   overflow: hidden;
   text-indent: 100%;
   white-space: nowrap;
-  background: url("../img/cd-icon-close.svg") no-repeat center center;
   -webkit-transform: scale(0) translateZ(0);
   -moz-transform: scale(0) translateZ(0);
   -ms-transform: scale(0) translateZ(0);
@@ -212,7 +211,6 @@
   width: 80px;
   border-radius: 50%;
   background-color: #77BFA3;
-  background-image: url("../img/cd-category-icons.svg");
   background-repeat: no-repeat;
   background-position: 0 0;
 }

@@ -23,8 +23,13 @@ function Download(path, filename){
             window.open("/download.py?dl_token="+json.token);
         },
         error: function (xhr) {
-            alert(xhr.status + " " + xhr.statusText + "\n"
-                + xhr.responseText);
+            var json = xhr.responseText;
+            if(json.errno==2){
+                alert("Access denied!");
+                window.location.href = "/registration.html";
+            }
+            else if(json.errno==3)
+                alert("Access denied!");
         }
     });
 }
@@ -38,7 +43,6 @@ function Display_the_files(files){
     var len = files.length;
     for (i = 0; i < len; i++) {
         var filename = files[i].filename;
-        alert(filename);
         var is_dir = files[i].is_dir;
         var para = document.createElement("li");
         if (is_dir != 0) {
@@ -52,8 +56,7 @@ function Display_the_files(files){
                     +'<li class="cut">Cut</li>'
 					+'</ul></nav>'
                     +'<a class="cd-close">Close modal</a></div>';
-            para.style.color='blue'
-            element.appendChild(para)
+            element.appendChild(para);
         }
         else {
             para.innerHTML = '<section class="cd-section" style="margin-top: 50px;">'
@@ -216,14 +219,16 @@ function Delete_file(Path, Filename){
         processData: false,
         contentType: false,
         success: function (response) {
-            if(errno==1)
-                alert("Failed");
-            else
-                window.location.href = window.location.href;
+            window.location.href = window.location.href;
         },
         error: function (xhr) {
-            alert(xhr.status + " " + xhr.statusText + "\n"
-                + xhr.responseText);
+            var json = xhr.responseText;
+            if(json.errno==2){
+                alert("Access denied!");
+                window.location.href = "/registration.html";
+            }
+            else if(json.errno==3)
+                alert("Access denied!");
         }
     });
 }
@@ -245,14 +250,18 @@ function Makedir(Path, Dirname){
         processData: false,
         contentType: false,
         success: function (response) {
-            if(errno==1)
-                alert("Failed");
-            else
-                window.location.href = window.location.href;
+            window.location.href = window.location.href;
         },
         error: function (xhr) {
-            alert(xhr.status + " " + xhr.statusText + "\n"
-                + xhr.responseText);
+            var json = xhr.responseText;
+            if(json.errno==2){
+                alert("Access denied!");
+                window.location.href = "/registration.html";
+            }
+            else if(json.errno==3)
+                alert("Access denied!");
+            else if(json.errno==7)
+                alert("Dirname should not be the same as any exist File or Dir!");
         }
     });
 }
@@ -274,18 +283,11 @@ function refresh_token(){
         contentType: false,
         success: function (response) {
             var json = JSON.parse(response);
-            if(json.errno==1){
-                // Todo: Jump to Registraion
-                alert("An error occurs! Please login again!");
-                window.location.href = "/registration.html";
-            }
-            else {
-                localStorage.token = json.token;
-            }                              
+            localStorage.token = json.token;
         },
         error: function (xhr) {
-            alert(xhr.status + " " + xhr.statusText + "\n"
-                + xhr.responseText);
+            alert("An error occurs! Please login again!");
+            window.location.href = "/registration.html";
         }
     });
 }
@@ -318,14 +320,16 @@ function Copyfile(to_path=localStorage.path){
         processData: false,
         contentType: false,
         success: function (response) {
-            if(errno==1)
-                alert("Failed");
-            else
-                window.location.href = window.location.href;
+            window.location.href = window.location.href;
         },
         error: function (xhr) {
-            alert(xhr.status + " " + xhr.statusText + "\n"
-                + xhr.responseText);
+            var json = xhr.responseText;
+            if(json.errno==2){
+                alert("Access denied!");
+                window.location.href = "/registration.html";
+            }
+            else if(json.errno==3)
+                alert("Access denied!");
         }
     });
     
@@ -350,10 +354,10 @@ function share(filename) {
 }
 
 // 上传文件，还有不少需要完善
-function upload(File, Proc){
+function upload(File){
     var token = localStorage.token;
     var path = localStorage.path;
-    var file = $("#file")[0].files[0];
+    var file = File;
     var filename = file.name;
     var size = file.size;
 
@@ -375,7 +379,7 @@ function upload(File, Proc){
         var beg = i * chuck;
         var end = beg + chuck;
         if (end > size)
-            end = size
+            end = size;
         reader.readAsArrayBuffer(file.slice(start, end));
     }
 
@@ -399,25 +403,31 @@ function upload(File, Proc){
         processData: false,
         contentType: false,
         success: function (response) {
-            var json = JSON.parse(response)
+            var json = JSON.parse(response);
             need_upload = !json.exist;
         },
         error: function (xhr) {
-            alert(xhr.status + " " + xhr.statusText + "\n"
-                + xhr.responseText);
+            var json = xhr.responseText;
+            if(json.errno==7){
+                alert("Duplicate filename! Please rename your file before upload!");
+            }
+            else{
+                alert("Access denied!");
+                window.location.href = "/registration.html";
+            }            
             // TODO: filename duplicate will give stat=400 error
         }
     });
 
     if (need_upload) {
-        var proc = 0;
-        $("#proc")[0].innerHTML = "process: " + proc.toFixed(0) + "%";
+        // var proc = 0;
+        // $("#proc")[0].innerHTML = "process: " + proc.toFixed(0) + "%";
 
         for (var i = 0; i < nchunk; i++) {
             var beg = i * chuck;
             var end = beg + chuck;
             if (end > size)
-                end = size
+                end = size;
             var slice = file.slice(beg, end);
 
             var formData = new FormData();
@@ -435,12 +445,15 @@ function upload(File, Proc){
                 processData: false,
                 contentType: false,
                 success: function (response) {
-                    var json = JSON.parse(response)
+                    var json = JSON.parse(response);
                     md5list[json.no] = json.md5;
-                    proc += 100 / nchunk;
-                    $("#proc")[0].innerHTML = "process: " + proc.toFixed(0) + "%";
+                    // proc += 100 / nchunk;
+                    // $("#proc")[0].innerHTML = "process: " + proc.toFixed(0) + "%";
+                },
+                error: function (xhr) {
+                    alert("Access denied!");
+                    window.location.href = "/registration.html";
                 }
-                // TODO: error handler, but error should not occur
             });
         }
     }
@@ -482,7 +495,10 @@ function upload(File, Proc){
                 // TODO: upload complete
                 alert("Upload finished!");
             },
-            // TODO: error handler, but error should not occur
+            error: function (xhr) {
+                alert("Access denied!");
+                window.location.href = "/registration.html";
+            }
         });
     });
 }
@@ -493,15 +509,14 @@ function Menu() {
 
 // 点击下拉菜单意外区域隐藏
 window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
-
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
+    if (!event.target.matches('.dropbtn')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
     }
-  }
 };

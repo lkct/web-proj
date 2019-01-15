@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>File manager</title>
 	<script src="/jquery-3.3.1.min.js"></script>
+	<script src="/spark-md5.min.js"></script>
     <script src="./Main_action.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css"> <!-- https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css -->
     <link rel="stylesheet" href="css/style.css"> <!-- Resource style -->
@@ -42,13 +43,12 @@
             </div>
         </div>
     </div>
-
     <!-- 上传文件可以改为单独跳转html进行上传 -->
 </body>
 
 <!--Display the files-->
 <script>
-    refresh_token();
+    setInterval(refresh_token(),60000);
 	var token = localStorage.token;
 	var path = localStorage.path;
 	var auth = new URLSearchParams();
@@ -71,31 +71,23 @@
         success: function (response) {
             var json = JSON.parse(response);
             var files = JSON.parse(json.list);
-            if(json.errno==1){
-                // Todo: Jump to Registraion
-                alert("An error occurs! Please login again!");
-                window.location.href = "/registration.html";
-            }
-            else {
-                Display_the_files(files);
-            }                              
+            Display_the_files(files);
         },
         error: function (xhr) {
-            alert(xhr.status + " " + xhr.statusText + "\n"
-                + xhr.responseText);
+            alert("An error occurs! Please login again!");
+            window.location.href = "/registration.html";
         }
     });
-    setInterval(refresh_token(),60000);
 
 </script>
 
 <!--The Buttons-->
 <script>
-	$("#Dload").click(function(){
-		Download();
-	});
+	// $("#Dload").click(function(){
+    //	Download();
+    // });
 	$("#Uload").click(function(){
-		upload($("#file"),$("#proc"));
+		upload($("#file")[0].files[0]);
 	});
 	$("#Bpage").click(function(){
         localStorage.path = localStorage.path.substring(0, localStorage.path.lastIndexOf('/'));
@@ -113,7 +105,7 @@
 	$("#GroupManage").click(function(){
 		window.location.href="./Group_page.html";
 	});
-	$("#Path").document.write("Your directory: "+localStorage.path);
+    $("#Path")[0].innerHTML = "Your directory: "+localStorage.path;
 
 </script>
 
