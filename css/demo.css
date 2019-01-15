@@ -6,8 +6,8 @@ a:hover{text-decoration:underline}
 a:focus {outline:none; -moz-outline:none;}
 ol,ul{list-style:none}
 table{border-collapse:collapse;border-spacing:0}
-html{background:url(../images/bg.png)}
-body{height:100%; font:"Microsoft Yahei", Tahoma, Helvetica, Arial, Verdana, "\5b8b\4f53", sans-serif; color:#51555C; background: url(../images/body_bg.gif) repeat-x}
+html{background:url(/images/bg.png)}
+body{height:100%; font:"Microsoft Yahei", Tahoma, Helvetica, Arial, Verdana, "\5b8b\4f53", sans-serif; color:#51555C; background: url(/images/body_bg.gif) repeat-x}
 img{border:none}
 
 header h1{ padding:10px 2px; line-height:16px; text-align:center; margin-top: 20px; margin-top: 20px}
