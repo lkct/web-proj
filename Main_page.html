@@ -11,7 +11,7 @@
     <title>File Manager</title>
 </head>
 <body>
-	<button type='button' id='Dload'>Download</button><br>
+    <!-- <button type='button' id='Dload'>Download</button><br> -->
 	<button type='button' id='Bpage'>Go up one directory</button><br>
 	<button type='button' id='Nfolder'>New Folder</button><br>
 	<button type='button' id='GroupManage'>Group Management</button><br>
@@ -73,9 +73,9 @@
 
 <!--The Buttons-->
 <script>
-	$("#Dload").click(function(){
-		Download();
-	});
+	// $("#Dload").click(function(){
+    //	Download();
+    // });
 	$("#Uload").click(function(){
 		upload($("#file")[0].files[0]);
 	});
@@ -95,7 +95,8 @@
 	$("#GroupManage").click(function(){
 		window.location.href="./Group_page.html";
 	});
-	$("#Path").document.write("Your directory: "+localStorage.path);
+    p = $("#Path");
+    p.document.write("Your directory: "+localStorage.path);
 
 </script>
 
