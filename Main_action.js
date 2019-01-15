@@ -26,7 +26,7 @@ function Download(path, filename){
             var json = xhr.responseText;
             if(json.errno==2){
                 alert("Access denied!");
-                window.location.href = "/registraion.html";
+                window.location.href = "/registration.html";
             }
             else if(json.errno==3)
                 alert("Access denied!");
@@ -227,7 +227,7 @@ function Delete_file(Path, Filename){
             var json = xhr.responseText;
             if(json.errno==2){
                 alert("Access denied!");
-                window.location.href = "/registraion.html";
+                window.location.href = "/registration.html";
             }
             else if(json.errno==3)
                 alert("Access denied!");
@@ -258,7 +258,7 @@ function Makedir(Path, Dirname){
             var json = xhr.responseText;
             if(json.errno==2){
                 alert("Access denied!");
-                window.location.href = "/registraion.html";
+                window.location.href = "/registration.html";
             }
             else if(json.errno==3)
                 alert("Access denied!");
@@ -289,7 +289,7 @@ function refresh_token(){
         },
         error: function (xhr) {
             alert("An error occurs! Please login again!");
-            window.location.href = "/registraion.html";
+            window.location.href = "/registration.html";
         }
     });
 }
@@ -328,7 +328,7 @@ function Copyfile(to_path=localStorage.path){
             var json = xhr.responseText;
             if(json.errno==2){
                 alert("Access denied!");
-                window.location.href = "/registraion.html";
+                window.location.href = "/registration.html";
             }
             else if(json.errno==3)
                 alert("Access denied!");
@@ -415,7 +415,7 @@ function upload(File){
             }
             else{
                 alert("Access denied!");
-                window.location.href = "/registraion.html";
+                window.location.href = "/registration.html";
             }            
             // TODO: filename duplicate will give stat=400 error
         }
@@ -499,7 +499,7 @@ function upload(File){
             },
             error: function (xhr) {
                 alert("Access denied!");
-                window.location.href = "/registraion.html";
+                window.location.href = "/registration.html";
             }
         });
     });
