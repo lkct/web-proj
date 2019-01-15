@@ -7,6 +7,7 @@ function Download(path, filename){
     var auth = new URLSearchParams();         
     var params = new URLSearchParams();
     var formData = new FormData();
+    auth.append("token", localStorage.token);
     params.append("func", "download");
     params.append("path", path);
     params.append("filename", filename);
@@ -26,7 +27,7 @@ function Download(path, filename){
             var json = xhr.responseText;
             if(json.errno==2){
                 alert("Access denied!");
-                window.location.href = "/registraion.html";
+                window.location.href = "/registration.html";
             }
             else if(json.errno==3)
                 alert("Access denied!");
@@ -43,12 +44,11 @@ function Display_the_files(files){
     var len = files.length;
     for (i = 0; i < len; i++) {
         var filename = files[i].filename;
-        alert(filename);
         var is_dir = files[i].is_dir;
         var para = document.createElement("li");
         if (is_dir != 0) {
             para.innerHTML = '<section class="cd-section" style="margin-top: 50px;">'
-					+'<button class="cd-bouncy-nav-trigger" type="button" onclick="pasd("'+filename+'")">'+filename + '</button></section>'
+					+'<button class="cd-bouncy-nav-trigger" type="button" onclick="pasd(\''+filenam+'\')">'+filename + '</button></section>'
 					+'<div class="cd-bouncy-nav-modal">'
 					+'<nav><ul class="cd-bouncy-nav">'
                     +'<li class="share">Share</li>'
@@ -57,12 +57,11 @@ function Display_the_files(files){
                     +'<li class="cut">Cut</li>'
 					+'</ul></nav>'
                     +'<a class="cd-close">Close modal</a></div>';
-            para.style.color='blue'
-            element.appendChild(para)
+            element.appendChild(para);
         }
         else {
             para.innerHTML = '<section class="cd-section" style="margin-top: 50px;">'
-					+'<button class="cd-bouncy-nav-trigger" type="button" onclick="pasf("'+filename+'")">'+filename + '</button></section>'
+					+'<button class="cd-bouncy-nav-trigger" type="button" onclick="pasf(\''+filename+'\')">'+filename + '</button></section>'
 					+'<div class="cd-bouncy-nav-modal">'
 					+'<nav><ul class="cd-bouncy-nav">'
                     +'<li class="share">Share</li>'
@@ -227,7 +226,7 @@ function Delete_file(Path, Filename){
             var json = xhr.responseText;
             if(json.errno==2){
                 alert("Access denied!");
-                window.location.href = "/registraion.html";
+                window.location.href = "/registration.html";
             }
             else if(json.errno==3)
                 alert("Access denied!");
@@ -239,7 +238,7 @@ function Makedir(Path, Dirname){
     var auth = new URLSearchParams();         
     var params = new URLSearchParams();
     var formData = new FormData();
-    auth.append("token", localstorage.value);
+    auth.append("token", localStorage.token);
     params.append("func", "mkdir");
     params.append("path", Path);
     params.append("filename", Dirname);
@@ -258,7 +257,7 @@ function Makedir(Path, Dirname){
             var json = xhr.responseText;
             if(json.errno==2){
                 alert("Access denied!");
-                window.location.href = "/registraion.html";
+                window.location.href = "/registration.html";
             }
             else if(json.errno==3)
                 alert("Access denied!");
@@ -285,11 +284,11 @@ function refresh_token(){
         contentType: false,
         success: function (response) {
             var json = JSON.parse(response);
-            localStorage.token = json.token;                             
+            localStorage.token = json.token;
         },
         error: function (xhr) {
             alert("An error occurs! Please login again!");
-            window.location.href = "/registraion.html";
+            window.location.href = "/registration.html";
         }
     });
 }
@@ -306,7 +305,7 @@ function Copyfile(to_path=localStorage.path){
     var auth = new URLSearchParams();         
     var params = new URLSearchParams();
     var formData = new FormData();
-    auth.append("token", localstorage.value);
+    auth.append("token", localStorage.token);
     params.append("func", "cp");
     params.append("filename", src_file);
     params.append("path", src_path);
@@ -328,7 +327,7 @@ function Copyfile(to_path=localStorage.path){
             var json = xhr.responseText;
             if(json.errno==2){
                 alert("Access denied!");
-                window.location.href = "/registraion.html";
+                window.location.href = "/registration.html";
             }
             else if(json.errno==3)
                 alert("Access denied!");
@@ -381,7 +380,7 @@ function upload(File){
         var beg = i * chuck;
         var end = beg + chuck;
         if (end > size)
-            end = size
+            end = size;
         reader.readAsArrayBuffer(file.slice(start, end));
     }
 
@@ -405,7 +404,7 @@ function upload(File){
         processData: false,
         contentType: false,
         success: function (response) {
-            var json = JSON.parse(response)
+            var json = JSON.parse(response);
             need_upload = !json.exist;
         },
         error: function (xhr) {
@@ -415,7 +414,7 @@ function upload(File){
             }
             else{
                 alert("Access denied!");
-                window.location.href = "/registraion.html";
+                window.location.href = "/registration.html";
             }            
             // TODO: filename duplicate will give stat=400 error
         }
@@ -429,7 +428,7 @@ function upload(File){
             var beg = i * chuck;
             var end = beg + chuck;
             if (end > size)
-                end = size
+                end = size;
             var slice = file.slice(beg, end);
 
             var formData = new FormData();
@@ -447,14 +446,14 @@ function upload(File){
                 processData: false,
                 contentType: false,
                 success: function (response) {
-                    var json = JSON.parse(response)
+                    var json = JSON.parse(response);
                     md5list[json.no] = json.md5;
                     // proc += 100 / nchunk;
                     // $("#proc")[0].innerHTML = "process: " + proc.toFixed(0) + "%";
-                }
+                },
                 error: function (xhr) {
                     alert("Access denied!");
-                    window.location.href = "/registraion.html";
+                    window.location.href = "/registration.html";
                 }
             });
         }
@@ -499,7 +498,7 @@ function upload(File){
             },
             error: function (xhr) {
                 alert("Access denied!");
-                window.location.href = "/registraion.html";
+                window.location.href = "/registration.html";
             }
         });
     });
@@ -511,15 +510,14 @@ function Menu() {
 
 // 点击下拉菜单意外区域隐藏
 window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
-
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
+    if (!event.target.matches('.dropbtn')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
     }
-  }
 };
