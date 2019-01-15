@@ -452,7 +452,7 @@ function upload(File){
                 },
                 error: function (xhr) {
                     alert("Access denied!");
-                    window.location.href = "/registraion.html";
+                    window.location.href = "/registration.html";
                 }
             });
         }
