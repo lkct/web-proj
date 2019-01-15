@@ -9,32 +9,41 @@
     <script src="./Main_action.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css"> <!-- https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css -->
     <link rel="stylesheet" href="css/style.css"> <!-- Resource style -->
+    <link rel="stylesheet" href="css/main.css"> <!-- Resource style -->
     <title>File Manager</title>
 </head>
 <body>
-    <!-- <button type='button' id='Dload'>Download</button><br> -->
-	<button type='button' id='Bpage'>Go up one directory</button><br>
-	<button type='button' id='Nfolder'>New Folder</button><br>
-	<button type='button' id='GroupManage'>Group Management</button><br>
-	<p id='Path'></p>
-    <ul id='file_list'>
-        <li>it should be different based on who the user is</li>
-    </ul>
-
-    <!-- 上传文件可以改为单独跳转html进行上传 -->
-	<form>
-        <p>Your Document <input id="file" name="file" type="file" /></p>
-        <p><button id="Uload" type="button">Upload</button></p>
-    </form>
-    <div class="dropdown">
-        <button onclick="Menu()" class="dropbtn">Menu</button>
-          <div id="myDropdown" class="dropdown-content">
-            <a href="/registration.html">Log out</a>
-            <!-- <a href="#0" onclick="upload()">Upload your file</a> -->
-            <a href="/Main_page.html">Refresh</a>
-            <a href="#Paste" onclick="Copyfile()">Paste</a>
-          </div>
+    <div class="logbody2">
+        <img src="./files.jpg" width="400" height="400" align="top"> 
     </div>
+    <div class = "container">
+        <div class="leftbox">
+            <button class="logbtn" id='Dload'>Download</button><br>
+            <button class="logbtn" id='Bpage'>Go up one directory</button><br>
+            <button class="logbtn" id='Nfolder'>New Folder</button><br>
+            <button class="logbtn" id='GroupManage'>Group Management</button><br>
+            <form>
+                <p>Your Document <input id="file" name="file" type="file" /></p>
+                <p><button id="Uload" type="button">Upload</button></p>
+            </form>
+        </div>
+        <div class="rightbox">
+            <p id='Path'></p>
+            <ul id='file_list'>
+                <li>it should be different based on who the user is</li>
+            </ul>
+            <div class="dropdown">
+                <button onclick="Menu()" class="dropbtn">Menu</button>
+                    <div id="myDropdown" class="dropdown-content">
+                    <a href="/registraion.html">Log out</a>
+                    <!-- <a href="#0" onclick="upload()">Upload your file</a> -->
+                    <a href="/Main_page.html">Refresh</a>
+                    <a href="#Paste" onclick="Copyfile()">Paste</a>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <!-- 上传文件可以改为单独跳转html进行上传 -->
 </body>
 
 <!--Display the files-->
@@ -62,7 +71,7 @@
         success: function (response) {
             var json = JSON.parse(response);
             var files = JSON.parse(json.list);
-            Display_the_files(files);                             
+            Display_the_files(files);
         },
         error: function (xhr) {
             alert("An error occurs! Please login again!");

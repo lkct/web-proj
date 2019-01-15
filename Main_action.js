@@ -283,7 +283,7 @@ function refresh_token(){
         contentType: false,
         success: function (response) {
             var json = JSON.parse(response);
-            localStorage.token = json.token;                             
+            localStorage.token = json.token;
         },
         error: function (xhr) {
             alert("An error occurs! Please login again!");
