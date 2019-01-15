@@ -86,14 +86,14 @@
 	// $("#Dload").click(function(){
     //	Download();
     // });
-	$("#Uload").click(function(){
+	$("#Uload").unbind('click').bind('click', function(){
 		upload($("#file")[0].files[0]);
 	});
-	$("#Bpage").click(function(){
+	$("#Bpage").unbind('click').bind('click', function(){
         localStorage.path = localStorage.path.substring(0, localStorage.path.lastIndexOf('/'));
         window.location.href = window.location.href;
 	});
-	$("#Nfolder").click(function(){
+	$("#Nfolder").unbind('click').bind('click', function(){
         var dir_name = "";
         $(function() {
             dir_name = prompt("Please enter the directory name:")
@@ -102,7 +102,7 @@
         })
 		Makedir(localStorage.path, dir_name);
 	});
-	$("#GroupManage").click(function(){
+	$("#GroupManage").unbind('click').bind('click', function(){
 		window.location.href="/Group_page.html";
 	});
     $("#Path")[0].innerHTML = "Your directory: "+localStorage.path;
