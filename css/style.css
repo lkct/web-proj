@@ -270,7 +270,7 @@ height: 80px;
 width: 80px;
 /*border-radius: 50%;*/
 background-color: #77BFA3;
-background-image: url("/../images/enter.svg"), url("/../images/share.svg"), url("/../images/download.svg"), url("/../images/copy.svg"), url("/../images/cut.svg"), url("/../images/remove.svg");
+background-image: url("/../images/share.svg"), url("/../images/cut.svg"), url("/../images/copy.svg"), url("/../images/enter.svg"), url("/../images/download.svg"), url("/../images/remove.svg");
 background-repeat: no-repeat;
 background-position: 0 0;
 }
