@@ -4,6 +4,7 @@ import sys
 
 from mysql import rm_r
 
+
 def rm(form, params, cursor):
     """
     params:

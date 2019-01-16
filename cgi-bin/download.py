@@ -32,11 +32,13 @@ try:
                 headers[key[5:]] = dl_msg['file_srv']
             else:
                 headers[key[5:]] = os.environ[key]
-    
+
     chunk_size = 1000000
-    r = requests.request(os.environ['REQUEST_METHOD'], url, headers=headers, stream=True)
+    r = requests.request(
+        os.environ['REQUEST_METHOD'], url, headers=headers, stream=True)
     print 'Status: %d' % r.status_code
-    print 'Content-Disposition: attachment; filename="%s"' % (dl_msg['filename'])
+    print 'Content-Disposition: attachment; filename="%s"' % (
+        dl_msg['filename'])
     for key in r.headers.keys():
         print '%s: %s' % (key, r.headers[key])
     print ''

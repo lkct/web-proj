@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>File Manager</title>
@@ -8,10 +9,12 @@
     <link rel="stylesheet" href="/css/demo.css">
     <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
     <div class="container">
         <header style="color:#F0F8FF;">
-            <br><h1>Simple File Manager</h1>
+            <br>
+            <h1>Simple File Manager</h1>
         </header>
         <div id="LoggingInput" class="logbody">
             Username: <input type="text" id="username"><br>
@@ -26,12 +29,12 @@
             </div>
         </footer>
     </div>
-    
+
 </body>
 <script>
     // Login
     $(document).ready(() => {
-        $("#loginBtn").on("click", function(){
+        $("#loginBtn").on("click", function () {
             var name = $("#username").val();
             var value = Encrypt($("#password").val());
 
@@ -39,14 +42,14 @@
             var params = new URLSearchParams();
             var formData = new FormData();
             auth.append("user", name);
-            auth.append("passwd", value);            
+            auth.append("passwd", value);
             params.append("func", "login");
             formData.append("auth", auth);
             formData.append("params", params);
 
             // Login Request
             $.ajax({
-                url: "/cgi-bin/serve.py", 
+                url: "/cgi-bin/serve.py",
                 type: "POST",
                 data: formData,
                 processData: false,
@@ -54,12 +57,12 @@
                 success: function (response) {
                     var json = JSON.parse(response);
                     localStorage.token = json.token;
-                    localStorage.path = "/"+name;
-                    window.location.href="/Main_page.html";
+                    localStorage.path = "/" + name;
+                    window.location.href = "/Main_page.html";
                 },
                 error: function (xhr) {
                     var json = JSON.parse(xhr.responseText);
-                    if(json.errno==2){
+                    if (json.errno == 2) {
                         alert("The password does not match the username or the username does not exist!");
                     }
                 }
@@ -67,12 +70,12 @@
         });
 
         // Registration
-        $("#registBtn").on("click", function(){
+        $("#registBtn").on("click", function () {
             var name = $("#username").val();
-			
+
             var value = Encrypt($("#password").val());
 
-            var auth = new URLSearchParams();         
+            var auth = new URLSearchParams();
             var params = new URLSearchParams();
             var formData = new FormData();
             auth.append("user", name);
@@ -81,7 +84,7 @@
             formData.append("auth", auth);
             formData.append("params", params);
             $.ajax({
-                url: "/cgi-bin/serve.py", 
+                url: "/cgi-bin/serve.py",
                 type: "POST",
                 data: formData,
                 processData: false,
@@ -91,20 +94,20 @@
                 },
                 error: function (xhr) {
                     var json = JSON.parse(xhr.responseText);
-                    if(json.errno==4)
+                    if (json.errno == 4)
                         alert("Name 'Root' is reserved for super account! Please choose another one!");
-                    else if(json.errno==8)
+                    else if (json.errno == 8)
                         alert('Oops! The username has already been used!');
                 }
             });
         });
     });
 
-    function Encrypt(passwd){
+    function Encrypt(passwd) {
         var key = "";
         $.ajax({
             async: false,
-            url: "/public.key", 
+            url: "/public.key",
             type: "GET",
             success: function (response) {
                 key = response;
@@ -120,4 +123,5 @@
         return res;
     }
 </script>
+
 </html>

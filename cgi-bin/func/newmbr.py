@@ -4,6 +4,7 @@ import sys
 
 from mysql import mysql
 
+
 def newmbr(form, params, cursor):
     """
     params:
@@ -20,7 +21,8 @@ def newmbr(form, params, cursor):
     if len(result) == 0:
         return {'errno': 6, 'errmsg': 'User not exist'}
 
-    sql = 'SELECT * FROM belongs WHERE group_name="%s" AND user_name="%s"' % (group, user2)
+    sql = 'SELECT * FROM belongs WHERE group_name="%s" AND user_name="%s"' % (
+        group, user2)
     result = mysql(sql, cursor)
     if len(result) > 0:
         return {'errno': 0}
