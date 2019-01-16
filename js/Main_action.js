@@ -105,7 +105,8 @@ function pasd(dname){
             // waiting for the"paste" to call the Copy function
         });
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .enter').unbind('click').bind('click', function(){
-            localStorage.path = localStorage.path + '/' + dname;
+            if (localStorage.path != '/') localStorage.path = localStorage.path + '/' + dname;
+            else localStorage.path = '/' + dname;
             window.location.href = window.location.href;
         });
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .share').unbind('click').bind('click', function(){
