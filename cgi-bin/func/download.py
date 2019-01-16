@@ -21,7 +21,8 @@ def download(form, params, cursor):
     fn = params['filename']
     fpath = params['path']
 
-    sql = 'SELECT * FROM file_list WHERE path="%s" AND filename="%s"' % (fpath, fn)
+    sql = 'SELECT * FROM file_list WHERE path="%s" AND filename="%s"' % (
+        fpath, fn)
     result = mysql(sql, cursor)
     md5 = result[0]['md5']
     sql = 'SELECT * FROM md5_list WHERE md5="%s"' % (md5)

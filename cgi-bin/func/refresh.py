@@ -4,6 +4,7 @@ import sys
 
 from token import generate
 
+
 def refresh(form, params, cursor):
     """
     params:

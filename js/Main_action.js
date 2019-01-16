@@ -3,8 +3,8 @@
 */
 
 // 下载文件
-function Download(path, filename){
-    var auth = new URLSearchParams();         
+function Download(path, filename) {
+    var auth = new URLSearchParams();
     var params = new URLSearchParams();
     var formData = new FormData();
     auth.append("token", localStorage.token);
@@ -15,30 +15,30 @@ function Download(path, filename){
     formData.append("params", params);
     $.ajax({
         async: false,
-        url: "/cgi-bin/serve.py", 
+        url: "/cgi-bin/serve.py",
         type: "POST",
         data: formData,
         processData: false,
         contentType: false,
         success: function (response) {
             var json = JSON.parse(response);
-            window.open("/download.py?dl_token="+json.token);
+            window.open("/cgi-bin/download.py?dl_token=" + json.dl_token);
         },
         error: function (xhr) {
-            var json = xhr.responseText;
-            if(json.errno==2){
+            var json = JSON.parse(xhr.responseText);
+            if (json.errno == 2) {
                 alert("Access denied!");
                 window.location.href = "/registration.html";
             }
-            else if(json.errno==3)
+            else if (json.errno == 3)
                 alert("Access denied!");
         }
     });
 }
 
-function Display_the_files(files){
+function Display_the_files(files) {
     var element = document.getElementById("file_list");
-    while(element.hasChildNodes()) {
+    while (element.hasChildNodes()) {
         element.removeChild(element.firstChild);
     }
     var i;
@@ -49,166 +49,166 @@ function Display_the_files(files){
         var para = document.createElement("li");
         if (is_dir != 0) {
             para.innerHTML = '<section class="cd-section" style="margin-top: 50px;">'
-                    +'<button class="cd-bouncy-nav-trigger" type="button" id="'+filename+'"'
-                    +'onclick="pasd(\''+filename+'\')">'+filename + '</button></section>'
-					+'<div class="cd-bouncy-nav-modal-d">'
-					+'<nav><ul class="cd-bouncy-nav">'
-                    +'<li class="share">Share</li>'
-                    +'<li class="cut">Cut</li>'
-					+'<li class="copy">Copy</li>'
-                    +'<li class="enter">Enter</li>'
-					+'</ul></nav>'
-                    +'<a class="cd-close">Close modal</a></div>';
+                +'<button class="cd-bouncy-nav-trigger" type="button" id="'+filename+'"'
+                +'onclick="pasd(\''+filename+'\')">'+filename + '</button></section>'
+					      +'<div class="cd-bouncy-nav-modal-d">'
+					      +'<nav><ul class="cd-bouncy-nav">'
+                +'<li class="share">Share</li>'
+                +'<li class="cut">Cut</li>'
+					      +'<li class="copy">Copy</li>'
+                +'<li class="enter">Enter</li>'
+					      +'</ul></nav>'
+                +'<a class="cd-close">Close modal</a></div>';
             element.appendChild(para);
         }
         else {
             para.innerHTML = '<section class="cd-section" style="margin-top: 50px;">'
-                    +'<button class="cd-bouncy-nav-trigger" type="button" id="'+filename+'"'
-                    +'onclick="pasf(\''+filename+'\')">'+filename + '</button></section>'
-					+'<div class="cd-bouncy-nav-modal-f">'
-					+'<nav><ul class="cd-bouncy-nav">'
-                    +'<li class="share">Share</li>'
-                    +'<li class="cut">Cut</li>'
-					+'<li class="copy">Copy</li>'
-					+'<li class="down">Download</li>'
-					+'<li class="delete">Delete</li>'
-					+'</ul></nav>'
-					+'<a class="cd-close">Close modal</a></div>';
+                +'<button class="cd-bouncy-nav-trigger" type="button" id="'+filename+'"'
+                +'onclick="pasf(\''+filename+'\')">'+filename + '</button></section>'
+					      +'<div class="cd-bouncy-nav-modal-f">'
+					      +'<nav><ul class="cd-bouncy-nav">'
+                +'<li class="share">Share</li>'
+                +'<li class="cut">Cut</li>'
+					      +'<li class="copy">Copy</li>'
+					      +'<li class="down">Download</li>'
+					      +'<li class="delete">Delete</li>'
+					      +'</ul></nav>'
+					      +'<a class="cd-close">Close modal</a></div>';
             element.appendChild(para);
         }
     }
 }
 
-function pasd(dname){
-	jQuery(document).ready(function($){
-		var is_bouncy_nav_animating = false;
-		//open bouncy navigation
-		$('.cd-bouncy-nav-trigger').unbind('click').bind('click', function(){
-			triggerBouncyNav(true);
-		});
-		//close bouncy navigation
-		$('.cd-bouncy-nav-modal-d .cd-close').unbind('click').bind('click', function(){
-			triggerBouncyNav(false);
+function pasd(dname) {
+    jQuery(document).ready(function ($) {
+        var is_bouncy_nav_animating = false;
+        //open bouncy navigation
+        $('.cd-bouncy-nav-trigger').unbind('click').bind('click', function () {
+            triggerBouncyNav(true);
         });
-        $('.cd-bouncy-nav-modal-d .cd-bouncy-nav .copy').unbind('click').bind('click', function(){
+        //close bouncy navigation
+        $('.cd-bouncy-nav-modal-d .cd-close').unbind('click').bind('click', function () {
+            triggerBouncyNav(false);
+        });
+        $('.cd-bouncy-nav-modal-d .cd-bouncy-nav .copy').unbind('click').bind('click', function () {
             localStorage.src_path = localStorage.path;
             localStorage.src_file = dname;
             localStorage.mvpara = 'cp';
             triggerBouncyNav(false);
             // waiting for the"paste" to call the Copy function
         });
-        $('.cd-bouncy-nav-modal-d .cd-bouncy-nav .cut').unbind('click').bind('click', function(){
+        $('.cd-bouncy-nav-modal-d .cd-bouncy-nav .cut').unbind('click').bind('click', function () {
             localStorage.src_path = localStorage.path;
             localStorage.src_file = dname;
             localStorage.mvpara = 'mv';
             triggerBouncyNav(false);
             // waiting for the"paste" to call the Copy function
         });
-        $('.cd-bouncy-nav-modal-d .cd-bouncy-nav .enter').unbind('click').bind('click', function(){
+        $('.cd-bouncy-nav-modal-d .cd-bouncy-nav .enter').unbind('click').bind('click', function () {
             if (localStorage.path != '/') localStorage.path = localStorage.path + '/' + dname;
             else localStorage.path = '/' + dname;
             window.location.href = window.location.href;
         });
-        $('.cd-bouncy-nav-modal-d .cd-bouncy-nav .share').unbind('click').bind('click', function(){
+        $('.cd-bouncy-nav-modal-d .cd-bouncy-nav .share').unbind('click').bind('click', function () {
             share(dname);
             triggerBouncyNav(false);
         });
-		$('.cd-bouncy-nav-modal-d').on('click', function(event){
-			if($(event.target).is('.cd-bouncy-nav-modal')) {
-				triggerBouncyNav(false);
-			}
-		});
+        $('.cd-bouncy-nav-modal-d').on('click', function (event) {
+            if ($(event.target).is('.cd-bouncy-nav-modal')) {
+                triggerBouncyNav(false);
+            }
+        });
 
-		function triggerBouncyNav($bool) {
-			//check if no nav animation is ongoing
-			if( !is_bouncy_nav_animating) {
-				is_bouncy_nav_animating = true;
-				
-				//toggle list items animation
-				$('.cd-bouncy-nav-modal-d').toggleClass('fade-in', $bool).toggleClass('fade-out', !$bool).find('li:last-child').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
-					$('.cd-bouncy-nav-modal-d').toggleClass('is-visible', $bool);
-					if(!$bool) $('.cd-bouncy-nav-modal-d').removeClass('fade-out');
-					is_bouncy_nav_animating = false;
-				});
-				
-				//check if CSS animations are supported... 
-				if($('.cd-bouncy-nav-trigger').parents('.no-csstransitions').length > 0 ) {
-					$('.cd-bouncy-nav-modal-d').toggleClass('is-visible', $bool);
-					is_bouncy_nav_animating = false;
-				}
-			}
-		}
-	});
+        function triggerBouncyNav($bool) {
+            //check if no nav animation is ongoing
+            if (!is_bouncy_nav_animating) {
+                is_bouncy_nav_animating = true;
+
+                //toggle list items animation
+                $('.cd-bouncy-nav-modal-d').toggleClass('fade-in', $bool).toggleClass('fade-out', !$bool).find('li:last-child').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function () {
+                    $('.cd-bouncy-nav-modal-d').toggleClass('is-visible', $bool);
+                    if (!$bool) $('.cd-bouncy-nav-modal-d').removeClass('fade-out');
+                    is_bouncy_nav_animating = false;
+                });
+
+                //check if CSS animations are supported... 
+                if ($('.cd-bouncy-nav-trigger').parents('.no-csstransitions').length > 0) {
+                    $('.cd-bouncy-nav-modal-d').toggleClass('is-visible', $bool);
+                    is_bouncy_nav_animating = false;
+                }
+            }
+        }
+    });
 }
 
-function pasf(fname){
-	jQuery(document).ready(function($){
-		var is_bouncy_nav_animating = false;
-		//open bouncy navigation
-		$('.cd-bouncy-nav-trigger').unbind('click').bind('click', function(){
-			triggerBouncyNav(true);
-		});
-		//close bouncy navigation
-		$('.cd-bouncy-nav-modal-f .cd-close').unbind('click').bind('click', function(){
-			triggerBouncyNav(false);
+function pasf(fname) {
+    jQuery(document).ready(function ($) {
+        var is_bouncy_nav_animating = false;
+        //open bouncy navigation
+        $('.cd-bouncy-nav-trigger').unbind('click').bind('click', function () {
+            triggerBouncyNav(true);
         });
-        $('.cd-bouncy-nav-modal-f .cd-bouncy-nav .copy').unbind('click').bind('click', function(){
+        //close bouncy navigation
+        $('.cd-bouncy-nav-modal-f .cd-close').unbind('click').bind('click', function () {
+            triggerBouncyNav(false);
+        });
+        $('.cd-bouncy-nav-modal-f .cd-bouncy-nav .copy').unbind('click').bind('click', function () {
             localStorage.src_path = localStorage.path;
             localStorage.src_file = fname;
             localStorage.mvpara = 'cp';
             triggerBouncyNav(false);
             // waiting for the"paste" to call the Copy function
         });
-        $('.cd-bouncy-nav-modal-f .cd-bouncy-nav .cut').unbind('click').bind('click', function(){
+        $('.cd-bouncy-nav-modal-f .cd-bouncy-nav .cut').unbind('click').bind('click', function () {
             localStorage.src_path = localStorage.path;
             localStorage.src_file = fname;
             localStorage.mvpara = 'mv';
             triggerBouncyNav(false);
             // waiting for the"paste" to call the Copy function
         });
-        $('.cd-bouncy-nav-modal-f .cd-bouncy-nav .delete').unbind('click').bind('click', function(){
+        $('.cd-bouncy-nav-modal-f .cd-bouncy-nav .delete').unbind('click').bind('click', function () {
             Delete_file(localStorage.path, fname);
-			triggerBouncyNav(false);
+            triggerBouncyNav(false);
         });
-        $('.cd-bouncy-nav-modal-f .cd-bouncy-nav .down').unbind('click').bind('click', function(){
+        $('.cd-bouncy-nav-modal-f .cd-bouncy-nav .down').unbind('click').bind('click', function () {
             Download(localStorage.path, fname);
-			triggerBouncyNav(false);
+            triggerBouncyNav(false);
         });
-        $('.cd-bouncy-nav-modal-f .cd-bouncy-nav .share').unbind('click').bind('click', function(){
+        $('.cd-bouncy-nav-modal-f .cd-bouncy-nav .share').unbind('click').bind('click', function () {
             share(fname);
             triggerBouncyNav(false);
         });
-		$('.cd-bouncy-nav-modal-f').unbind('click').bind('click', function(event){
-			if($(event.target).is('.cd-bouncy-nav-modal')) {
-				triggerBouncyNav(false);
-			}
-		});
+        $('.cd-bouncy-nav-modal-f').unbind('click').bind('click', function (event) {
+            if ($(event.target).is('.cd-bouncy-nav-modal')) {
+                triggerBouncyNav(false);
+            }
+        });
 
-		function triggerBouncyNav($bool) {
-			//check if no nav animation is ongoing
-			if( !is_bouncy_nav_animating) {
-				is_bouncy_nav_animating = true;
-				
-				//toggle list items animation
-				$('.cd-bouncy-nav-modal-f').toggleClass('fade-in', $bool).toggleClass('fade-out', !$bool).find('li:last-child').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
-					$('.cd-bouncy-nav-modal-f').toggleClass('is-visible', $bool);
-					if(!$bool) $('.cd-bouncy-nav-modal-f').removeClass('fade-out');
-					is_bouncy_nav_animating = false;
-				});
-				
-				//check if CSS animations are supported... 
-				if($('.cd-bouncy-nav-trigger').parents('.no-csstransitions').length > 0 ) {
-					$('.cd-bouncy-nav-modal-f').toggleClass('is-visible', $bool);
-					is_bouncy_nav_animating = false;
-				}
-			}
-		}
-	});
+        function triggerBouncyNav($bool) {
+            //check if no nav animation is ongoing
+            if (!is_bouncy_nav_animating) {
+                is_bouncy_nav_animating = true;
+
+                //toggle list items animation
+                $('.cd-bouncy-nav-modal-f').toggleClass('fade-in', $bool).toggleClass('fade-out', !$bool).find('li:last-child').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function () {
+                    $('.cd-bouncy-nav-modal-f').toggleClass('is-visible', $bool);
+                    if (!$bool) $('.cd-bouncy-nav-modal-f').removeClass('fade-out');
+                    is_bouncy_nav_animating = false;
+                });
+
+                //check if CSS animations are supported... 
+                if ($('.cd-bouncy-nav-trigger').parents('.no-csstransitions').length > 0) {
+                    $('.cd-bouncy-nav-modal-f').toggleClass('is-visible', $bool);
+                    is_bouncy_nav_animating = false;
+                }
+            }
+        }
+    });
 }
 
 // Post a rm request and refresh the page
-function Delete_file(Path, Filename){
-    var auth = new URLSearchParams();         
+function Delete_file(Path, Filename) {
+    var auth = new URLSearchParams();
     var params = new URLSearchParams();
     var formData = new FormData();
     auth.append("token", localStorage.token);
@@ -219,7 +219,7 @@ function Delete_file(Path, Filename){
     formData.append("params", params);
     $.ajax({
         async: false,
-        url: "/cgi-bin/serve.py", 
+        url: "/cgi-bin/serve.py",
         type: "POST",
         data: formData,
         processData: false,
@@ -228,19 +228,19 @@ function Delete_file(Path, Filename){
             window.location.href = window.location.href;
         },
         error: function (xhr) {
-            var json = xhr.responseText;
-            if(json.errno==2){
+            var json = JSON.parse(xhr.responseText);
+            if (json.errno == 2) {
                 alert("Access denied!");
                 window.location.href = "/registration.html";
             }
-            else if(json.errno==3)
+            else if (json.errno == 3)
                 alert("Access denied!");
         }
     });
 }
 
-function Makedir(Path, Dirname){
-    var auth = new URLSearchParams();         
+function Makedir(Path, Dirname) {
+    var auth = new URLSearchParams();
     var params = new URLSearchParams();
     var formData = new FormData();
     auth.append("token", localStorage.token);
@@ -251,7 +251,7 @@ function Makedir(Path, Dirname){
     formData.append("params", params);
     $.ajax({
         async: false,
-        url: "/cgi-bin/serve.py", 
+        url: "/cgi-bin/serve.py",
         type: "POST",
         data: formData,
         processData: false,
@@ -260,20 +260,20 @@ function Makedir(Path, Dirname){
             window.location.href = window.location.href;
         },
         error: function (xhr) {
-            var json = xhr.responseText;
-            if(json.errno==2){
+            var json = JSON.parse(xhr.responseText);
+            if (json.errno == 2) {
                 alert("Access denied!");
                 window.location.href = "/registration.html";
             }
-            else if(json.errno==3)
+            else if (json.errno == 3)
                 alert("Access denied!");
-            else if(json.errno==7)
+            else if (json.errno == 7)
                 alert("Dirname should not be the same as any exist File or Dir!");
         }
     });
 }
 
-function refresh_token(){
+function refresh_token() {
     var auth = new URLSearchParams();
     var params = new URLSearchParams();
     auth.append("token", localStorage.token);
@@ -283,7 +283,7 @@ function refresh_token(){
     formData.append("params", params);
     $.ajax({
         async: false,
-        url: "/cgi-bin/serve.py", 
+        url: "/cgi-bin/serve.py",
         type: "POST",
         data: formData,
         processData: false,
@@ -293,13 +293,16 @@ function refresh_token(){
             localStorage.token = json.token;
         },
         error: function (xhr) {
-            alert("An error occurs! Please login again!");
-            window.location.href = "/registration.html";
+            var json = JSON.parse(xhr.responseText);
+            if (json.errno == 2) {
+                alert("An error occurs! Please login again!");
+                window.location.href = "/registration.html";
+            }
         }
     });
 }
 
-function Copyfile(to_path=localStorage.path){
+function Copyfile(to_path = localStorage.path) {
     var src_file = localStorage.src_file;
     if (src_file == "") {
         alert('No file selected.');
@@ -311,7 +314,7 @@ function Copyfile(to_path=localStorage.path){
     if (localStorage.mvpara == "mv") mvpara = 1;
     else if (localStorage.mvpara == "cp") mvpara = 0;
 
-    var auth = new URLSearchParams();         
+    var auth = new URLSearchParams();
     var params = new URLSearchParams();
     var formData = new FormData();
     auth.append("token", localStorage.token);
@@ -325,12 +328,12 @@ function Copyfile(to_path=localStorage.path){
     formData.append("params", params);
     $.ajax({
         async: false,
-        url: "/cgi-bin/serve.py", 
+        url: "/cgi-bin/serve.py",
         type: "POST",
         data: formData,
         processData: false,
         contentType: false,
-        success: function (response) {   
+        success: function (response) {
             if (mvpara == 1) {
                 localStorage.src_file = "";
                 localStorage.src_path = "";
@@ -339,12 +342,12 @@ function Copyfile(to_path=localStorage.path){
             window.location.href = window.location.href;
         },
         error: function (xhr) {
-            var json = xhr.responseText;
-            if(json.errno==2){
+            var json = JSON.parse(xhr.responseText);
+            if (json.errno == 2) {
                 alert("Access denied!");
                 window.location.href = "/registration.html";
             }
-            else if(json.errno==3)
+            else if (json.errno == 3)
                 alert("Access denied!");
         }
     });
@@ -365,7 +368,7 @@ function share(filename) {
     formData.append("params", params);
     $.ajax({
         async: false,
-        url: "/cgi-bin/serve.py", 
+        url: "/cgi-bin/serve.py",
         type: "POST",
         data: formData,
         processData: false,
@@ -383,12 +386,12 @@ function share(filename) {
             }
         },
         error: function (xhr) {
-            var json = xhr.responseText;
-            if(json.errno==2){
+            var json = JSON.parse(xhr.responseText);
+            if (json.errno == 2) {
                 alert("Access denied!");
                 window.location.href = "/registration.html";
             }
-            else if(json.errno==3)
+            else if (json.errno == 3)
                 alert("Access denied!");
         }
     });
@@ -397,7 +400,7 @@ function share(filename) {
         alert("You are not in the wanted group!");
         return;
     }
-    if (grp_name[0] != '/') grp_name = '/'+grp_name;
+    if (grp_name[0] != '/') grp_name = '/' + grp_name;
 
     var tmp_src_file = localStorage.src_file;
     var tmp_src_path = localStorage.src_path;
@@ -412,10 +415,10 @@ function share(filename) {
 }
 
 // 上传文件，还有不少需要完善
-function upload(File){
+function upload() {
     var token = localStorage.token;
     var path = localStorage.path;
-    var file = File;
+    var file = $("#file")[0].files[0];
     var filename = file.name;
     var size = file.size;
 
@@ -438,7 +441,8 @@ function upload(File){
         var end = beg + chuck;
         if (end > size)
             end = size;
-        reader.readAsArrayBuffer(file.slice(start, end));
+        var slice = file.slice(beg, end);
+        reader.readAsBinaryString(slice);
     }
 
     var md5 = spark.end();
@@ -465,15 +469,14 @@ function upload(File){
             need_upload = !json.exist;
         },
         error: function (xhr) {
-            var json = xhr.responseText;
-            if(json.errno==7){
+            var json = JSON.parse(xhr.responseText);
+            if (json.errno == 7) {
                 alert("Duplicate filename! Please rename your file before upload!");
             }
-            else{
+            else if (json.errno == 2) {
                 alert("Access denied!");
                 window.location.href = "/registration.html";
-            }            
-            // TODO: filename duplicate will give stat=400 error
+            }
         }
     });
 
@@ -509,8 +512,11 @@ function upload(File){
                     // $("#proc")[0].innerHTML = "process: " + proc.toFixed(0) + "%";
                 },
                 error: function (xhr) {
-                    alert("Access denied!");
-                    window.location.href = "/registration.html";
+                    var json = JSON.parse(xhr.responseText);
+                    if (json.errno == 2) {
+                        alert("Access denied!");
+                        window.location.href = "/registration.html";
+                    }
                 }
             });
         }
@@ -550,12 +556,14 @@ function upload(File){
             processData: false,
             contentType: false,
             success: function (response) {
-                // TODO: upload complete
                 alert("Upload finished!");
             },
             error: function (xhr) {
-                alert("Access denied!");
-                window.location.href = "/registration.html";
+                var json = JSON.parse(xhr.responseText);
+                if (json.errno == 2) {
+                    alert("Access denied!");
+                    window.location.href = "/registration.html";
+                }
             }
         });
     });
@@ -566,7 +574,7 @@ function Menu() {
 };
 
 // 点击下拉菜单意外区域隐藏
-window.onclick = function(event) {
+window.onclick = function (event) {
     if (!event.target.matches('.dropbtn')) {
         var dropdowns = document.getElementsByClassName("dropdown-content");
         var i;
