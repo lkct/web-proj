@@ -22,7 +22,7 @@ def mysql(sql, cursor):
 
 
 def rm_r(cursor, path, fn):
-    cursor.execute('DESCRIBE %s' % (table))
+    cursor.execute('DESCRIBE %s' % ('file_list'))
     fields = cursor.fetchall()
     fields = [ln[0] for ln in fields]
 
@@ -46,7 +46,7 @@ def rm_r(cursor, path, fn):
 
 
 def cp_r(cursor, path, fn, path2, fn2):
-    cursor.execute('DESCRIBE %s' % (table))
+    cursor.execute('DESCRIBE %s' % ('file_list'))
     fields = cursor.fetchall()
     fields = [ln[0] for ln in fields]
 
