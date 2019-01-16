@@ -107,6 +107,7 @@ function click_download() {
 }
 
 function click_delete() {
+    if (confirm("Really want to delete the file/path?") == false) return;
     file_name = localStorage.click_file;
     Delete_file(localStorage.path, file_name);
 }
@@ -115,7 +116,7 @@ function click_enter() {
     file_name = localStorage.click_file;
     if (localStorage.path != '/') localStorage.path = localStorage.path + '/' + file_name;
     else localStorage.path = '/' + file_name;
-    window.location.href = window.location.href;
+    window.location.href = "/Main_page.html";
 }
 
 function pasd(file_name) {
@@ -213,7 +214,7 @@ function Delete_file(Path, Filename) {
         processData: false,
         contentType: false,
         success: function (response) {
-            window.location.href = window.location.href;
+            window.location.href = "/Main_page.html";
         },
         error: function (xhr) {
             var json = JSON.parse(xhr.responseText);
@@ -245,7 +246,7 @@ function Makedir(Path, Dirname) {
         processData: false,
         contentType: false,
         success: function (response) {
-            window.location.href = window.location.href;
+            window.location.href = "/Main_page.html";
         },
         error: function (xhr) {
             var json = JSON.parse(xhr.responseText);
@@ -327,7 +328,7 @@ function Copyfile(to_path = localStorage.path) {
                 localStorage.src_path = "";
                 localStorage.mvpara = "";
             }
-            window.location.href = window.location.href;
+            window.location.href = "/Main_page.html";
         },
         error: function (xhr) {
             var json = JSON.parse(xhr.responseText);
