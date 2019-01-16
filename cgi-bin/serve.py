@@ -23,14 +23,16 @@ def check_path(path, user, fname=None):
         path = '/' + path
 
     if fname is not None:
-        sql = 'SELECT * FROM file_list WHERE path="%s" AND filename="%s"' % (path, fname)
+        sql = 'SELECT * FROM file_list WHERE path="%s" AND filename="%s"' % (
+            path, fname)
         result = func.mysql(sql, cursor)
         if len(result) == 0:
             return {'errno': 5, 'errmsg': 'File not exist'}
     else:
         dirn = os.path.dirname(path)
         basen = os.path.basename(path)
-        sql = 'SELECT * FROM file_list WHERE path="%s" AND filename="%s"' % (dirn, basen)
+        sql = 'SELECT * FROM file_list WHERE path="%s" AND filename="%s"' % (
+            dirn, basen)
         result = func.mysql(sql, cursor)
         if len(result) == 0 or result[0]['is_dir'] == 0:
             return {'errno': 5, 'errmsg': 'Directory not exist'}
@@ -52,14 +54,15 @@ def check_grp(group, user, check_own=0):
     if len(result) == 0:
         return {'errno': 6, 'errmsg': 'Group not exist'}
 
-    sql = 'SELECT * FROM belongs WHERE group_name="%s" AND user_name="%s"' % (group, user)
+    sql = 'SELECT * FROM belongs WHERE group_name="%s" AND user_name="%s"' % (
+        group, user)
     result = func.mysql(sql, cursor)
     if len(result) == 0:
         return {'errno': 3, 'errmsg': 'Access not authorized'}
 
     if check_own == 1 and result[0]['is_own'] == 0:
         return {'errno': 3, 'errmsg': 'Access not authorized'}
-    
+
     return {'errno': 0}
 
 
@@ -80,7 +83,8 @@ def serve(form, cursor):
 
         if params.has_key('path'):
             if func in ['cp', 'download']:
-                ret = check_path(params['path'], params['user'], params['filename'])
+                ret = check_path(
+                    params['path'], params['user'], params['filename'])
             else:
                 ret = check_path(params['path'], params['user'])
             if ret['errno'] > 0:
@@ -110,12 +114,13 @@ log_file = '/var/www/html/grp-srv/tmp/err.log'
 
 try:
     form = cgi.FieldStorage()
-    
+
     db = MySQLdb.connect('localhost', 'web', 'web', 'web', charset='utf8')
     cursor = db.cursor()
 
     msg = serve(form, cursor)
-    err2stat = {0: 200, 1: 400, 2: 403, 3: 403, 4: 403, 5: 404, 6: 404, 7:400, 8: 400}
+    err2stat = {0: 200, 1: 400, 2: 403, 3: 403,
+                4: 403, 5: 404, 6: 404, 7: 400, 8: 400}
     stat = err2stat[msg['errno']]
 
     db.commit()
@@ -126,7 +131,7 @@ except Exception, e:
         db.close()
     except Exception, ee:
         pass
-    
+
     with open(log_file, 'w', 664) as f:
         f.write(str(datetime.datetime.now()))
         f.write('\n')

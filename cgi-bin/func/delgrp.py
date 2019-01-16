@@ -5,6 +5,7 @@ import sys
 from mysql import mysql
 from mysql import rm_r
 
+
 def delgrp(form, params, cursor):
     """
     params:

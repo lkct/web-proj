@@ -8,6 +8,7 @@ import hashlib
 from mysql import mysql
 from rsa import decrypt
 
+
 def reg(form, params, cursor):
     """
     auth:
@@ -33,15 +34,16 @@ def reg(form, params, cursor):
     result = mysql(sql, cursor)
     if len(result) > 0:
         return {'errno': 8, 'errmsg': 'Duplicate name used'}
-    
+
     passwd = decrypt(passwd)
     md5 = hashlib.md5()
     md5.update(passwd)
     passwd = md5.hexdigest()
     sql = [
-        'INSERT INTO users (user_name, passwd) VALUES ("%s", "%s")' % (user, passwd),
-        
-        'INSERT INTO file_list (path, filename, is_dir) ' \
+        'INSERT INTO users (user_name, passwd) VALUES ("%s", "%s")' % (
+            user, passwd),
+
+        'INSERT INTO file_list (path, filename, is_dir) '
         'VALUES ("%s", "%s", %d)' % ('/', user, 1)
     ]
     mysql(sql, cursor)
