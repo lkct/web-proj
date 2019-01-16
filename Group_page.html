@@ -3,7 +3,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Group manager</title>
-	<script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/Main_action.js"></script>
     <link rel="stylesheet" href="/css/group.css">
     <link rel="stylesheet" href="/css/style.css">
 </head>
@@ -60,6 +61,8 @@
 
 <!--Display the groups you are in-->
 <script>
+    var intervalid = null;
+    intervalid = setInterval(refresh_token,60000);
 	var token = localStorage.token;
 	var path = localStorage.path;
 	var auth = new URLSearchParams();
@@ -93,7 +96,12 @@
                 var tbody = document.getElementById("group_list");
                 for (i=0; i<len;i++){
                     var para = document.createElement("li");
-                    para.innerHTML = files[i].group + " " + files[i].is_own;
+                    if (files[i].is_own == 0){
+                        para.innerHTML = files[i].user + " ";
+                    }
+                    else{
+                        para.innerHTML = files[i].user + " *";
+                    }
                     tbody.appendChild(para);
                 }
             }                              
@@ -148,7 +156,12 @@
                     }
                     for (i=0; i<len;i++){
                         var para = document.createElement("li");
-                        para.innerHTML = files[i].user + " " + files[i].is_own;
+                        if (files[i].is_own == 0){
+                            para.innerHTML = files[i].user + " ";
+                        }
+                        else{
+                            para.innerHTML = files[i].user + " *";
+                        }
                         tbody2.appendChild(para);
                     }
                 }                              
