@@ -91,6 +91,7 @@ function pasd(dname){
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .copy').unbind('click').bind('click', function(){
             localStorage.src_path = localStorage.path;
             localStorage.src_file = dname;
+            alert(src_file, src_path);
             localStorage.mvpara = 'cp';
             triggerBouncyNav(false);
             // waiting for the"paste" to call the Copy function
@@ -98,6 +99,7 @@ function pasd(dname){
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .cut').unbind('click').bind('click', function(){
             localStorage.src_path = localStorage.path;
             localStorage.src_file = dname;
+            alert(src_file, src_path);
             localStorage.mvpara = 'mv';
             triggerBouncyNav(false);
             // waiting for the"paste" to call the Copy function
@@ -152,6 +154,7 @@ function pasf(fname){
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .copy').unbind('click').bind('click', function(){
             localStorage.src_path = localStorage.path;
             localStorage.src_file = fname;
+            alert(src_file, src_path);
             localStorage.mvpara = 'cp';
             triggerBouncyNav(false);
             // waiting for the"paste" to call the Copy function
@@ -159,6 +162,7 @@ function pasf(fname){
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .cut').unbind('click').bind('click', function(){
             localStorage.src_path = localStorage.path;
             localStorage.src_file = fname;
+            alert(src_file, src_path);
             localStorage.mvpara = 'mv';
             triggerBouncyNav(false);
             // waiting for the"paste" to call the Copy function
@@ -298,12 +302,16 @@ function refresh_token(){
 
 function Copyfile(to_path=localStorage.path){
     var src_file = localStorage.src_file;
+    alert(src_file);
     if (src_file == "") {
         alert('No file selected.');
         return;
     }
     var src_path = localStorage.src_path;
+    alert(src_path);
     var to_file = localStorage.src_file;
+    alert(to_file);
+    alert(to_path);
     var mvpara = -1;
     if (localStorage.mvpara == "mv") mvpara = 1;
     else if (localStorage.mvpara == "cp") mvpara = 0
