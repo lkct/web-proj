@@ -444,7 +444,8 @@ function upload(){
         var end = beg + chuck;
         if (end > size)
             end = size;
-        reader.readAsArrayBuffer(file.slice(start, end));
+        var slice = file.slice(beg, end);
+        reader.readAsBinaryString(slice);
     }
 
     var md5 = spark.end();
