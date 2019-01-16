@@ -4,6 +4,7 @@ import sys
 
 from mysql import mysql
 
+
 def diff(form, params, cursor):
     """
     params:
@@ -18,7 +19,8 @@ def diff(form, params, cursor):
     fpath = params['path']
     md5 = params['md5']
 
-    sql = 'SELECT * FROM file_list WHERE path="%s" AND filename="%s"' % (fpath, fn)
+    sql = 'SELECT * FROM file_list WHERE path="%s" AND filename="%s"' % (
+        fpath, fn)
     result = mysql(sql, cursor)
     if len(result) > 0:
         return {'errno': 7, 'errmsg': 'File of same name already existed at destination'}

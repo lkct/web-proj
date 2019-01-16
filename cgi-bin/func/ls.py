@@ -5,6 +5,7 @@ import json
 
 from mysql import mysql
 
+
 def ls(form, params, cursor):
     """
     params:
@@ -16,8 +17,9 @@ def ls(form, params, cursor):
 
     sql = 'SELECT * FROM file_list WHERE path="%s"' % (fpath)
     result = mysql(sql, cursor)
-    ret = [{'filename': ln['filename'], 'is_dir': ln['is_dir'], 'size': ln['size']} for ln in result]
-    
+    ret = [{'filename': ln['filename'], 'is_dir': ln['is_dir'],
+            'size': ln['size']} for ln in result]
+
     fin_ret = []
     if fpath == '/':
         sql = 'SELECT * FROM belongs where user_name="%s"' % (params['user'])

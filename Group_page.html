@@ -1,49 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-	<meta charset="UTF-8">
-	<title>Group manager</title>
-	<script src="/js/jquery-3.3.1.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Group manager</title>
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/Main_action.js"></script>
     <link rel="stylesheet" href="/css/group.css">
     <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
-    
+
     <div class="logbody2">
-        <img src="/groups.jpg" width="400" height="400" align="top"> 
+        <img src="/images/groups.jpg" width="400" height="400" align="top">
     </div>
     <div class="container">
         <div class="leftbox">
-            <ul id='group_list'>group name here</ul>
             <h2 style="color:rgb(23, 80, 138);">The Groups you in:</h2>
+            <ul id='group_list'></ul>
             <div id="GroupInfo">
                 Groupname: <input type="text" id="info_groupname"><br><br>
                 <button id="GInfo" class="logbtn">Show the members of this group</button>
             </div>
-            
-            
             <h2 style="color:rgb(23, 80, 138);">Build a new one</h2>
             <div id="BuildGroupInput">
                 Groupname: <input type="text" id="groupname"><br><br>
                 <button id="Gbuild" class="logbtn">Build this group</button>
+            </div>
+            <h2 style="color:rgb(23, 80, 138);">Delete a group</h2>
+            <div id="DelGroupInput">
+                Groupname: <input type="text" id="delgroupname"><br><br>
+                <button id="GfullDel" class="logbtn">Delete this group</button>
             </div>
             <br>
             <br>
             <br>
         </div>
         <div class="rightbox">
-            <ul id='member_list'>Members of this group here</ul>
+            <ul id='member_list'></ul>
             <h2 style="color:rgb(23, 80, 138);">Pull someone into your group</h2>
             <div id="PullGroupInput">
                 Groupname: <input type="text" id="pull_groupname"><br>
                 Username : <input type="text" id="pull_username"><br>
                 <button id="GPull" class="logbtn">Pull</button>
             </div>
-            <h2 style="color:rgb(23, 80, 138);">delete someone in your group</h2>
+            <h2 style="color:rgb(23, 80, 138);">Delete someone in your group</h2>
             <div id="DelGroupInput">
                 Groupname: <input type="text" id="del_groupname"><br>
                 Username : <input type="text" id="del_username"><br>
                 <button id="GDel" class="logbtn">Delete</button>
+            </div>
+            <div id="BACK">
+                <button id="Back" class="logbtn">Back to Mainpage</button>
             </div>
             <br>
             <br>
@@ -54,10 +63,13 @@
 
 <!--Display the groups you are in-->
 <script>
-	var token = localStorage.token;
-	var path = localStorage.path;
-	var auth = new URLSearchParams();
-	var params = new URLSearchParams();
+    refresh_token();
+    var intervalid = null;
+    intervalid = setInterval(refresh_token, 60000);
+    var token = localStorage.token;
+    var path = localStorage.path;
+    var auth = new URLSearchParams();
+    var params = new URLSearchParams();
     var formData = new FormData();
     auth.append("token", token);
     params.append("func", "lsgrps");
@@ -68,7 +80,7 @@
     // Request for contents
     $.ajax({
         async: false,
-        url: "/cgi-bin/serve.py", 
+        url: "/cgi-bin/serve.py",
         type: "POST",
         data: formData,
         processData: false,
@@ -77,35 +89,37 @@
             var json = JSON.parse(response);
             var files = JSON.parse(json.list);// ????
             var i;
-            if(json.errno==1){
-                // Todo: Jump to Registration
-                alert("An error occurs! Please login again!");
-                window.location.href = "/registration.html";
-            }
-            else {
-                var len = files.length;
-                var tbody = document.getElementById("group_list");
-                for (i=0; i<len;i++){
-                    var para = document.createElement("li");
-                    para.innerHTML = files[i].group + " " + files[i].is_own;
-                    tbody.appendChild(para);
+            var len = files.length;
+            var tbody = document.getElementById("group_list");
+            for (i = 0; i < len; i++) {
+                var para = document.createElement("li");
+                if (files[i].is_own == 0) {
+                    para.innerHTML = files[i].user + " ";
                 }
-            }                              
+                else {
+                    para.innerHTML = files[i].user + " *";
+                }
+                tbody.appendChild(para);
+            }
         },
         error: function (xhr) {
-            alert(xhr.status + " " + xhr.statusText + "\n"
-                + xhr.responseText);
+            var json = JSON.parse(xhr.responseText);
+            if (json.errno == 6) {
+                alert("Group not exist!");
+            }
+            else if (json.errno == 3)
+                alert("Access denied!");
         }
     });
 </script>
 
 <!--The Buttons-->
 <script>
-    $("#GInfo").click(function(){
+    $("#GInfo").click(function () {
         var group_name = $("#info_groupname").val();
         var token = localStorage.token;
-	    var auth = new URLSearchParams();
-	    var params = new URLSearchParams();
+        var auth = new URLSearchParams();
+        var params = new URLSearchParams();
         var formData = new FormData();
         auth.append("token", token);
         params.append("func", "lsmbr");
@@ -113,10 +127,10 @@
         formData.append("auth", auth);
         formData.append("params", params);
 
-    // Request for contents
+        // Request for contents
         $.ajax({
             async: false,
-            url: "/cgi-bin/serve.py", 
+            url: "/cgi-bin/serve.py",
             type: "POST",
             data: formData,
             processData: false,
@@ -125,36 +139,38 @@
                 var json = JSON.parse(response);
                 var files = JSON.parse(json.list);// ????
                 var i;
-                if(json.errno==1){
-                    // Todo: Jump to Registration
-                    alert("An error occurs! Please login again!");
-                    window.location.href = "/registration.html";
+                var len = files.length;
+                var tbody2 = document.getElementById("member_list");
+                while (tbody2.hasChildNodes()) {
+                    tbody2.removeChild(tbody2.firstChild);
                 }
-                else {
-                    var len = files.length;
-                    var tbody2 = document.getElementById("member_list");
-                    while(tbody2.hasChildNodes()) {
-                        tbody2.removeChild(tbody2.firstChild());
+                for (i = 0; i < len; i++) {
+                    var para = document.createElement("li");
+                    if (files[i].is_own == 0) {
+                        para.innerHTML = files[i].user + " ";
                     }
-                    for (i=0; i<len;i++){
-                        var para = document.createElement("li");
-                        para.innerHTML = files[i].user + " " + files[i].is_own;
-                        tbody2.appendChild(para);
+                    else {
+                        para.innerHTML = files[i].user + " *";
                     }
-                }                              
+                    tbody2.appendChild(para);
+                }
             },
             error: function (xhr) {
-                alert(xhr.status + " " + xhr.statusText + "\n"
-                    + xhr.responseText);
+                var json = JSON.parse(xhr.responseText);
+                if (json.errno == 6) {
+                    alert("Group not exist!");
+                }
+                else if (json.errno == 3)
+                    alert("Access denied!");
             }
         });
-	});
-    $("#GPull").click(function(){
+    });
+    $("#GPull").click(function () {
         var group_name = $("#pull_groupname").val();
         var name = $("#pull_username").val();
         var token = localStorage.token;
-	    var auth = new URLSearchParams();
-	    var params = new URLSearchParams();
+        var auth = new URLSearchParams();
+        var params = new URLSearchParams();
         var formData = new FormData();
         auth.append("token", token);
         params.append("func", "newmbr");
@@ -163,30 +179,35 @@
         formData.append("auth", auth);
         formData.append("params", params);
 
-    // Request for contents
+        // Request for contents
         $.ajax({
             async: false,
-            url: "/cgi-bin/serve.py", 
+            url: "/cgi-bin/serve.py",
             type: "POST",
             data: formData,
             processData: false,
             contentType: false,
             success: function (response) {
-                alert("Success!");                            
+                alert("Success!");
+                window.location.href = "/Group_page.html";
             },
             error: function (xhr) {
-                alert(xhr.status + " " + xhr.statusText + "\n"
-                    + xhr.responseText);
+                var json = JSON.parse(xhr.responseText);
+                if (json.errno == 6) {
+                    alert("Group or user not exist!");
+                }
+                else if (json.errno == 3)
+                    alert("Access denied!");
             }
         });
-	});
-    $("#GDel").click(function(){
+    });
+    $("#GDel").click(function () {
         var group_name = $("#del_groupname").val();
         var name = $("#del_username").val();
         var token = localStorage.token;
-	    
-	    var auth = new URLSearchParams();
-	    var params = new URLSearchParams();
+
+        var auth = new URLSearchParams();
+        var params = new URLSearchParams();
         var formData = new FormData();
         auth.append("token", token);
         params.append("func", "delmbr");
@@ -195,24 +216,29 @@
         formData.append("auth", auth);
         formData.append("params", params);
 
-    // Request for contents
+        // Request for contents
         $.ajax({
             async: false,
-            url: "/cgi-bin/serve.py", 
+            url: "/cgi-bin/serve.py",
             type: "POST",
             data: formData,
             processData: false,
             contentType: false,
             success: function (response) {
-                alert("Success!");                         
+                alert("Success!");
+                window.location.href = "/Group_page.html";
             },
             error: function (xhr) {
-                alert(xhr.status + " " + xhr.statusText + "\n"
-                    + xhr.responseText);
+                var json = JSON.parse(xhr.responseText);
+                if (json.errno == 6) {
+                    alert("Group not exist!");
+                }
+                else if (json.errno == 3)
+                    alert("Access denied!");
             }
         });
-	});
-	$("#Gbuild").click(function(){
+    });
+    $("#Gbuild").click(function () {
         var name = $("#groupname").val();
         var token = localStorage.token;
         var auth = new URLSearchParams();
@@ -227,19 +253,66 @@
         // Request for contents
         $.ajax({
             async: false,
-            url: "/cgi-bin/serve.py", 
+            url: "/cgi-bin/serve.py",
             type: "POST",
             data: formData,
             processData: false,
             contentType: false,
             success: function (response) {
-                alert("success!")                             
+                alert("success!");
+                window.location.href = "/Group_page.html";
             },
             error: function (xhr) {
-                alert(xhr.status + " " + xhr.statusText + "\n"
-                    + xhr.responseText);
+                var json = JSON.parse(xhr.responseText);
+                if (json.errno == 6) {
+                    alert("Group not exist!");
+                }
+                else if (json.errno == 3)
+                    alert("Access denied!");
+                else if (json.errno == 8)
+                    alert("Groupname already exist!");
+                else if (json.errno == 4)
+                    alert("Don't use root as a groupname!");
             }
         });
-	});
+    });
+    $("#GfullDel").click(function () {
+        var name = $("#delgroupname").val();
+        var token = localStorage.token;
+        var auth = new URLSearchParams();
+        var params = new URLSearchParams();
+        var formData = new FormData();
+        auth.append("token", token);
+        params.append("func", "delgrp");
+        params.append("group", name);
+        formData.append("auth", auth);
+        formData.append("params", params);
+
+        // Request for contents
+        $.ajax({
+            async: false,
+            url: "/cgi-bin/serve.py",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                alert("success!");
+                window.location.href = "/Group_page.html";
+            },
+            error: function (xhr) {
+                var json = JSON.parseJSON.parse(xhr.responseText);
+                if (json.errno == 6) {
+                    alert("Group not exist!");
+                }
+                else if (json.errno == 3)
+                    alert("Access denied!");
+            }
+        });
+    });
+    $("#Back").click(function () {
+        window.location.href = "/Main_page.html";
+    });
 </script>
+
 </html>

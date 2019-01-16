@@ -4,6 +4,7 @@ import sys
 
 from mysql import mysql
 
+
 def mkdir(form, params, cursor):
     """
     params:
@@ -15,7 +16,8 @@ def mkdir(form, params, cursor):
     fn = params['filename']
     fpath = params['path']
 
-    sql = 'SELECT * FROM file_list WHERE path="%s" AND filename="%s"' % (fpath, fn)
+    sql = 'SELECT * FROM file_list WHERE path="%s" AND filename="%s"' % (
+        fpath, fn)
     result = mysql(sql, cursor)
     if len(result) > 0:
         return {'errno': 7, 'errmsg': 'File of same name already existed at destination'}
