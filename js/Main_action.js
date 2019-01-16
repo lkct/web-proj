@@ -478,7 +478,6 @@ function upload(){
                 alert("Access denied!");
                 window.location.href = "/registration.html";
             }            
-            // TODO: filename duplicate will give stat=400 error
         }
     });
 
@@ -555,7 +554,6 @@ function upload(){
             processData: false,
             contentType: false,
             success: function (response) {
-                // TODO: upload complete
                 alert("Upload finished!");
             },
             error: function (xhr) {
