@@ -119,8 +119,7 @@ try:
     cursor = db.cursor()
 
     msg = serve(form, cursor)
-    err2stat = {0: 200, 1: 400, 2: 403, 3: 403,
-                4: 400, 5: 404, 6: 404, 7: 400, 8: 400}
+    err2stat = {0: 200, 1: 400, 2: 403, 3: 403, 4: 400, 5: 404, 6: 404, 7: 400, 8: 400, 9: 400}
     stat = err2stat[msg['errno']]
 
     db.commit()

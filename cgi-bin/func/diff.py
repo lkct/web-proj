@@ -19,6 +19,9 @@ def diff(form, params, cursor):
     fpath = params['path']
     md5 = params['md5']
 
+    if fpath == '/':
+        return {'errno': 3, 'errmsg': 'Access not authorized'}
+
     sql = 'SELECT * FROM file_list WHERE path="%s" AND filename="%s"' % (
         fpath, fn)
     result = mysql(sql, cursor)
