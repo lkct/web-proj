@@ -87,17 +87,17 @@
         contentType: false,
         success: function (response) {
             var json = JSON.parse(response);
-            var files = JSON.parse(json.list);// ????
+            var files = JSON.parse(json.list);
             var i;
             var len = files.length;
             var tbody = document.getElementById("group_list");
             for (i = 0; i < len; i++) {
                 var para = document.createElement("li");
                 if (files[i].is_own == 0) {
-                    para.innerHTML = files[i].user + " ";
+                    para.innerHTML = files[i].group + " ";
                 }
                 else {
-                    para.innerHTML = files[i].user + " *";
+                    para.innerHTML = files[i].group + " *";
                 }
                 tbody.appendChild(para);
             }
@@ -137,7 +137,7 @@
             contentType: false,
             success: function (response) {
                 var json = JSON.parse(response);
-                var files = JSON.parse(json.list);// ????
+                var files = JSON.parse(json.list);
                 var i;
                 var len = files.length;
                 var tbody2 = document.getElementById("member_list");

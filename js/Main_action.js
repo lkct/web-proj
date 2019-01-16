@@ -50,69 +50,76 @@ function Display_the_files(files) {
         if (is_dir != 0) {
             para.innerHTML = '<section class="cd-section" style="margin-top: 50px;">'
                     +'<button class="cd-bouncy-nav-trigger" type="button" id="'+filename+'"'
-                    +'onclick="pasd()">'+filename + '</button></section>'
+                    +'onclick="pasd(\''+filename+'\')">'+filename + '</button></section>'
 					+'<div class="cd-bouncy-nav-modal-d">'
 					+'<nav><ul class="cd-bouncy-nav">'
-                    +'<li onclick="click_share(\''+filename+'\')">Share</li>'
-                    +'<li onclick="click_cut(\''+filename+'\')">Cut</li>'
-                    +'<li onclick="click_copy(\''+filename+'\')">Copy</li>'
-                    +'<li onclick="click_enter(\''+filename+'\')">Enter</li>'
-					+'<li></li>'
-					+'<li></li>'
+                    +'<li><a href=#0 onclick="click_share()">Share</a></li>'
+                    +'<li><a href=#0 onclick="click_cut()">Cut</a></li>'
+                    +'<li><a href=#0 onclick="click_copy()">Copy</a></li>'
+                    +'<li><a href=#0 onclick="click_enter()">Enter</a></li>'
+					+'<li><a href=#0></a></li>'
+					+'<li><a href=#0></a></li>'
 					+'</ul></nav>'
-                    +'<a class="cd-close">Close modal</a></div>';
+                    +'<a href=#0 class="cd-close">Close modal</a></div>';
             element.appendChild(para);
         }
         else {
             para.innerHTML = '<section class="cd-section" style="margin-top: 50px;">'
                     +'<button class="cd-bouncy-nav-trigger" type="button" id="'+filename+'"'
-                    +'onclick="pasf()">'+filename + '</button></section>'
+                    +'onclick="pasf(\''+filename+'\')">'+filename + '</button></section>'
 					+'<div class="cd-bouncy-nav-modal-f">'
 					+'<nav><ul class="cd-bouncy-nav">'
-                    +'<li onclick="click_share(\''+filename+'\')">Share</li>'
-                    +'<li onclick="click_cut(\''+filename+'\')">Cut</li>'
-                    +'<li onclick="click_copy(\''+filename+'\')">Copy</li>'
-					+'<li></li>'
-					+'<li onclick="click_download(\''+filename+'\')">Download</li>'
-					+'<li onclick="click_delete(\''+filename+'\')">Delete</li>'
+                    +'<li><a href=#0 onclick="click_share()">Share</a></li>'
+                    +'<li><a href=#0 onclick="click_cut()">Cut</a></li>'
+                    +'<li><a href=#0 onclick="click_copy()">Copy</a></li>'
+					+'<li><a href=#0></a></li>'
+					+'<li><a href=#0 onclick="click_download()">Download</a></li>'
+					+'<li><a href=#0 onclick="click_delete()">Delete</a></li>'
 					+'</ul></nav>'
-					+'<a class="cd-close">Close modal</a></div>';
+					+'<a href=#0 class="cd-close">Close modal</a></div>';
             element.appendChild(para);
         }
     }
 }
 
-function click_share(file_name) {
+function click_share() {
+    file_name = localStorage.click_file;
     share(file_name);
 }
 
-function click_cut(file_name) {
+function click_cut() {
+    file_name = localStorage.click_file;
     localStorage.src_path = localStorage.path;
     localStorage.src_file = file_name;
     localStorage.mvpara = 'mv';
 }
 
-function click_copy(file_name) {
+function click_copy() {
+    file_name = localStorage.click_file;
     localStorage.src_path = localStorage.path;
     localStorage.src_file = file_name;
     localStorage.mvpara = 'cp';
 }
 
-function click_download(file_name) {
+function click_download() {
+    file_name = localStorage.click_file;
     Download(localStorage.path, file_name);
 }
 
-function click_delete(file_name) {
+function click_delete() {
+    file_name = localStorage.click_file;
     Delete_file(localStorage.path, file_name);
 }
 
-function click_enter(file_name) {
+function click_enter() {
+    file_name = localStorage.click_file;
     if (localStorage.path != '/') localStorage.path = localStorage.path + '/' + file_name;
     else localStorage.path = '/' + file_name;
     window.location.href = window.location.href;
 }
 
-function pasd() {
+function pasd(file_name) {
+    localStorage.click_file = file_name;
 	jQuery(document).ready(function($){
 		var is_bouncy_nav_animating = false;
 		//open bouncy navigation
@@ -151,7 +158,8 @@ function pasd() {
 	});
 }
 
-function pasf() {
+function pasf(file_name) {
+    localStorage.click_file = file_name;
 	jQuery(document).ready(function($){
 		var is_bouncy_nav_animating = false;
 		//open bouncy navigation
