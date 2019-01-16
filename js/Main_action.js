@@ -404,22 +404,23 @@ function share(filename) {
 }
 
 function calcmd5(file) {
-    // TODO: md5 calculation
-    // var md5;
-    // var reader = new FileReader();
-    // reader.onload = function (event) {
-    //     md5 = SparkMD5.hashBinary(event.target.result);
-    //     resolve();
-    // };
-    // reader.readAsBinaryString(file);
-    // return md5;
-    return SparkMD5.hashBinary(String(file));
+    var reader = new FileReader();
+    reader.onload = function (event) {
+        var md5 = SparkMD5.hashBinary(event.target.result);
+        real_upload(file, md5);
+    };
+    reader.readAsBinaryString(file);
 }
 
 function upload() {
+    var file = $("#file")[0].files[0];
+
+    calcmd5(file);
+}
+
+function real_upload(file, md5) {
     var token = localStorage.token;
     var path = localStorage.path;
-    var file = $("#file")[0].files[0];
     var filename = file.name;
     var size = file.size;
 
@@ -430,8 +431,6 @@ function upload() {
 
     var md5list = new Array(nchunk);
     var ajaxlist = new Array(nchunk);
-
-    var md5 = calcmd5(file);
 
     var formData = new FormData();
     var auth = new URLSearchParams();
