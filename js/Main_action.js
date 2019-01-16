@@ -21,7 +21,7 @@ function Download(path, filename){
         contentType: false,
         success: function (response) {
             var json = JSON.parse(response);
-            window.open("/download.py?dl_token="+json.token);
+            window.open("/cgi-bin/download.py?dl_token="+json.dl_token);
         },
         error: function (xhr) {
             var json = xhr.responseText;
