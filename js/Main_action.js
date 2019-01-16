@@ -398,7 +398,6 @@ function share(filename) {
     localStorage.mvpara = tmp_mvpara;
 }
 
-// 上传文件，还有不少需要完善
 function upload() {
     var token = localStorage.token;
     var path = localStorage.path;
@@ -555,6 +554,7 @@ function upload() {
             }
         });
     });
+	window.location.href = "/Main_page.html";
 }
 
 function Menu() {
