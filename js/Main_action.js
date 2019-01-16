@@ -348,12 +348,9 @@ function Copyfile(to_path=localStorage.path){
 }
 
 function share(filename) {
-    var grp_name = "";
-    $(function() {
-        grp_name = prompt("Please enter the group to which you want to share the file(s):")
-        if (!grp_name)
-            return;
-    });
+    var grp_name = prompt("Please enter the group to which you want to share the file(s):");
+    if (!grp_name)
+        return;
 
     var grp_check = false;
     var auth = new URLSearchParams();
