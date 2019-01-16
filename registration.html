@@ -36,10 +36,6 @@
     $(document).ready(() => {
         $("#loginBtn").on("click", function () {
             var name = $("#username").val();
-			if(name.indexof('/')!=-1){
-				alert("Username should not include '/'");
-				return;
-			}
             var value = Encrypt($("#password").val());
             var auth = new URLSearchParams();
             var params = new URLSearchParams();
@@ -75,9 +71,7 @@
         // Registration
         $("#registBtn").on("click", function () {
             var name = $("#username").val();
-
             var value = Encrypt($("#password").val());
-
             var auth = new URLSearchParams();
             var params = new URLSearchParams();
             var formData = new FormData();
@@ -98,7 +92,7 @@
                 error: function (xhr) {
                     var json = JSON.parse(xhr.responseText);
                     if (json.errno == 4)
-                        alert("Name 'Root' is reserved for super account! Please choose another one!");
+                        alert("Name 'Root' is reserved for super account and only 'a-z,0-9,_,space' is allowed! Please choose another username!");
                     else if (json.errno == 8)
                         alert('Oops! The username has already been used!');
                 }
