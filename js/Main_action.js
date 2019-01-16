@@ -48,8 +48,9 @@ function Display_the_files(files){
         var is_dir = files[i].is_dir;
         var para = document.createElement("li");
         if (is_dir != 0) {
-            para.innerHTML = '<section class="cd-section" style="margin-top: 50px;">'
-					+'<button class="cd-bouncy-nav-trigger" type="button" onclick="pasd(\''+filename+'\')">'+filename + '</button></section>'
+            para.innerHTML = '<section class="cd-section-d" style="margin-top: 50px;">'
+                    +'<button class="cd-bouncy-nav-trigger" type="button" id="'+filename+'"'
+                    +'onclick="pasf(\''+filename+'\')">'+filename + '</button></section>'
 					+'<div class="cd-bouncy-nav-modal">'
 					+'<nav><ul class="cd-bouncy-nav">'
                     +'<li class="share">Share</li>'
@@ -61,8 +62,9 @@ function Display_the_files(files){
             element.appendChild(para);
         }
         else {
-            para.innerHTML = '<section class="cd-section" style="margin-top: 50px;">'
-					+'<button class="cd-bouncy-nav-trigger" type="button" onclick="pasf(\''+filename+'\')">'+filename + '</button></section>'
+            para.innerHTML = '<section class="cd-section-f" style="margin-top: 50px;">'
+                    +'<button class="cd-bouncy-nav-trigger" type="button" id="'+filename+'"'
+                    +'onclick="pasf(\''+filename+'\')">'+filename + '</button></section>'
 					+'<div class="cd-bouncy-nav-modal">'
 					+'<nav><ul class="cd-bouncy-nav">'
                     +'<li class="share">Share</li>'
@@ -176,7 +178,7 @@ function pasf(fname){
             Download(localStorage.path, fname);
 			triggerBouncyNav(false);
         });
-        $('.cd-bouncy-nav-modal .cd-bouncy-nav .enter').unbind('click').bind('click', function(){
+        $('.cd-bouncy-nav-modal .cd-bouncy-nav .share').unbind('click').bind('click', function(){
             share(fname);
             triggerBouncyNav(false);
         });
