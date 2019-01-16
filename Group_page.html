@@ -144,7 +144,7 @@
                     var len = files.length;
                     var tbody2 = document.getElementById("member_list");
                     while(tbody2.hasChildNodes()) {
-                        tbody2.removeChild(element.firstChild);
+                        tbody2.removeChild(tbody2.firstChild);
                     }
                     for (i=0; i<len;i++){
                         var para = document.createElement("li");
