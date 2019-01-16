@@ -37,7 +37,12 @@
 
 .show {display:block;}
 
-.cd-section {
+.cd-section-d {
+  padding: 2em;
+  text-align: middle;
+}
+
+.cd-section-f {
   padding: 2em;
   text-align: middle;
 }
