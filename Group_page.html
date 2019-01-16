@@ -14,8 +14,8 @@
     </div>
     <div class="container">
         <div class="leftbox">
-            <ul id='group_list'>group name here</ul>
             <h2 style="color:rgb(23, 80, 138);">The Groups you in:</h2>
+            <ul id='group_list'></ul>
             <div id="GroupInfo">
                 Groupname: <input type="text" id="info_groupname"><br><br>
                 <button id="GInfo" class="logbtn">Show the members of this group</button>
@@ -133,9 +133,6 @@
                 else {
                     var len = files.length;
                     var tbody2 = document.getElementById("member_list");
-                    while(tbody2.hasChildNodes()) {
-                        tbody2.removeChild(tbody2.firstChild());
-                    }
                     for (i=0; i<len;i++){
                         var para = document.createElement("li");
                         para.innerHTML = files[i].user + " " + files[i].is_own;
