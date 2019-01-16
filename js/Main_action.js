@@ -49,7 +49,7 @@ function Display_the_files(files){
         var para = document.createElement("li");
         if (is_dir != 0) {
             para.innerHTML = '<section class="cd-section" style="margin-top: 50px;">'
-					+'<button class="cd-bouncy-nav-trigger" type="button" onclick="pasd(\''+filenam+'\')">'+filename + '</button></section>'
+					+'<button class="cd-bouncy-nav-trigger" type="button" onclick="pasd(\''+filename+'\')">'+filename + '</button></section>'
 					+'<div class="cd-bouncy-nav-modal">'
 					+'<nav><ul class="cd-bouncy-nav">'
                     +'<li class="share">Share</li>'
@@ -91,6 +91,7 @@ function pasd(dname){
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .copy').unbind('click').bind('click', function(){
             localStorage.src_path = localStorage.path;
             localStorage.src_file = dname;
+            alert(localStorage.src_file, localStorage.src_path);
             localStorage.mvpara = 'cp';
             triggerBouncyNav(false);
             // waiting for the"paste" to call the Copy function
@@ -98,6 +99,7 @@ function pasd(dname){
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .cut').unbind('click').bind('click', function(){
             localStorage.src_path = localStorage.path;
             localStorage.src_file = dname;
+            alert(localStorage.src_file, localStorage.src_path);
             localStorage.mvpara = 'mv';
             triggerBouncyNav(false);
             // waiting for the"paste" to call the Copy function
@@ -152,6 +154,7 @@ function pasf(fname){
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .copy').unbind('click').bind('click', function(){
             localStorage.src_path = localStorage.path;
             localStorage.src_file = fname;
+            alert(localStorage.src_file, localStorage.src_path);
             localStorage.mvpara = 'cp';
             triggerBouncyNav(false);
             // waiting for the"paste" to call the Copy function
@@ -159,6 +162,7 @@ function pasf(fname){
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .cut').unbind('click').bind('click', function(){
             localStorage.src_path = localStorage.path;
             localStorage.src_file = fname;
+            alert(localStorage.src_file, localStorage.src_path);
             localStorage.mvpara = 'mv';
             triggerBouncyNav(false);
             // waiting for the"paste" to call the Copy function
@@ -242,8 +246,8 @@ function Makedir(Path, Dirname){
     var formData = new FormData();
     auth.append("token", localStorage.token);
     params.append("func", "mkdir");
-    params.append("path", Path);
     params.append("filename", Dirname);
+    params.append("path", Path);
     formData.append("auth", auth);
     formData.append("params", params);
     $.ajax({
@@ -298,12 +302,16 @@ function refresh_token(){
 
 function Copyfile(to_path=localStorage.path){
     var src_file = localStorage.src_file;
+    alert(src_file);
     if (src_file == "") {
         alert('No file selected.');
         return;
     }
     var src_path = localStorage.src_path;
+    alert(src_path);
     var to_file = localStorage.src_file;
+    alert(to_file);
+    alert(to_path);
     var mvpara = -1;
     if (localStorage.mvpara == "mv") mvpara = 1;
     else if (localStorage.mvpara == "cp") mvpara = 0
@@ -348,12 +356,9 @@ function Copyfile(to_path=localStorage.path){
 }
 
 function share(filename) {
-    var grp_name = "";
-    $(function() {
-        grp_name = prompt("Please enter the group to which you want to share the file(s):")
-        if (!grp_name)
-            return;
-    });
+    var grp_name = prompt("Please enter the group to which you want to share the file(s):");
+    if (!grp_name)
+        return;
 
     var grp_check = false;
     var auth = new URLSearchParams();
@@ -473,7 +478,6 @@ function upload(){
                 alert("Access denied!");
                 window.location.href = "/registration.html";
             }            
-            // TODO: filename duplicate will give stat=400 error
         }
     });
 
@@ -552,7 +556,6 @@ function upload(){
             processData: false,
             contentType: false,
             success: function (response) {
-                // TODO: upload complete
                 alert("Upload finished!");
             },
             error: function (xhr) {
