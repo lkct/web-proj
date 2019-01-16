@@ -432,18 +432,22 @@ function upload() {
 
     var spark = new SparkMD5.ArrayBuffer();
     var reader = new FileReader();
+    var idx = 0;
     reader.onload = function (event) {
         spark.append(event.target.result);
+        idx++;
+        if (idx < nchunk)
+            loadnext();
     };
-
-    for (var i = 0; i < nchunk; i++) {
-        var beg = i * chuck;
+    function loadnext(){
+        var beg = idx * chuck;
         var end = beg + chuck;
         if (end > size)
             end = size;
         var slice = file.slice(beg, end);
         reader.readAsBinaryString(slice);
     }
+    loadnext();
 
     var md5 = spark.end();
 

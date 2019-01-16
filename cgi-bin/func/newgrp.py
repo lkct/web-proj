@@ -18,6 +18,12 @@ def newgrp(form, params, cursor):
 
     if string.lower(group) == 'root':
         return {'errno': 4, 'errmsg': 'Register name ROOT not allowed'}
+    if len(group) >= 32:
+        return {'errno': 4, 'errmsg': 'Group name too long'}
+    allow_char = string.letters + string.digits + ' _'
+    for ch in group:
+        if ch not in allow_char:
+            return {'errno': 4, 'errmsg': 'Group name include illegal character'}
 
     sql = 'SELECT * FROM belongs WHERE group_name="%s"' % (group)
     result = mysql(sql, cursor)

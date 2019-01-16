@@ -33,7 +33,8 @@ def commit(form, params, cursor):
     if len(md5list) > 0:
         sql = 'SELECT * FROM file_server'
         result = mysql(sql, cursor)
-        rand = random.shuffle(range(len(result)))
+        rand = range(len(result))
+        random.shuffle(rand)
         for i in rand:
             if result[i]['avail_space'] >= size:
                 srv_id = result[i]['srv_id']
@@ -62,8 +63,12 @@ def commit(form, params, cursor):
         r = requests.post(url, data=payload)
         r.raise_for_status()
 
-        sql = 'INSERT INTO md5_list (md5, srv_id) VALUES ("%s", %d)' % (
-            filemd5, srv_id)
+        sql = [
+            'INSERT INTO md5_list (md5, size, srv_id) VALUES ("%s", %d, %d)' % (
+                filemd5, size, srv_id),
+            'UPDATE file_server SET avail_space=avail_space-%d WHERE srv_id="%s"' % (
+                size, srv_id)
+        ]
         mysql(sql, cursor)
 
     sql = [

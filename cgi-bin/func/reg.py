@@ -24,6 +24,12 @@ def reg(form, params, cursor):
 
     if string.lower(user) == 'root':
         return {'errno': 4, 'errmsg': 'Register name ROOT not allowed'}
+    if len(user) >= 32:
+        return {'errno': 4, 'errmsg': 'User name too long'}
+    allow_char = string.letters + string.digits + ' _'
+    for ch in user:
+        if ch not in allow_char:
+            return {'errno': 4, 'errmsg': 'User name include illegal character'}
 
     sql = 'SELECT * FROM users WHERE user_name="%s"' % (user)
     result = mysql(sql, cursor)
