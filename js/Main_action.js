@@ -412,17 +412,17 @@ function upload() {
 
     var need_upload = true;
 
-    var chuck = 1000000;
+    var chuck = 1048576;
     var nchunk = Math.ceil(size / chuck);
 
     var md5list = new Array(nchunk);
     var ajaxlist = new Array(nchunk);
 
-    var spark = new SparkMD5.ArrayBuffer();
+    var spark = new SparkMD5();
     var reader = new FileReader();
     var idx = 0;
     reader.onload = function (event) {
-        spark.append(event.target.result);
+        spark.appendBinary(event.target.result);
         idx++;
         if (idx < nchunk)
             loadnext();
@@ -437,6 +437,7 @@ function upload() {
     }
     loadnext();
 
+    while (idx < nchunk) {}
     var md5 = spark.end();
 
     var formData = new FormData();
@@ -558,8 +559,10 @@ function upload() {
                 }
             }
         });
+        window.location.href = "/Main_page.html";
     });
-	window.location.href = "/Main_page.html";
+
+    while (true) {}
 }
 
 function Menu() {
