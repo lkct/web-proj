@@ -49,34 +49,34 @@ function Display_the_files(files) {
         var para = document.createElement("li");
         if (is_dir != 0) {
             para.innerHTML = '<section class="cd-section" style="margin-top: 50px;">'
-                    +'<button class="cd-bouncy-nav-trigger" type="button" id="'+filename+'"'
-                    +'onclick="pasd(\''+filename+'\')">'+filename + '</button></section>'
-					+'<div class="cd-bouncy-nav-modal-d">'
-					+'<nav><ul class="cd-bouncy-nav">'
-                    +'<li><a href=#0 onclick="click_enter()">Enter</a></li>'
-                    +'<li><a href=#0 onclick="click_share()">Share</a></li>'
-					+'<li><a href=#0>&nbsp;</a></li>'
-                    +'<li><a href=#0 onclick="click_copy()">Copy</a></li>'
-                    +'<li><a href=#0 onclick="click_cut()">Cut</a></li>'
-					+'<li><a href=#0 onclick="click_delete()">Delete</a></li>'
-					+'</ul></nav>'
-                    +'<a href=#0 class="cd-close">Close modal</a></div>';
+                + '<button class="cd-bouncy-nav-trigger" type="button" id="' + filename + '"'
+                + 'onclick="pasd(\'' + filename + '\')">' + filename + '</button></section>'
+                + '<div class="cd-bouncy-nav-modal-d">'
+                + '<nav><ul class="cd-bouncy-nav">'
+                + '<li><a href=#0 onclick="click_enter()">Enter</a></li>'
+                + '<li><a href=#0 onclick="click_share()">Share</a></li>'
+                + '<li><a href=#0>&nbsp;</a></li>'
+                + '<li><a href=#0 onclick="click_copy()">Copy</a></li>'
+                + '<li><a href=#0 onclick="click_cut()">Cut</a></li>'
+                + '<li><a href=#0 onclick="click_delete()">Delete</a></li>'
+                + '</ul></nav>'
+                + '<a href=#0 class="cd-close">Close modal</a></div>';
             element.appendChild(para);
         }
         else {
             para.innerHTML = '<section class="cd-section" style="margin-top: 50px;">'
-                    +'<button class="cd-bouncy-nav-trigger" type="button" id="'+filename+'"'
-                    +'onclick="pasf(\''+filename+'\')">'+filename + '</button></section>'
-					+'<div class="cd-bouncy-nav-modal-f">'
-					+'<nav><ul class="cd-bouncy-nav">'
-					+'<li><a href=#0>&nbsp;</a></li>'
-                    +'<li><a href=#0 onclick="click_share()">Share</a></li>'
-					+'<li><a href=#0 onclick="click_download()">Download</a></li>'
-                    +'<li><a href=#0 onclick="click_copy()">Copy</a></li>'
-                    +'<li><a href=#0 onclick="click_cut()">Cut</a></li>'
-					+'<li><a href=#0 onclick="click_delete()">Delete</a></li>'
-					+'</ul></nav>'
-					+'<a href=#0 class="cd-close">Close modal</a></div>';
+                + '<button class="cd-bouncy-nav-trigger" type="button" id="' + filename + '"'
+                + 'onclick="pasf(\'' + filename + '\')">' + filename + '</button></section>'
+                + '<div class="cd-bouncy-nav-modal-f">'
+                + '<nav><ul class="cd-bouncy-nav">'
+                + '<li><a href=#0>&nbsp;</a></li>'
+                + '<li><a href=#0 onclick="click_share()">Share</a></li>'
+                + '<li><a href=#0 onclick="click_download()">Download</a></li>'
+                + '<li><a href=#0 onclick="click_copy()">Copy</a></li>'
+                + '<li><a href=#0 onclick="click_cut()">Cut</a></li>'
+                + '<li><a href=#0 onclick="click_delete()">Delete</a></li>'
+                + '</ul></nav>'
+                + '<a href=#0 class="cd-close">Close modal</a></div>';
             element.appendChild(para);
         }
     }
@@ -121,78 +121,78 @@ function click_enter() {
 
 function pasd(file_name) {
     localStorage.click_file = file_name;
-	jQuery(document).ready(function($){
-		var is_bouncy_nav_animating = false;
-		//open bouncy navigation
-		triggerBouncyNav(true);
-		//close bouncy navigation
-		$('.cd-bouncy-nav-modal-d .cd-close').unbind('click').bind('click', function(){
-			triggerBouncyNav(false);
+    jQuery(document).ready(function ($) {
+        var is_bouncy_nav_animating = false;
+        //open bouncy navigation
+        triggerBouncyNav(true);
+        //close bouncy navigation
+        $('.cd-bouncy-nav-modal-d .cd-close').unbind('click').bind('click', function () {
+            triggerBouncyNav(false);
         });
-		$('.cd-bouncy-nav-modal-d').on('click', function(event){
-			if($(event.target).is('.cd-bouncy-nav-modal')) {
-				triggerBouncyNav(false);
-			}
-		});
+        $('.cd-bouncy-nav-modal-d').on('click', function (event) {
+            if ($(event.target).is('.cd-bouncy-nav-modal')) {
+                triggerBouncyNav(false);
+            }
+        });
 
-		function triggerBouncyNav($bool) {
-			//check if no nav animation is ongoing
-			if( !is_bouncy_nav_animating) {
-				is_bouncy_nav_animating = true;
-				
-				//toggle list items animation
-				$('.cd-bouncy-nav-modal-d').toggleClass('fade-in', $bool).toggleClass('fade-out', !$bool).find('li:last-child').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
-					$('.cd-bouncy-nav-modal-d').toggleClass('is-visible', $bool);
-					if(!$bool) $('.cd-bouncy-nav-modal-d').removeClass('fade-out');
-					is_bouncy_nav_animating = false;
-				});
-				
-				//check if CSS animations are supported... 
-				if($('.cd-bouncy-nav-trigger').parents('.no-csstransitions').length > 0 ) {
-					$('.cd-bouncy-nav-modal-d').toggleClass('is-visible', $bool);
-					is_bouncy_nav_animating = false;
-				}
-			}
-		}
-	});
+        function triggerBouncyNav($bool) {
+            //check if no nav animation is ongoing
+            if (!is_bouncy_nav_animating) {
+                is_bouncy_nav_animating = true;
+
+                //toggle list items animation
+                $('.cd-bouncy-nav-modal-d').toggleClass('fade-in', $bool).toggleClass('fade-out', !$bool).find('li:last-child').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function () {
+                    $('.cd-bouncy-nav-modal-d').toggleClass('is-visible', $bool);
+                    if (!$bool) $('.cd-bouncy-nav-modal-d').removeClass('fade-out');
+                    is_bouncy_nav_animating = false;
+                });
+
+                //check if CSS animations are supported... 
+                if ($('.cd-bouncy-nav-trigger').parents('.no-csstransitions').length > 0) {
+                    $('.cd-bouncy-nav-modal-d').toggleClass('is-visible', $bool);
+                    is_bouncy_nav_animating = false;
+                }
+            }
+        }
+    });
 }
 
 function pasf(file_name) {
     localStorage.click_file = file_name;
-	jQuery(document).ready(function($){
-		var is_bouncy_nav_animating = false;
-		//open bouncy navigation
-		triggerBouncyNav(true);
-		//close bouncy navigation
-		$('.cd-bouncy-nav-modal-f .cd-close').unbind('click').bind('click', function(){
-			triggerBouncyNav(false);
+    jQuery(document).ready(function ($) {
+        var is_bouncy_nav_animating = false;
+        //open bouncy navigation
+        triggerBouncyNav(true);
+        //close bouncy navigation
+        $('.cd-bouncy-nav-modal-f .cd-close').unbind('click').bind('click', function () {
+            triggerBouncyNav(false);
         });
-		$('.cd-bouncy-nav-modal-f').unbind('click').bind('click', function(event){
-			if($(event.target).is('.cd-bouncy-nav-modal')) {
-				triggerBouncyNav(false);
-			}
-		});
+        $('.cd-bouncy-nav-modal-f').unbind('click').bind('click', function (event) {
+            if ($(event.target).is('.cd-bouncy-nav-modal')) {
+                triggerBouncyNav(false);
+            }
+        });
 
-		function triggerBouncyNav($bool) {
-			//check if no nav animation is ongoing
-			if( !is_bouncy_nav_animating) {
-				is_bouncy_nav_animating = true;
-				
-				//toggle list items animation
-				$('.cd-bouncy-nav-modal-f').toggleClass('fade-in', $bool).toggleClass('fade-out', !$bool).find('li:last-child').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
-					$('.cd-bouncy-nav-modal-f').toggleClass('is-visible', $bool);
-					if(!$bool) $('.cd-bouncy-nav-modal-f').removeClass('fade-out');
-					is_bouncy_nav_animating = false;
-				});
-				
-				//check if CSS animations are supported... 
-				if($('.cd-bouncy-nav-trigger').parents('.no-csstransitions').length > 0 ) {
-					$('.cd-bouncy-nav-modal-f').toggleClass('is-visible', $bool);
-					is_bouncy_nav_animating = false;
-				}
-			}
-		}
-	});
+        function triggerBouncyNav($bool) {
+            //check if no nav animation is ongoing
+            if (!is_bouncy_nav_animating) {
+                is_bouncy_nav_animating = true;
+
+                //toggle list items animation
+                $('.cd-bouncy-nav-modal-f').toggleClass('fade-in', $bool).toggleClass('fade-out', !$bool).find('li:last-child').one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function () {
+                    $('.cd-bouncy-nav-modal-f').toggleClass('is-visible', $bool);
+                    if (!$bool) $('.cd-bouncy-nav-modal-f').removeClass('fade-out');
+                    is_bouncy_nav_animating = false;
+                });
+
+                //check if CSS animations are supported... 
+                if ($('.cd-bouncy-nav-trigger').parents('.no-csstransitions').length > 0) {
+                    $('.cd-bouncy-nav-modal-f').toggleClass('is-visible', $bool);
+                    is_bouncy_nav_animating = false;
+                }
+            }
+        }
+    });
 }
 
 // Post a rm request and refresh the page
@@ -403,6 +403,19 @@ function share(filename) {
     localStorage.mvpara = tmp_mvpara;
 }
 
+function calcmd5(file) {
+    // TODO: md5 calculation
+    // var md5;
+    // var reader = new FileReader();
+    // reader.onload = function (event) {
+    //     md5 = SparkMD5.hashBinary(event.target.result);
+    //     resolve();
+    // };
+    // reader.readAsBinaryString(file);
+    // return md5;
+    return SparkMD5.hashBinary(String(file));
+}
+
 function upload() {
     var token = localStorage.token;
     var path = localStorage.path;
@@ -418,27 +431,7 @@ function upload() {
     var md5list = new Array(nchunk);
     var ajaxlist = new Array(nchunk);
 
-    var spark = new SparkMD5();
-    var reader = new FileReader();
-    var idx = 0;
-    reader.onload = function (event) {
-        spark.appendBinary(event.target.result);
-        idx++;
-        if (idx < nchunk)
-            loadnext();
-    };
-    function loadnext(){
-        var beg = idx * chuck;
-        var end = beg + chuck;
-        if (end > size)
-            end = size;
-        var slice = file.slice(beg, end);
-        reader.readAsBinaryString(slice);
-    }
-    loadnext();
-
-    while (idx < nchunk) {}
-    var md5 = spark.end();
+    var md5 = calcmd5(file);
 
     var formData = new FormData();
     var auth = new URLSearchParams();
@@ -561,8 +554,6 @@ function upload() {
         });
         window.location.href = "/Main_page.html";
     });
-
-    while (true) {}
 }
 
 function Menu() {
