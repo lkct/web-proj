@@ -10,7 +10,7 @@ def newmbr(form, params, cursor):
         group: group name
         user2: user to add
     return:
-        NONE
+        errno
     """
     group = params['group']
     user2 = params['user2']
