@@ -55,15 +55,13 @@
                     var json = JSON.parse(response);
                     localStorage.token = json.token;
                     localStorage.path = "/"+name;
-                    if(json.errno==1)
-                        alert("The password does not match the username or the username does not exist!");
-                    else {
-                        window.location.href="/Main_page.html"; //+"?token="+json.token;
-                    }
+                    window.location.href="/Main_page.html";
                 },
                 error: function (xhr) {
-                    alert(xhr.status + " " + xhr.statusText + "\n"
-                        + xhr.responseText);
+                    var json = xhr.responseText;
+                    if(json.errno==2){
+                        alert("The password does not match the username or the username does not exist!");
+                    }
                 }
             });
         });
@@ -88,15 +86,15 @@
                 processData: false,
                 contentType: false,
                 success: function (response) {
-                    var json = JSON.parse(response);
-                    if(json.errno==1)
-                        alert('Oops! The username has already been used!');
-                    else
-                        alert("You've already registered!\nPlease log in.");
+                    alert("You've already registered!\nPlease log in.");
                 },
                 error: function (xhr) {
-                    alert(xhr.status + " " + xhr.statusText + "\n"
-                        + xhr.responseText);
+                    var json = xhr.responseText;
+                    if(json.errno==4){
+                        alert("Name 'Root' is reserved for super account! Please choose another one!");
+                    }
+                    else if(json.errno==8)
+                        alert('Oops! The username has already been used!');
                 }
             });
         });
