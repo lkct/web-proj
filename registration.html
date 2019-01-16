@@ -33,8 +33,11 @@
     $(document).ready(() => {
         $("#loginBtn").on("click", function(){
             var name = $("#username").val();
+			if(name.indexof('/')!=-1){
+				alert("Username should not include '/'");
+				return;
+			}
             var value = Encrypt($("#password").val());
-
             var auth = new URLSearchParams();
             var params = new URLSearchParams();
             var formData = new FormData();
