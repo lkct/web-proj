@@ -104,7 +104,7 @@
             localStorage.path = '/';
         else
             localStorage.path = localStorage.path.substring(0, localStorage.path.lastIndexOf('/'));
-        window.location.href = window.location.href;
+        window.location.href = "/Main_page.html";
     });
     $("#Nfolder").unbind('click').bind('click', function () {
         var dir_name = prompt("Please enter the directory name:");
