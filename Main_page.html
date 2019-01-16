@@ -88,7 +88,7 @@
     //	Download();
     // });
 	$("#Uload").unbind('click').bind('click', function(){
-		upload($("#file")[0].files[0]);
+		upload();
 	});
 	$("#Bpage").unbind('click').bind('click', function(){
 		if(localStorage.path.split('/').length<=2)
