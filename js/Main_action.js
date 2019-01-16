@@ -417,10 +417,10 @@ function share(filename) {
 }
 
 // 上传文件，还有不少需要完善
-function upload(File){
+function upload(){
     var token = localStorage.token;
     var path = localStorage.path;
-    var file = File;
+    var file = $("#file")[0].files[0];
     var filename = file.name;
     var size = file.size;
 
