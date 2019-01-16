@@ -25,7 +25,7 @@ function Download(path, filename){
             window.open("/cgi-bin/download.py?dl_token="+json.dl_token);
         },
         error: function (xhr) {
-            var json = xhr.responseText;
+            var json = JSON.parse(xhr.responseText);
             if(json.errno==2){
                 alert("Access denied!");
                 window.location.href = "/registration.html";
@@ -229,7 +229,7 @@ function Delete_file(Path, Filename){
             window.location.href = window.location.href;
         },
         error: function (xhr) {
-            var json = xhr.responseText;
+            var json = JSON.parse(xhr.responseText);
             if(json.errno==2){
                 alert("Access denied!");
                 window.location.href = "/registration.html";
@@ -261,7 +261,7 @@ function Makedir(Path, Dirname){
             window.location.href = window.location.href;
         },
         error: function (xhr) {
-            var json = xhr.responseText;
+            var json = JSON.parse(xhr.responseText);
             if(json.errno==2){
                 alert("Access denied!");
                 window.location.href = "/registration.html";
@@ -294,8 +294,11 @@ function refresh_token(){
             localStorage.token = json.token;
         },
         error: function (xhr) {
-            alert("An error occurs! Please login again!");
-            window.location.href = "/registration.html";
+			var json = JSON.parse(xhr.responseText);
+			if(json.errno==2){
+				alert("An error occurs! Please login again!");
+				window.location.href = "/registration.html";
+			}
         }
     });
 }
@@ -344,7 +347,7 @@ function Copyfile(to_path=localStorage.path){
             window.location.href = window.location.href;
         },
         error: function (xhr) {
-            var json = xhr.responseText;
+            var json = JSON.parse(xhr.responseText);
             if(json.errno==2){
                 alert("Access denied!");
                 window.location.href = "/registration.html";
@@ -388,7 +391,7 @@ function share(filename) {
             }
         },
         error: function (xhr) {
-            var json = xhr.responseText;
+            var json = JSON.parse(xhr.responseText);
             if(json.errno==2){
                 alert("Access denied!");
                 window.location.href = "/registration.html";
@@ -470,7 +473,7 @@ function upload(){
             need_upload = !json.exist;
         },
         error: function (xhr) {
-            var json = xhr.responseText;
+            var json = JSON.parse(xhr.responseText);
             if(json.errno==7){
                 alert("Duplicate filename! Please rename your file before upload!");
             }
@@ -513,6 +516,7 @@ function upload(){
                     // $("#proc")[0].innerHTML = "process: " + proc.toFixed(0) + "%";
                 },
                 error: function (xhr) {
+					var json = JSON.parse(xhr.responseText);
 					if(json.errno==2){
 						alert("Access denied!");
 						window.location.href = "/registration.html";
@@ -559,6 +563,7 @@ function upload(){
                 alert("Upload finished!");
             },
             error: function (xhr) {
+				var json = JSON.parse(xhr.responseText);
                 if(json.errno==2){
 					alert("Access denied!");
 					window.location.href = "/registration.html";

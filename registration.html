@@ -58,7 +58,7 @@
                     window.location.href="/Main_page.html";
                 },
                 error: function (xhr) {
-                    var json = xhr.responseText;
+                    var json = JSON.parse(xhr.responseText);
                     if(json.errno==2){
                         alert("The password does not match the username or the username does not exist!");
                     }
@@ -69,6 +69,7 @@
         // Registration
         $("#registBtn").on("click", function(){
             var name = $("#username").val();
+			
             var value = Encrypt($("#password").val());
 
             var auth = new URLSearchParams();         
@@ -89,10 +90,9 @@
                     alert("You've already registered!\nPlease log in.");
                 },
                 error: function (xhr) {
-                    var json = xhr.responseText;
-                    if(json.errno==4){
+                    var json = JSON.parse(xhr.responseText);
+                    if(json.errno==4)
                         alert("Name 'Root' is reserved for super account! Please choose another one!");
-                    }
                     else if(json.errno==8)
                         alert('Oops! The username has already been used!');
                 }
