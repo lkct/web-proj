@@ -50,12 +50,12 @@ function Display_the_files(files) {
         if (is_dir != 0) {
             para.innerHTML = '<section class="cd-section" style="margin-top: 50px;">'
                     +'<button class="cd-bouncy-nav-trigger" type="button" id="'+filename+'"'
-                    +'onclick="pasd(\''+filename+'\')">'+filename + '</button></section>'
+                    +'onclick="pasd2(\''+filename+'\')">'+filename + '</button></section>'
 					+'<div class="cd-bouncy-nav-modal-d">'
 					+'<nav><ul class="cd-bouncy-nav">'
                     +'<li><a href=#0 onclick="click_enter()">Enter</a></li>'
                     +'<li><a href=#0 onclick="click_share()">Share</a></li>'
-					+'<li><a href=#0></a></li>'
+					+'<li><a href=#0>&nbsp;</a></li>'
                     +'<li><a href=#0 onclick="click_copy()">Copy</a></li>'
                     +'<li><a href=#0 onclick="click_cut()">Cut</a></li>'
 					+'<li><a href=#0 onclick="click_delete()">Delete</a></li>'
@@ -69,7 +69,7 @@ function Display_the_files(files) {
                     +'onclick="pasf(\''+filename+'\')">'+filename + '</button></section>'
 					+'<div class="cd-bouncy-nav-modal-f">'
 					+'<nav><ul class="cd-bouncy-nav">'
-					+'<li><a href=#0></a></li>'
+					+'<li><a href=#0>&nbsp;</a></li>'
                     +'<li><a href=#0 onclick="click_share()">Share</a></li>'
 					+'<li><a href=#0 onclick="click_download()">Download</a></li>'
                     +'<li><a href=#0 onclick="click_copy()">Copy</a></li>'
@@ -116,6 +116,11 @@ function click_enter() {
     if (localStorage.path != '/') localStorage.path = localStorage.path + '/' + file_name;
     else localStorage.path = '/' + file_name;
     window.location.href = window.location.href;
+}
+
+function pasd2(file_name) {
+    pasd(file_name);
+    pasd(file_name);
 }
 
 function pasd(file_name) {
