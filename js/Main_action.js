@@ -123,9 +123,7 @@ function pasd(file_name) {
 	jQuery(document).ready(function($){
 		var is_bouncy_nav_animating = false;
 		//open bouncy navigation
-		$('.cd-bouncy-nav-trigger').unbind('click').bind('click', function(){
-			triggerBouncyNav(true);
-		});
+		triggerBouncyNav(true);
 		//close bouncy navigation
 		$('.cd-bouncy-nav-modal-d .cd-close').unbind('click').bind('click', function(){
 			triggerBouncyNav(false);
@@ -163,9 +161,7 @@ function pasf(file_name) {
 	jQuery(document).ready(function($){
 		var is_bouncy_nav_animating = false;
 		//open bouncy navigation
-		$('.cd-bouncy-nav-trigger').unbind('click').bind('click', function(){
-			triggerBouncyNav(true);
-		});
+		triggerBouncyNav(true);
 		//close bouncy navigation
 		$('.cd-bouncy-nav-modal-f .cd-close').unbind('click').bind('click', function(){
 			triggerBouncyNav(false);
