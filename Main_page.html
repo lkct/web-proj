@@ -102,8 +102,9 @@
 	});
 	$("#Nfolder").unbind('click').bind('click', function(){
         var dir_name = prompt("Please enter the directory name:");
-        if (!dir_name)
-            return;
+        var len = dir_name.length;
+        if (!dir_name) return;
+        if (dir_name[len-1] == '/') return;
 		Makedir(localStorage.path, dir_name);
 	});
 	$("#GroupManage").unbind('click').bind('click', function(){
