@@ -242,8 +242,8 @@ function Makedir(Path, Dirname){
     var formData = new FormData();
     auth.append("token", localStorage.token);
     params.append("func", "mkdir");
-    params.append("path", Path);
     params.append("filename", Dirname);
+    params.append("path", Path);
     formData.append("auth", auth);
     formData.append("params", params);
     $.ajax({
