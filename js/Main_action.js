@@ -14,6 +14,7 @@ function Download(path, filename){
     formData.append("auth", auth);
     formData.append("params", params);
     $.ajax({
+        async: false,
         url: "/cgi-bin/serve.py", 
         type: "POST",
         data: formData,
@@ -90,14 +91,14 @@ function pasd(dname){
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .copy').unbind('click').bind('click', function(){
             localStorage.src_path = localStorage.path;
             localStorage.src_file = dname;
-            localStorage.op_type = 'copy';
+            localStorage.mvpara = 'cp';
             triggerBouncyNav(false);
             // waiting for the"paste" to call the Copy function
         });
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .cut').unbind('click').bind('click', function(){
             localStorage.src_path = localStorage.path;
             localStorage.src_file = dname;
-            localStorage.op_type = 'cut';
+            localStorage.mvpara = 'mv';
             triggerBouncyNav(false);
             // waiting for the"paste" to call the Copy function
         });
@@ -151,14 +152,14 @@ function pasf(fname){
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .copy').unbind('click').bind('click', function(){
             localStorage.src_path = localStorage.path;
             localStorage.src_file = fname;
-            localStorage.op_type = 'copy';
+            localStorage.mvpara = 'cp';
             triggerBouncyNav(false);
             // waiting for the"paste" to call the Copy function
         });
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .cut').unbind('click').bind('click', function(){
             localStorage.src_path = localStorage.path;
             localStorage.src_file = fname;
-            localStorage.op_type = 'cut';
+            localStorage.mvpara = 'mv';
             triggerBouncyNav(false);
             // waiting for the"paste" to call the Copy function
         });
@@ -214,6 +215,7 @@ function Delete_file(Path, Filename){
     formData.append("auth", auth);
     formData.append("params", params);
     $.ajax({
+        async: false,
         url: "/cgi-bin/serve.py", 
         type: "POST",
         data: formData,
@@ -245,6 +247,7 @@ function Makedir(Path, Dirname){
     formData.append("auth", auth);
     formData.append("params", params);
     $.ajax({
+        async: false,
         url: "/cgi-bin/serve.py", 
         type: "POST",
         data: formData,
@@ -295,12 +298,15 @@ function refresh_token(){
 
 function Copyfile(to_path=localStorage.path){
     var src_file = localStorage.src_file;
-    var src_path = localStorage.src_path;
-    var to_file = localStorage.src_file;
-    var mvpara = localStorage.mvpara;
     if (src_file == "") {
         alert('No file selected.');
+        return;
     }
+    var src_path = localStorage.src_path;
+    var to_file = localStorage.src_file;
+    var mvpara = -1;
+    if (localStorage.mvpara == "mv") mvpara = 1;
+    else if (localStorage.mvpara == "cp") mvpara = 0
 
     var auth = new URLSearchParams();         
     var params = new URLSearchParams();
@@ -315,12 +321,18 @@ function Copyfile(to_path=localStorage.path){
     formData.append("auth", auth);
     formData.append("params", params);
     $.ajax({
+        async: false,
         url: "/cgi-bin/serve.py", 
         type: "POST",
         data: formData,
         processData: false,
         contentType: false,
-        success: function (response) {
+        success: function (response) {   
+            if (mvpara == 1) {
+                localStorage.src_file = "";
+                localStorage.src_path = "";
+                localStorage.mvpara = "";
+            }
             window.location.href = window.location.href;
         },
         error: function (xhr) {
@@ -333,22 +345,67 @@ function Copyfile(to_path=localStorage.path){
                 alert("Access denied!");
         }
     });
-    
-    if (mvpara == 'cut') {
-        localStorage.src_file = "";
-        localStorage.src_path = "";
-        localStorage.mvpara = "";
-    }
 }
 
 function share(filename) {
+    var grp_name = "";
+    $(function() {
+        grp_name = prompt("Please enter the group to which you want to share the file(s):")
+        if (!grp_name)
+            return;
+    });
+
+    var grp_check = false;
+    var auth = new URLSearchParams();
+    var params = new URLSearchParams();
+    auth.append("token", localStorage.token);
+    params.append("func", "lsgrps");
+    var formData = new FormData();
+    formData.append("auth", auth);
+    formData.append("params", params);
+    $.ajax({
+        async: false,
+        url: "/cgi-bin/serve.py", 
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            var json = JSON.parse(response);
+            var lst = JSON.parse(json.list);
+            var len = lst.length;
+            var i;
+            for (i = 0; i < len; i++) {
+                if (lst[i].group == grp_name) {
+                    grp_check = true;
+                    break;
+                }
+            }
+        },
+        error: function (xhr) {
+            var json = xhr.responseText;
+            if(json.errno==2){
+                alert("Access denied!");
+                window.location.href = "/registration.html";
+            }
+            else if(json.errno==3)
+                alert("Access denied!");
+        }
+    });
+
+    if (grp_check == false) {
+        alert("You are not in the wanted group!");
+        return;
+    }
+    if (grp_name[0] != '/') grp_name = '/'+grp_name;
+
     var tmp_src_file = localStorage.src_file;
     var tmp_src_path = localStorage.src_path;
     var tmp_mvpara = localStorage.mvpara;
     localStorage.src_file = filename;
     localStorage.src_path = localStorage.path;
-    localStorage.mvpara = "copy";
-    Copyfile(_________); // fill the shared path
+    localStorage.mvpara = "cp";
+    Copyfile(grp_name); // fill the shared path
     localStorage.src_file = tmp_src_file;
     localStorage.src_path = tmp_src_path;
     localStorage.mvpara = tmp_mvpara;
