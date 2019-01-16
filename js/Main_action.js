@@ -469,7 +469,7 @@ function upload(){
             if(json.errno==7){
                 alert("Duplicate filename! Please rename your file before upload!");
             }
-            else{
+            else if(json.errno==2){
                 alert("Access denied!");
                 window.location.href = "/registration.html";
             }            
@@ -509,8 +509,10 @@ function upload(){
                     // $("#proc")[0].innerHTML = "process: " + proc.toFixed(0) + "%";
                 },
                 error: function (xhr) {
-                    alert("Access denied!");
-                    window.location.href = "/registration.html";
+					if(json.errno==2){
+						alert("Access denied!");
+						window.location.href = "/registration.html";
+					}    
                 }
             });
         }
@@ -554,8 +556,10 @@ function upload(){
                 alert("Upload finished!");
             },
             error: function (xhr) {
-                alert("Access denied!");
-                window.location.href = "/registration.html";
+                if(json.errno==2){
+					alert("Access denied!");
+					window.location.href = "/registration.html";
+				}    
             }
         });
     });
