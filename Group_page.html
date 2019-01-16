@@ -20,19 +20,21 @@
                 Groupname: <input type="text" id="info_groupname"><br><br>
                 <button id="GInfo" class="logbtn">Show the members of this group</button>
             </div>
-            
-            
             <h2 style="color:rgb(23, 80, 138);">Build a new one</h2>
             <div id="BuildGroupInput">
                 Groupname: <input type="text" id="groupname"><br><br>
                 <button id="Gbuild" class="logbtn">Build this group</button>
+            </div>
+            <div id="DelGroupInput">
+                Groupname: <input type="text" id="delgroupname"><br><br>
+                <button id="GfullDel" class="logbtn">Delete this group</button>
             </div>
             <br>
             <br>
             <br>
         </div>
         <div class="rightbox">
-            <ul id='member_list'>Members of this group here</ul>
+            <ul id='member_list'></ul>
             <h2 style="color:rgb(23, 80, 138);">Pull someone into your group</h2>
             <div id="PullGroupInput">
                 Groupname: <input type="text" id="pull_groupname"><br>
@@ -44,6 +46,9 @@
                 Groupname: <input type="text" id="del_groupname"><br>
                 Username : <input type="text" id="del_username"><br>
                 <button id="GDel" class="logbtn">Delete</button>
+            </div>
+            <div id="BACK">
+                <button id="Back" class="logbtn">Back to Mainpage</button>
             </div>
             <br>
             <br>
@@ -93,8 +98,12 @@
             }                              
         },
         error: function (xhr) {
-            alert(xhr.status + " " + xhr.statusText + "\n"
-                + xhr.responseText);
+            var json = xhr.responseText;
+            if(json.errno==6){
+                alert("Group not exist!");
+            }
+            else if(json.errno==3)
+                alert("Access denied!");
         }
     });
 </script>
@@ -133,6 +142,9 @@
                 else {
                     var len = files.length;
                     var tbody2 = document.getElementById("member_list");
+                    while(tbody2.hasChildNodes()) {
+                        tbody2.removeChild(element.firstChild);
+                    }
                     for (i=0; i<len;i++){
                         var para = document.createElement("li");
                         para.innerHTML = files[i].user + " " + files[i].is_own;
@@ -141,8 +153,12 @@
                 }                              
             },
             error: function (xhr) {
-                alert(xhr.status + " " + xhr.statusText + "\n"
-                    + xhr.responseText);
+                var json = xhr.responseText;
+                if(json.errno==6){
+                    alert("Group not exist!");
+                }
+                else if(json.errno==3)
+                    alert("Access denied!");
             }
         });
 	});
@@ -169,11 +185,16 @@
             processData: false,
             contentType: false,
             success: function (response) {
-                alert("Success!");                            
+                alert("Success!");
+                window.document.execCommand("Refresh");                            
             },
             error: function (xhr) {
-                alert(xhr.status + " " + xhr.statusText + "\n"
-                    + xhr.responseText);
+                var json = xhr.responseText;
+                if(json.errno==6){
+                    alert("Group or user not exist!");
+                }
+                else if(json.errno==3)
+                    alert("Access denied!");
             }
         });
 	});
@@ -201,11 +222,16 @@
             processData: false,
             contentType: false,
             success: function (response) {
-                alert("Success!");                         
+                alert("Success!");
+                window.document.execCommand("Refresh");                         
             },
             error: function (xhr) {
-                alert(xhr.status + " " + xhr.statusText + "\n"
-                    + xhr.responseText);
+                var json = xhr.responseText;
+                if(json.errno==6){
+                    alert("Group not exist!");
+                }
+                else if(json.errno==3)
+                    alert("Access denied!");
             }
         });
 	});
@@ -230,13 +256,59 @@
             processData: false,
             contentType: false,
             success: function (response) {
-                alert("success!")                             
+                alert("success!");
+                window.document.execCommand("Refresh");                          
             },
             error: function (xhr) {
-                alert(xhr.status + " " + xhr.statusText + "\n"
-                    + xhr.responseText);
+                var json = xhr.responseText;
+                if(json.errno==6){
+                    alert("Group not exist!");
+                }
+                else if(json.errno==3)
+                    alert("Access denied!");
+                else if(json.errno==8)
+                    alert("Groupname already exist!");
+                else if(json.errno==4)
+                    alert("Don't use root as a groupname!");
             }
         });
+    });
+    $("#GfullDel").click(function(){
+        var name = $("#delgroupname").val();
+        var token = localStorage.token;
+        var auth = new URLSearchParams();
+        var params = new URLSearchParams();
+        var formData = new FormData();
+        auth.append("token", token);
+        params.append("func", "delgrp");
+        params.append("group", name);
+        formData.append("auth", auth);
+        formData.append("params", params);
+
+        // Request for contents
+        $.ajax({
+            async: false,
+            url: "/cgi-bin/serve.py", 
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                alert("success!");
+                window.document.execCommand("Refresh");                        
+            },
+            error: function (xhr) {
+                var json = xhr.responseText;
+                if(json.errno==6){
+                    alert("Group not exist!");
+                }
+                else if(json.errno==3)
+                    alert("Access denied!");
+            }
+        });
+    });
+    $("#Back").click(function(){
+        window.location.href = "/registration.html";
 	});
 </script>
 </html>
