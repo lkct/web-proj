@@ -91,7 +91,7 @@ function pasd(dname){
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .copy').unbind('click').bind('click', function(){
             localStorage.src_path = localStorage.path;
             localStorage.src_file = dname;
-            alert(src_file, src_path);
+            alert(localStorage.src_file, localStorage.src_path);
             localStorage.mvpara = 'cp';
             triggerBouncyNav(false);
             // waiting for the"paste" to call the Copy function
@@ -99,7 +99,7 @@ function pasd(dname){
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .cut').unbind('click').bind('click', function(){
             localStorage.src_path = localStorage.path;
             localStorage.src_file = dname;
-            alert(src_file, src_path);
+            alert(localStorage.src_file, localStorage.src_path);
             localStorage.mvpara = 'mv';
             triggerBouncyNav(false);
             // waiting for the"paste" to call the Copy function
@@ -154,7 +154,7 @@ function pasf(fname){
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .copy').unbind('click').bind('click', function(){
             localStorage.src_path = localStorage.path;
             localStorage.src_file = fname;
-            alert(src_file, src_path);
+            alert(localStorage.src_file, localStorage.src_path);
             localStorage.mvpara = 'cp';
             triggerBouncyNav(false);
             // waiting for the"paste" to call the Copy function
@@ -162,7 +162,7 @@ function pasf(fname){
         $('.cd-bouncy-nav-modal .cd-bouncy-nav .cut').unbind('click').bind('click', function(){
             localStorage.src_path = localStorage.path;
             localStorage.src_file = fname;
-            alert(src_file, src_path);
+            alert(localStorage.src_file, localStorage.src_path);
             localStorage.mvpara = 'mv';
             triggerBouncyNav(false);
             // waiting for the"paste" to call the Copy function
