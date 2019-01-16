@@ -49,31 +49,31 @@ function Display_the_files(files) {
         var para = document.createElement("li");
         if (is_dir != 0) {
             para.innerHTML = '<section class="cd-section" style="margin-top: 50px;">'
-                + '<button class="cd-bouncy-nav-trigger" type="button" id="' + filename + '"'
-                + 'onclick="pasd(\'' + filename + '\')">' + filename + '</button></section>'
-                + '<div class="cd-bouncy-nav-modal-d">'
-                + '<nav><ul class="cd-bouncy-nav">'
-                + '<li class="share">Share</li>'
-                + '<li class="enter">Enter</li>'
-                + '<li class="copy">Copy</li>'
-                + '<li class="cut">Cut</li>'
-                + '</ul></nav>'
-                + '<a class="cd-close">Close modal</a></div>';
+                +'<button class="cd-bouncy-nav-trigger" type="button" id="'+filename+'"'
+                +'onclick="pasd(\''+filename+'\')">'+filename + '</button></section>'
+					      +'<div class="cd-bouncy-nav-modal-d">'
+					      +'<nav><ul class="cd-bouncy-nav">'
+                +'<li class="share">Share</li>'
+                +'<li class="cut">Cut</li>'
+					      +'<li class="copy">Copy</li>'
+                +'<li class="enter">Enter</li>'
+					      +'</ul></nav>'
+                +'<a class="cd-close">Close modal</a></div>';
             element.appendChild(para);
         }
         else {
             para.innerHTML = '<section class="cd-section" style="margin-top: 50px;">'
-                + '<button class="cd-bouncy-nav-trigger" type="button" id="' + filename + '"'
-                + 'onclick="pasf(\'' + filename + '\')">' + filename + '</button></section>'
-                + '<div class="cd-bouncy-nav-modal-f">'
-                + '<nav><ul class="cd-bouncy-nav">'
-                + '<li class="share">Share</li>'
-                + '<li class="down">Download</li>'
-                + '<li class="copy">Copy</li>'
-                + '<li class="cut">Cut</li>'
-                + '<li class="delete">Delete</li>'
-                + '</ul></nav>'
-                + '<a class="cd-close">Close modal</a></div>';
+                +'<button class="cd-bouncy-nav-trigger" type="button" id="'+filename+'"'
+                +'onclick="pasf(\''+filename+'\')">'+filename + '</button></section>'
+					      +'<div class="cd-bouncy-nav-modal-f">'
+					      +'<nav><ul class="cd-bouncy-nav">'
+                +'<li class="share">Share</li>'
+                +'<li class="cut">Cut</li>'
+					      +'<li class="copy">Copy</li>'
+					      +'<li class="down">Download</li>'
+					      +'<li class="delete">Delete</li>'
+					      +'</ul></nav>'
+					      +'<a class="cd-close">Close modal</a></div>';
             element.appendChild(para);
         }
     }
