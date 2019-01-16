@@ -50,7 +50,7 @@ function Display_the_files(files){
         if (is_dir != 0) {
             para.innerHTML = '<section class="cd-section" style="margin-top: 50px;">'
                     +'<button class="cd-bouncy-nav-trigger" type="button" id="'+filename+'"'
-                    +'onclick="pasf(\''+filename+'\')">'+filename + '</button></section>'
+                    +'onclick="pasd(\''+filename+'\')">'+filename + '</button></section>'
 					+'<div class="cd-bouncy-nav-modal-d">'
 					+'<nav><ul class="cd-bouncy-nav">'
                     +'<li class="share">Share</li>'
