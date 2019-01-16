@@ -16,6 +16,9 @@ def mkdir(form, params, cursor):
     fn = params['filename']
     fpath = params['path']
 
+    if fpath == '/':
+        return {'errno': 3, 'errmsg': 'Access not authorized'}
+
     sql = 'SELECT * FROM file_list WHERE path="%s" AND filename="%s"' % (
         fpath, fn)
     result = mysql(sql, cursor)

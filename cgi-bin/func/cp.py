@@ -22,6 +22,12 @@ def cp(form, params, cursor):
     fpath2 = params['path2']
     mv = int(params['mv'])
 
+    if fpath2 == '/':
+        return {'errno': 3, 'errmsg': 'Access not authorized'}
+    tmpath = fpath + '/' + fn
+    if fpath2[:len(tmpath)] == tmpath:
+        return {'errno': 9, 'errmsg': 'Paste into source'}
+
     sql = 'SELECT * FROM file_list WHERE path="%s" AND filename="%s"' % (
         fpath2, fn2)
     result = mysql(sql, cursor)
